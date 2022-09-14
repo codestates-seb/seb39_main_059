@@ -1,6 +1,8 @@
 <div align="center">
 
-<h1>냥빌리지(Cat-Village)</h1>
+  
+  
+<h1>😻냥빌리지(Cat-Village)</h1>
 
 <br /> <br /> <br />
 
@@ -44,6 +46,11 @@
 </details>
 <br /> <br /> <br /><br><br>
 
+  <h1>기술스택</h1>  
+  <br><br><br>
+  <h1>인프라</h1>
+  
+<br /> <br /> <br /><br><br>
 <h1>팀 소개</h1>
 <br><br>
 
