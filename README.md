@@ -34,8 +34,6 @@
 다른 유저의 게시글에 좋아요👍와 댓글을 추가할 수 있습니다!
 
 </details>
-<br /> <br />
-
 <details>
 <summary>👤슬기로운 집사생활</summary>
 <br>
