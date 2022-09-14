@@ -37,7 +37,7 @@
 <br /> <br />
 
 <details>
-<summary>👤집사생활</summary>
+<summary>👤슬기로운 집사생활</summary>
 <br>
 
 고양이의 품종별 정보를 제공해드립니다!<br>
