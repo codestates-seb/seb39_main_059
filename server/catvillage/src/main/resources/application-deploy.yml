@@ -1,0 +1,26 @@
+spring:
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://${{ secrets.ENDPOINT }}:${{ secrets.PORT }}/cat-village?serverTimezone=UTC&characterEncoding=utf8mb4
+    username: ${{ secrets.USER }}
+    password: ${{ secrets.PASSWORD }}
+
+  jpa:
+    open-in-view: false
+    show-sql: true
+    hibernate:
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    properties:
+      hibernate:
+        format_sql: true
+
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: DEBUG
+        type:
+          descriptor:
+            sql:
+              BasicBinder: TRACE

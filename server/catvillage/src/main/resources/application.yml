@@ -1,0 +1,10 @@
+spring:
+  jpa:
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: UTC  # DB Timezone configure
+        format_sql: true  # SQL pretty print
+    show-sql: true
+
+# kakao Oauth2 ?? ??
