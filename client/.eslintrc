@@ -5,7 +5,8 @@
     "plugin:@typescript-eslint/recommended",
     "airbnb",
     "airbnb/hooks",
-    "@typescript-eslint/parser"
+    "airbnb-typescript",
+    "prettier"
   ],
   "parserOptions": {
     "project": "./tsconfig.json"
