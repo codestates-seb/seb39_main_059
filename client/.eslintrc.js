@@ -33,6 +33,10 @@ module.exports = {
     'no-shadow': 0,
     'jsx-a11y/no-noninteractive-element-interactions': 0,
     "react/jsx-uses-react": "off",
-    "react/react-in-jsx-scope": "off"
+    "react/react-in-jsx-scope": "off",
+    'react/function-component-definition': [
+      2,
+      { namedComponents: 'arrow-function' }, // 함수형 컴포넌트 형식 정의
+    ],
   }
 }

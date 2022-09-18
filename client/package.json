@@ -9,7 +9,7 @@
     "build": "webpack --mode production --progress",
     "lint": "eslint './src/**/*.{ts,tsx,js,jsx}'",
     "lint:fix": "eslint --fix './src/**/*.{ts,tsx,js,jsx}'",
-    "prettier": "prettier --write --config ./.prettierrc './src/**/*.{ts,tsx}'"
+    "prettier": "prettier --write --config ./.prettierrc.js './src/**/*.{ts,tsx}'"
   },
   "keywords": [],
   "author": "",
