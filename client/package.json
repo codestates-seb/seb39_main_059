@@ -18,7 +18,9 @@
     "@babel/runtime": "^7.19.0",
     "core-js": "^3.25.1",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "styled-components": "^5.3.5",
+    "styled-reset": "^4.4.2"
   },
   "devDependencies": {
     "@babel/core": "^7.19.0",
@@ -29,6 +31,7 @@
     "@babel/runtime-corejs3": "^7.19.0",
     "@types/react": "^18.0.19",
     "@types/react-dom": "^18.0.6",
+    "@types/styled-components": "^5.1.26",
     "@typescript-eslint/eslint-plugin": "^5.37.0",
     "@typescript-eslint/parser": "^5.37.0",
     "babel-loader": "^8.2.5",
