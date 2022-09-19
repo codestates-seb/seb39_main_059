@@ -9,7 +9,7 @@ import org.mapstruct.ReportingPolicy;
 import java.util.List;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
-public interface TagMapper {
+public interface CatTagMapper {
     default public CatTag tagPostDtoToCatTag(CatTagPostDto catTagPostDto) {
         if (catTagPostDto == null) return null;
         CatTag catTag = new CatTag(catTagPostDto.getTag());
