@@ -23,4 +23,8 @@ public class CatTag {
     @OneToMany(mappedBy = "catTag")
     @JsonManagedReference
     private List<TagToCat> tagToCats = new ArrayList<>();
+
+    public CatTag(String tagName) {
+        this.tagName = tagName;
+    }
 }

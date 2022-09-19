@@ -2,6 +2,7 @@ package com.twentyfour_seven.catvillage.cat.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -53,4 +54,13 @@ public class Cat {
     @OneToMany(mappedBy = "cat", cascade = CascadeType.REMOVE)
     @JsonManagedReference
     private List<TagToCat> tagToCats = new ArrayList<>();
+
+    @Builder
+    public Cat(String name, Date birthDate, String sex, int weight, String body) {
+        this.name = name;
+        this.birthDate = birthDate;
+        this.sex = sex;
+        this.weight = weight;
+        this.body = body;
+    }
 }
