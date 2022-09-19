@@ -23,7 +23,7 @@ public class CatService {
     public Cat saveCat(Cat cat, String breed) {
         User user = userService.findVerifiedUser(userId);
         cat.setUser(user);
-        Breed findBreed = findverifiedBreed(breed);
+        Breed findBreed = findVerifiedBreed(breed);
         cat.setBreed(findBreed);
         Cat createdCat = catRepository.save(cat);
         return createdCat;

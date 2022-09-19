@@ -8,8 +8,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Entity(name = "CAT")
@@ -25,7 +25,7 @@ public class Cat {
     private String name;
 
     @Column(name = "BIRTH_DATE")
-    private Date birthDate;
+    private LocalDateTime birthDate;
 
     @Column(name = "SEX", length = 1)
     private String sex;
@@ -56,7 +56,7 @@ public class Cat {
     private List<TagToCat> tagToCats = new ArrayList<>();
 
     @Builder
-    public Cat(String name, Date birthDate, String sex, int weight, String body) {
+    public Cat(String name, LocalDateTime birthDate, String sex, int weight, String body) {
         this.name = name;
         this.birthDate = birthDate;
         this.sex = sex;

@@ -5,6 +5,7 @@ import com.twentyfour_seven.catvillage.cat.entity.Cat;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
@@ -13,7 +14,7 @@ public interface CatMapper {
         if (catPostDto == null) {
             return null;
         }
-        Date birthDate = new Date(catPostDto.getBirthYear(), catPostDto.getBirthMonth(), catPostDto.getBirthDay());
+        LocalDateTime birthDate = LocalDateTime.of(catPostDto.getBirthYear(), catPostDto.getBirthMonth(), catPostDto.getBirthDay(), 0, 0, 0);
         Cat cat = Cat.builder()
                 .name(catPostDto.getName())
                 .birthDate(birthDate)
