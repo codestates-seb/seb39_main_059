@@ -102,6 +102,7 @@ module.exports = (_env) => {
       }),
       new webpack.DefinePlugin({
         "process.env.PUBLIC_URL": JSON.stringify(process.env.PUBLIC_URL),
+        "process.env.APP_API": JSON.stringify(process.env.APP_API),
         "process.env.IMAGE_INLINE_SIZE_LIMIT": JSON.stringify(
           process.env.IMAGE_INLINE_SIZE_LIMIT
         ),
