@@ -68,4 +68,9 @@ public class CatService {
         Cat updatingCat = beanUtils.copyNonNullProperties(cat, findCat);
         return catRepository.save(updatingCat);
     }
+
+    public List<Breed> findBreeds() {
+        List<Breed> findBreeds = breedService.findAll();
+        return findBreeds;
+    }
 }

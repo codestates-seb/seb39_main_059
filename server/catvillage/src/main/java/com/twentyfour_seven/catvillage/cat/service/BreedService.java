@@ -6,6 +6,7 @@ import com.twentyfour_seven.catvillage.exception.BusinessLogicException;
 import com.twentyfour_seven.catvillage.exception.ExceptionCode;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -22,4 +23,7 @@ public class BreedService {
         return findBreed;
     }
 
+    public List<Breed> findAll() {
+        return breedRepository.findAll();
+    }
 }
