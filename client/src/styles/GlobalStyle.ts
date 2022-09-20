@@ -11,6 +11,14 @@ export const GlobalStyle = createGlobalStyle`
   html, body {
     font-family: -apple-system,BlinkMacSystemFont,"Segoe UI Adjusted","Segoe UI","Liberation Sans",sans-serif;
   }
+
+  body {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
   
   input, textarea { 
     -moz-user-select: auto;

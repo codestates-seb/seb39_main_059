@@ -34,5 +34,5 @@ public class CatPostDto {
     @Length(max = 1000)
     private String body;
 
-    private List<CatTagPostDto> tag;
+    private List<CatTagPostDto> tags;
 }
