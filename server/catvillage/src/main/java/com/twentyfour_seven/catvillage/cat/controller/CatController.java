@@ -82,4 +82,10 @@ public class CatController {
         return new ResponseEntity<>(
                 breedMapper.breedToBreedResponseDto(saveBreed), HttpStatus.CREATED);
     }
+
+    @DeleteMapping("/breeds/{breeds-id}")
+    public ResponseEntity deleteBreed(@PathVariable("breeds-id") @Positive long breedId) {
+        catService.removeBreed(breedId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }

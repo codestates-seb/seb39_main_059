@@ -36,7 +36,7 @@ public class CatService {
     public Cat saveCat(Cat cat, String breed, List<CatTag> catTags) {
         User user = userService.findVerifiedUser(userId);
         cat.setUser(user);
-        Breed findBreed = breedService.findVerifiedBreed(breed);
+        Breed findBreed = breedService.findByBreedName(breed);
         cat.setBreed(findBreed);
         catTagService.saveTag(catTags, cat);
         Cat createdCat = catRepository.save(cat);
@@ -62,7 +62,7 @@ public class CatService {
 
     public Cat updateCat(Cat cat, String breed, List<CatTag> catTags) {
         Cat findCat = findVerifiedCat(cat.getCatId());
-        Breed findBreed = breedService.findVerifiedBreed(breed);
+        Breed findBreed = breedService.findByBreedName(breed);
         cat.setBreed(findBreed);
 
         Cat updatingCat = beanUtils.copyNonNullProperties(cat, findCat);
@@ -77,5 +77,9 @@ public class CatService {
     public Breed saveBreed(Breed breed) {
         Breed createdBreed = breedService.saveBreed(breed);
         return createdBreed;
+    }
+
+    public void removeBreed(long breedId) {
+        breedService.removeBreed(breedId);
     }
 }
