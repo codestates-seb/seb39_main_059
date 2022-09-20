@@ -45,11 +45,36 @@ module.exports = (_env) => {
           exclude: /node_modules/,
         },
         {
-          test: /\.(bmp|gif|jpe?g|png|svg|webp)$/i,
+          test: /\.(bmp|gif|jpe?g|png|webp)$/i,
           loader: "url-loader",
           options: {
             limit: imageInlineSizeLimit,
             name: "static/media/[name].[contenthash:8].[ext]",
+          },
+        },
+          test: /\.svg$/,
+          use: [
+            {
+              loader: require.resolve('@svgr/webpack'),
+              options: {
+                prettier: false,
+                svgo: false,
+                svgoConfig: {
+                  plugins: [{ removeViewBox: false }],
+                },
+                titleProp: true,
+                ref: true,
+              },
+            },
+            {
+              loader: require.resolve('file-loader'),
+              options: {
+                name: 'static/media/[name].[hash].[ext]',
+              },
+            },
+          ],
+          issuer: {
+            and: [/\.(ts|tsx|js|jsx|md|mdx)$/],
           },
         },
       ],
