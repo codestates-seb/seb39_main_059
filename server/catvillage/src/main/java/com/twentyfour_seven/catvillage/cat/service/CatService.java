@@ -49,4 +49,10 @@ public class CatService {
         Cat findCat = optionalCat.orElseThrow(() -> new BusinessLogicException(ExceptionCode.CAT_NOT_FOUND));
         return findCat;
     }
+
+    public void removeCat(long catId) {
+        Cat findCat = findVerifiedCat(catId);
+        catTagService.removeTagToCats(findCat.getTagToCats());
+        catRepository.delete(findCat);
+    }
 }

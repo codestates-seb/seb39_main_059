@@ -39,4 +39,8 @@ public class CatTagService {
         TagToCat createdTagToCat = tagToCatRepository.save(tagToCat);
         return createdTagToCat;
     }
+
+    public void removeTagToCats(List<TagToCat> tagToCats) {
+        tagToCatRepository.deleteAll(tagToCats);
+    }
 }

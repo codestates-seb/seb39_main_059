@@ -55,4 +55,11 @@ public class CatController {
         Cat saveCat = catService.saveCat(cat, breed, catTags);
         return new ResponseEntity<>(catMapper.catToCatResponseDto(saveCat), HttpStatus.OK);
     }
+
+    @DeleteMapping("/{cats-id}")
+    public ResponseEntity deleteCat(@PathVariable("cats-id") @Positive long catId) {
+        catService.removeCat(catId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
 }
