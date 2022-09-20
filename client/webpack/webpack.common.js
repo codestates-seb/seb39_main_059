@@ -7,6 +7,7 @@ const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CopyPlugin = require("copy-webpack-plugin");
 const InterpolateHtmlPlugin = require("interpolate-html-plugin");
+const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 
 // IMAGE_INLINE_SIZE_LIMIT라는 환경변수 사용
 const imageInlineSizeLimit = process.env.IMAGE_INLINE_SIZE_LIMIT
@@ -25,17 +26,10 @@ module.exports = (_env) => {
     },
     resolve: {
       extensions: [".ts", ".tsx", ".js", ".jsx", ".json"],
-      alias: {
-        "@": path.resolve(__dirname, "src/"),
-        "@Route": path.resolve(__dirname, "src/route/"),
-        "@Pages": path.resolve(__dirname, "src/pages/"),
-        "@Components": path.resolve(__dirname, "src/components/"),
-        "@Style": path.resolve(__dirname, "public/scss/"),
-        "@Public": path.resolve(__dirname, "public/"),
-        "@Config": path.resolve(__dirname, "src/config/"),
-        "@Stores": path.resolve(__dirname, "src/store/stores/"),
-        "@types": path.resolve(__dirname, "../@types/"),
-      },
+      plugins: [new TsconfigPathsPlugin({
+        configFile: path.resolve(__dirname, "../tsconfig.json"),
+        baseUrl: path.resolve(__dirname, "../")
+      })],
     },
     module: {
       rules: [
