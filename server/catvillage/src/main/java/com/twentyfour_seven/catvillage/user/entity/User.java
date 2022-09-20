@@ -25,7 +25,7 @@ public class User {
     private String password;
 
     @Setter
-    @Column(name = "NAME", nullable = false, length = 16)
+    @Column(name = "NAME", nullable = false, unique = true, length = 16)
     private String name;
 
     @Setter
