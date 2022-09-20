@@ -52,7 +52,7 @@ public class CatController {
         String breed = catPostDto.getBreed();
         List<CatTag> catTags = catTagMapper.catTagPostDtosToCatTags(catPostDto.getTags());
         // 토큰에서 User 정보 불러와서 Cat에 저장 필요!
-        Cat saveCat = catService.saveCat(cat, breed, catTags);
+        Cat saveCat = catService.updateCat(cat, breed, catTags);
         return new ResponseEntity<>(catMapper.catToCatResponseDto(saveCat), HttpStatus.OK);
     }
 

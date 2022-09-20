@@ -8,6 +8,7 @@ import com.twentyfour_seven.catvillage.exception.BusinessLogicException;
 import com.twentyfour_seven.catvillage.exception.ExceptionCode;
 import com.twentyfour_seven.catvillage.user.entity.User;
 import com.twentyfour_seven.catvillage.user.service.UserService;
+import com.twentyfour_seven.catvillage.utils.CustomBeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,13 +21,16 @@ public class CatService {
     private final BreedService breedService;
     private final UserService userService;
     private final CatTagService catTagService;
+    private final CustomBeanUtils<Cat> beanUtils;
 
     public CatService(CatRepository catRepository, BreedService breedService,
-                      UserService userService, CatTagService catTagService) {
+                      UserService userService, CatTagService catTagService,
+                      CustomBeanUtils beanUtils) {
         this.catRepository = catRepository;
         this.breedService = breedService;
         this.userService = userService;
         this.catTagService = catTagService;
+        this.beanUtils = beanUtils;
     }
 
     public Cat saveCat(Cat cat, String breed, List<CatTag> catTags) {
@@ -54,5 +58,14 @@ public class CatService {
         Cat findCat = findVerifiedCat(catId);
 //        catTagService.removeTagToCats(findCat.getTagToCats());
         catRepository.delete(findCat);
+    }
+
+    public Cat updateCat(Cat cat, String breed, List<CatTag> catTags) {
+        Cat findCat = findVerifiedCat(cat.getCatId());
+        Breed findBreed = breedService.findVerifiedBreed(breed);
+        cat.setBreed(findBreed);
+
+        Cat updatingCat = beanUtils.copyNonNullProperties(cat, findCat);
+        return catRepository.save(updatingCat);
     }
 }
