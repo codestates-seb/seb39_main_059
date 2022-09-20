@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "webpack serve --open --mode development --env env-path=.env",
-    "build": "webpack --mode production --progress",
+    "dev": "webpack serve --open --mode development --env env-path=.env.dev",
+    "build": "webpack --mode production --progress --env env-path=.env.prod",
     "lint": "eslint './src/**/*.{ts,tsx,js,jsx}'",
     "lint:fix": "eslint --fix './src/**/*.{ts,tsx,js,jsx}'",
     "prettier": "prettier --write --config ./.prettierrc.js './src/**/*.{ts,tsx}'"
