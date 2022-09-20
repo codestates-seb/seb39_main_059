@@ -1,5 +1,6 @@
 package com.twentyfour_seven.catvillage.user.entity;
 
+import com.twentyfour_seven.catvillage.audit.DateTable;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,7 +11,7 @@ import java.util.Date;
 
 @Entity(name = "USERS")
 @Getter
-public class User {
+public class User extends DateTable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "USER_ID")
@@ -61,7 +62,6 @@ public class User {
     private Date expiryDate;
 
     public User() {
-        profileImage = null;
         catCount = 0;
         contentCount = 0;
         followerCount = 0;
@@ -70,12 +70,13 @@ public class User {
     }
 
     @Builder
-    public User(Long userId, String email, String password, String name, String location, String role) {
+    public User(Long userId, String email, String password, String name, String profileImage, String location, String role) {
         this();
         this.userId = userId;
         this.email = email;
         this.password = password;
         this.name = name;
+        this.profileImage = profileImage;
         this.location = location;
         this.role = role;
     }
