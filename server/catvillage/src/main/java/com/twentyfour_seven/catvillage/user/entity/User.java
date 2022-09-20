@@ -1,5 +1,6 @@
 package com.twentyfour_seven.catvillage.user.entity;
 
+import com.twentyfour_seven.catvillage.audit.DateTable;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,7 +11,7 @@ import java.util.Date;
 
 @Entity(name = "USERS")
 @Getter
-public class User {
+public class User extends DateTable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "USER_ID")
