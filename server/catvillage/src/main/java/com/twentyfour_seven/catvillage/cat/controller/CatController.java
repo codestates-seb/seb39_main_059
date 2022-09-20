@@ -1,10 +1,13 @@
 package com.twentyfour_seven.catvillage.cat.controller;
 
+import com.twentyfour_seven.catvillage.cat.dto.BreedPostDto;
 import com.twentyfour_seven.catvillage.cat.dto.CatPostDto;
 import com.twentyfour_seven.catvillage.cat.dto.CatResponseDto;
 import com.twentyfour_seven.catvillage.cat.dto.CatTagResponseDto;
+import com.twentyfour_seven.catvillage.cat.entity.Breed;
 import com.twentyfour_seven.catvillage.cat.entity.Cat;
 import com.twentyfour_seven.catvillage.cat.entity.CatTag;
+import com.twentyfour_seven.catvillage.cat.mapper.BreedMapper;
 import com.twentyfour_seven.catvillage.cat.mapper.CatMapper;
 import com.twentyfour_seven.catvillage.cat.mapper.CatTagMapper;
 import com.twentyfour_seven.catvillage.cat.service.CatService;
@@ -27,12 +30,15 @@ public class CatController {
     private final CatService catService;
     private final CatMapper catMapper;
     private final CatTagMapper catTagMapper;
+    private final BreedMapper breedMapper;
 
     public CatController(CatService catService, CatMapper catMapper,
-                         CatTagMapper catTagMapper){
+                         CatTagMapper catTagMapper,
+                         BreedMapper breedMapper){
         this.catService = catService;
         this.catMapper = catMapper;
         this.catTagMapper = catTagMapper;
+        this.breedMapper = breedMapper;
     }
 
     @GetMapping("/{cats-id}")
@@ -62,4 +68,24 @@ public class CatController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    @GetMapping("/breeds")
+    public ResponseEntity getBreeds() {
+        List<Breed> breeds = catService.findBreeds();
+        return new ResponseEntity<>(
+                breedMapper.breedsToBreedResponseDtos(breeds), HttpStatus.OK);
+    }
+
+    @PostMapping("/breeds")
+    public ResponseEntity postBreed(@Valid @RequestBody BreedPostDto breedPostDto) {
+        Breed breed = breedMapper.breedPostDtoToBreed(breedPostDto);
+        Breed saveBreed = catService.saveBreed(breed);
+        return new ResponseEntity<>(
+                breedMapper.breedToBreedResponseDto(saveBreed), HttpStatus.CREATED);
+    }
+
+    @DeleteMapping("/breeds/{breeds-id}")
+    public ResponseEntity deleteBreed(@PathVariable("breeds-id") @Positive long breedId) {
+        catService.removeBreed(breedId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }
