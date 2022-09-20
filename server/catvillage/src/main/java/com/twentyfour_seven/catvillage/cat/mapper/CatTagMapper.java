@@ -17,7 +17,7 @@ public interface CatTagMapper {
         CatTag catTag = new CatTag(catTagPostDto.getTag());
         return catTag;
     }
-    public List<CatTag> catTagPostDtosToCatTags(List<CatPostDto> catPostDtos);
+    public List<CatTag> catTagPostDtosToCatTags(List<CatTagPostDto> catTagPostDtos);
 
     default public CatTagResponseDto catTagToCatTagResponseDto(CatTag catTag) {
         CatTagResponseDto catTagResponseDto = new CatTagResponseDto(catTag.getTagName());
