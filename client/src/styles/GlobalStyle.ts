@@ -14,7 +14,7 @@ export const GlobalStyle = createGlobalStyle`
 
   body {
     width: 100vw;
-    height: 100vh;
+    height: max(100vh, 812px);
     display: flex;
     justify-content: center;
     align-items: center;
