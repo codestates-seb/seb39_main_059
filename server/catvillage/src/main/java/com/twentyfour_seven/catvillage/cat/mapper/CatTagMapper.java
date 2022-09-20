@@ -2,7 +2,9 @@ package com.twentyfour_seven.catvillage.cat.mapper;
 
 import com.twentyfour_seven.catvillage.cat.dto.CatPostDto;
 import com.twentyfour_seven.catvillage.cat.dto.CatTagPostDto;
+import com.twentyfour_seven.catvillage.cat.dto.CatTagResponseDto;
 import com.twentyfour_seven.catvillage.cat.entity.CatTag;
+import com.twentyfour_seven.catvillage.cat.entity.TagToCat;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 
@@ -16,4 +18,17 @@ public interface CatTagMapper {
         return catTag;
     }
     public List<CatTag> catTagPostDtosToCatTags(List<CatPostDto> catPostDtos);
+
+    default public CatTagResponseDto catTagToCatTagResponseDto(CatTag catTag) {
+        CatTagResponseDto catTagResponseDto = new CatTagResponseDto(catTag.getTagName());
+        return catTagResponseDto;
+    }
+
+    public List<CatTagResponseDto> catTagsToCatTagResponseDtos(List<CatTag> catTags);
+
+    default public CatTag tagToCatToCatTag(TagToCat tagToCat) {
+        return tagToCat.getCatTag();
+    }
+
+    public List<CatTag> tagToCatsToCatTags(List<TagToCat> tagToCats);
 }
