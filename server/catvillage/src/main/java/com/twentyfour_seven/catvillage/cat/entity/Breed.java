@@ -17,10 +17,10 @@ public class Breed {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long breedId;
 
-    @Column(name = "KOR_NAME", nullable = false)
+    @Column(name = "KOR_NAME", length = 20, nullable = false)
     private String korName;
 
-    @Column(name = "ENG_NAME")
+    @Column(name = "ENG_NAME", length = 20)
     private String engName;
 
     @OneToMany(mappedBy = "breed")

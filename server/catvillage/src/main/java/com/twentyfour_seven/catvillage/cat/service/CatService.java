@@ -73,4 +73,9 @@ public class CatService {
         List<Breed> findBreeds = breedService.findAll();
         return findBreeds;
     }
+
+    public Breed saveBreed(Breed breed) {
+        Breed createdBreed = breedService.saveBreed(breed);
+        return createdBreed;
+    }
 }

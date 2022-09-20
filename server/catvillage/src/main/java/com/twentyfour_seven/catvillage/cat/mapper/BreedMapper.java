@@ -1,5 +1,6 @@
 package com.twentyfour_seven.catvillage.cat.mapper;
 
+import com.twentyfour_seven.catvillage.cat.dto.BreedPostDto;
 import com.twentyfour_seven.catvillage.cat.dto.BreedResponseDto;
 import com.twentyfour_seven.catvillage.cat.entity.Breed;
 import org.mapstruct.Mapper;
@@ -18,4 +19,6 @@ public interface BreedMapper {
         return breedResponseDto;
     }
    public List<BreedResponseDto> breedsToBreedResponseDtos(List<Breed> breeds);
+
+    Breed breedPostDtoToBreed(BreedPostDto breedPostDto);
 }

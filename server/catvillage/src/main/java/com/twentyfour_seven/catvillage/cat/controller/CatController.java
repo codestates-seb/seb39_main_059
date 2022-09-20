@@ -1,5 +1,6 @@
 package com.twentyfour_seven.catvillage.cat.controller;
 
+import com.twentyfour_seven.catvillage.cat.dto.BreedPostDto;
 import com.twentyfour_seven.catvillage.cat.dto.CatPostDto;
 import com.twentyfour_seven.catvillage.cat.dto.CatResponseDto;
 import com.twentyfour_seven.catvillage.cat.dto.CatTagResponseDto;
@@ -72,5 +73,13 @@ public class CatController {
         List<Breed> breeds = catService.findBreeds();
         return new ResponseEntity<>(
                 breedMapper.breedsToBreedResponseDtos(breeds), HttpStatus.OK);
+    }
+
+    @PostMapping("/breeds")
+    public ResponseEntity postBreed(@Valid @RequestBody BreedPostDto breedPostDto) {
+        Breed breed = breedMapper.breedPostDtoToBreed(breedPostDto);
+        Breed saveBreed = catService.saveBreed(breed);
+        return new ResponseEntity<>(
+                breedMapper.breedToBreedResponseDto(saveBreed), HttpStatus.CREATED);
     }
 }

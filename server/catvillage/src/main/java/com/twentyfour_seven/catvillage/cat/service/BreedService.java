@@ -26,4 +26,8 @@ public class BreedService {
     public List<Breed> findAll() {
         return breedRepository.findAll();
     }
+
+    public Breed saveBreed(Breed breed) {
+        return breedRepository.save(breed);
+    }
 }
