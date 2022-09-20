@@ -52,11 +52,6 @@ module.exports = (_env) => {
             name: "static/media/[name].[contenthash:8].[ext]",
           },
         },
-        // {
-        //   test: /\.svg$/,
-        //   use: ['@svgr/webpack'],
-        // }
-        {
           test: /\.svg$/,
           use: [
             {
