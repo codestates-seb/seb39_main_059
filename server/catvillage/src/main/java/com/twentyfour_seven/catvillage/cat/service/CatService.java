@@ -52,7 +52,7 @@ public class CatService {
 
     public void removeCat(long catId) {
         Cat findCat = findVerifiedCat(catId);
-        catTagService.removeTagToCats(findCat.getTagToCats());
+//        catTagService.removeTagToCats(findCat.getTagToCats());
         catRepository.delete(findCat);
     }
 }
