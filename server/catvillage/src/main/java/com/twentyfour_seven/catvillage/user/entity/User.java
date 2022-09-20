@@ -62,7 +62,6 @@ public class User extends DateTable {
     private Date expiryDate;
 
     public User() {
-        profileImage = null;
         catCount = 0;
         contentCount = 0;
         followerCount = 0;
@@ -71,12 +70,13 @@ public class User extends DateTable {
     }
 
     @Builder
-    public User(Long userId, String email, String password, String name, String location, String role) {
+    public User(Long userId, String email, String password, String name, String profileImage, String location, String role) {
         this();
         this.userId = userId;
         this.email = email;
         this.password = password;
         this.name = name;
+        this.profileImage = profileImage;
         this.location = location;
         this.role = role;
     }
