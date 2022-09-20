@@ -4,6 +4,10 @@ import com.twentyfour_seven.catvillage.cat.entity.Breed;
 import com.twentyfour_seven.catvillage.cat.entity.Cat;
 import com.twentyfour_seven.catvillage.cat.repository.BreedRepository;
 import com.twentyfour_seven.catvillage.cat.repository.CatRepository;
+import com.twentyfour_seven.catvillage.exception.BusinessLogicException;
+import com.twentyfour_seven.catvillage.exception.ExceptionCode;
+import com.twentyfour_seven.catvillage.user.entity.User;
+import com.twentyfour_seven.catvillage.user.service.UserService;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -33,5 +37,15 @@ public class CatService {
         Optional<Breed> optionalBreed = breedRepository.findByKorName(breed);
         Breed findBreed = optionalBreed.orElseThrow(() -> new BusinessLogicException(ExceptionCode.BREED_NOT_FOUND));
         return findBreed;
+    }
+
+    public Cat findCat(long catId) {
+        return findVerifiedCat(catId);
+    }
+
+    public Cat findVerifiedCat(long catId) {
+        Optional<Cat> optionalCat = catRepository.findById(catId);
+        Cat findCat = optionalCat.orElseThrow(() -> new BusinessLogicException(ExceptionCode.CAT_NOT_FOUND));
+        return findCat;
     }
 }

@@ -2,6 +2,7 @@ package com.twentyfour_seven.catvillage.cat.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.twentyfour_seven.catvillage.user.entity.User;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
