@@ -42,6 +42,7 @@ public class UserService {
     }
 
     public User updateUser(User user) {
+        verifiedExistedName(user.getName());
         User findUser = findVerifiedUser(user.getUserId());
         User updateUser = beanUtils.copyNonNullProperties(user, findUser);
         return userRepository.save(updateUser);
