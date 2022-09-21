@@ -12,10 +12,10 @@ env:
 
 on:
   push:
-    paths: [ "server/**" ]
+    # paths: [ "server/**" ]
     branches: [ "dev" ]
   pull_request:
-    paths: [ "server/**" ]
+    # paths: [ "server/**" ]
     branches: [ "dev" ]
 
 permissions:
