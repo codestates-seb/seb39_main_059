@@ -64,7 +64,7 @@ public class UserController {
 
     @PatchMapping("/{user-id}")
     public ResponseEntity patchUser(@PathVariable("user-id") Long userId,
-                                    @RequestBody UserPatchDto requestBody) {
+                                    @Valid @RequestBody UserPatchDto requestBody) {
         User user = userMapper.userPatchDtoToUser(requestBody);
         User updateUser = userService.updateUser(user);
         return new ResponseEntity<>(userMapper.userToUserPatchResponseDto(updateUser), HttpStatus.OK);
