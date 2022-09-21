@@ -34,8 +34,8 @@ public class CatService {
     }
 
     public Cat saveCat(Cat cat, String breed, List<CatTag> catTags) {
-        User user = userService.findVerifiedUser(userId);
-        cat.setUser(user);
+//        User user = userService.findVerifiedUser(userId);
+//        cat.setUser(user);
         Breed findBreed = breedService.findByBreedName(breed);
         cat.setBreed(findBreed);
         catTagService.saveTag(catTags, cat);
