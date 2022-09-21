@@ -39,7 +39,7 @@ jobs:
       run: chmod +x server/catvillage/gradlew
       shell: bash
     - name: Build with Gradle
-      run: server/catvillage/gradlew build
+      run: cd server/catvillage; ./gradlew build
       shell: bash
 
     # build한 후 프로젝트를 압축합니다.
