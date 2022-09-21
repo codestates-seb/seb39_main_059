@@ -47,6 +47,11 @@ public class UserService {
         return userRepository.save(updateUser);
     }
 
+    public void removeUser(Long userId) {
+        User findUser = findVerifiedUser(userId);
+        userRepository.delete(findUser);
+    }
+
     private User findVerifiedUser(Long id) {
         Optional<User> findUser = userRepository.findById(id);
         return findUser.orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));

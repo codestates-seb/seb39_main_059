@@ -69,4 +69,10 @@ public class UserController {
         User updateUser = userService.updateUser(user);
         return new ResponseEntity<>(userMapper.userToUserPatchResponseDto(updateUser), HttpStatus.OK);
     }
+
+    @DeleteMapping("/{user-id}/delete") // TODO : Security 적용 이후 "/delete"로 경로 변경 의논 필요
+    public ResponseEntity deleteUser(@PathVariable("user-id") Long userId) {
+        userService.removeUser(userId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }
