@@ -7,6 +7,9 @@
 
 name: Java CI with Gradle
 
+env:
+  S3_BUCKET_NAME: image.catvillage.shop
+
 on:
   push:
     paths: 
@@ -38,3 +41,25 @@ jobs:
       uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
       with:
         arguments: build
+
+    # build한 후 프로젝트를 압축합니다.
+    - name: Make zip file
+      run: zip -r ./springBoot-deploy.zip .
+      shell: bash
+
+    - name: Configure AWS Credentials Action For GitHub Actions
+      # You may pin to the exact commit or the version.
+      # uses: aws-actions/configure-aws-credentials@67fbcbb121271f7775d2e7715933280b06314838
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        # AWS Access Key ID. This input is required if running in the GitHub hosted environment. It is optional if running in a self-hosted environment that already has AWS credentials, for example on an EC2 instance.
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+        # AWS Secret Access Key. This input is required if running in the GitHub hosted environment. It is optional if running in a self-hosted environment that already has AWS credentials, for example on an EC2 instance.
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        # AWS Session Token
+        aws-region: ap-northeast-2
+        # Whether to set the AWS account ID for these credentials as a secret value, so that it is masked in logs. Valid values are 'true' and 'false'. Defaults to true
+
+    # 압축한 프로젝트를 S3로 전송합니다.
+    - name: Upload to S3
+      run: aws s3 cp --region ap-northeast-2 ./practice-deploy.zip s3://$S3_BUCKET_NAME/springBoot-deploy.zip
