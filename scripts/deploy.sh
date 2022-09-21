@@ -22,7 +22,15 @@ else
   sleep 5
 fi
 
+# SIGTERM의 경우 종료까지 시간이 걸릴 수 있으므로 종료 되었는지 확인하며 최대 30초까지 대기하도록 하는 로직
+WAIT_COUNT=0
+while [ -n $(pgrep -f $JAR_NAME) -o $WAIT_COUNT -ne 5]
+do
+  sleep 5
+  WAIT_COUNT=$((WAIT_COUNT + 1))
+done
 
 DEPLOY_JAR=$DEPLOY_PATH$JAR_NAME
 echo "> DEPLOY_JAR 배포"    >> /home/ubuntu/action/deploy.log
 sudo nohup java -jar $DEPLOY_JAR >> /home/ubuntu/deploy.log 2>/home/ubuntu/action/deploy_err.log &
+echo >> /home/ubuntu/action/deploy.log
