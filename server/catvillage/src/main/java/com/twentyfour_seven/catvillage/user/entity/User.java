@@ -1,13 +1,17 @@
 package com.twentyfour_seven.catvillage.user.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.twentyfour_seven.catvillage.audit.DateTable;
+import com.twentyfour_seven.catvillage.cat.entity.Cat;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import net.minidev.json.annotate.JsonIgnore;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity(name = "USERS")
 @Getter
@@ -60,6 +64,18 @@ public class User extends DateTable {
     @Setter
     @Column(name = "EXPIRY_DATE")
     private Date expiryDate;
+
+    @JsonManagedReference
+    @OneToMany(mappedBy = "memberId", cascade = CascadeType.REMOVE)
+    private final List<Follow> following = new ArrayList<>();
+
+    @JsonManagedReference
+    @OneToMany(mappedBy = "targetId", cascade = CascadeType.REMOVE)
+    private final List<Follow> follower = new ArrayList<>();
+
+    @JsonManagedReference
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    private final List<Cat> cats = new ArrayList<>();
 
     public User() {
         catCount = 0;
