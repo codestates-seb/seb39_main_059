@@ -59,3 +59,11 @@ jobs:
     # 압축한 프로젝트를 S3로 전송합니다.
     - name: Upload to S3
       run: aws s3 cp --region ap-northeast-2 ./springBoot-deploy.zip s3://$S3_BUCKET_NAME/springBoot-deploy.zip
+
+    # CodeDeploy에게 배포 명령을 내립니다.
+    - name: Code Deploy
+      run: >
+        aws deploy create-deployment --application-name catvillage-server-deploy
+        --deployment-config-name CodeDeployDefault.AllAtOnce
+        --deployment-group-name catvillage-server-deploy-group
+        --s3-location bucket=$S3_BUCKET_NAME,bundleType=zip,key=springBoot-deploy.zip
