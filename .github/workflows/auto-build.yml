@@ -36,10 +36,10 @@ jobs:
     
     # build gradle
     - name : Grant execute permission for gradlew
-      run: chmod +x gradlew
+      run: chmod +x server/catvillage/gradlew
       shell: bash
     - name: Build with Gradle
-      run: ./gradlew build
+      run: server/catvillage/gradlew build
       shell: bash
 
     # build한 후 프로젝트를 압축합니다.
