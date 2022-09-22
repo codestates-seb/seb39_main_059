@@ -83,10 +83,11 @@ public class User extends DateTable {
         followerCount = 0;
         followingCount = 0;
         expiryDate = null;
+        role = "ROLE_USER";
     }
 
     @Builder
-    public User(Long userId, String email, String password, String name, String profileImage, String location, String role) {
+    public User(Long userId, String email, String password, String name, String profileImage, String location) {
         this();
         this.userId = userId;
         this.email = email;
@@ -94,6 +95,5 @@ public class User extends DateTable {
         this.name = name;
         this.profileImage = profileImage;
         this.location = location;
-        this.role = role;
     }
 }
