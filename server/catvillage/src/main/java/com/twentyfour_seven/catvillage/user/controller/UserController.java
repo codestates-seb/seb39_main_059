@@ -1,9 +1,12 @@
 package com.twentyfour_seven.catvillage.user.controller;
 
+import com.twentyfour_seven.catvillage.dto.MultiResponseDto;
+import com.twentyfour_seven.catvillage.user.dto.UserPatchDto;
 import com.twentyfour_seven.catvillage.user.dto.UserPostDto;
 import com.twentyfour_seven.catvillage.user.entity.User;
 import com.twentyfour_seven.catvillage.user.mapper.UserMapper;
 import com.twentyfour_seven.catvillage.user.service.UserService;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -11,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
+import javax.validation.constraints.Positive;
 
 @RestController
 @RequestMapping("/users")
@@ -36,5 +40,39 @@ public class UserController {
     public ResponseEntity getNameCheck(@RequestParam String name) {
         userService.nameDuplicateCheck(name);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping
+    public ResponseEntity getUsers(@RequestParam @Positive int page,
+                                   @RequestParam @Positive int size) {
+        Page<User> users = userService.findUsers(page - 1, size);
+
+        return new ResponseEntity<>(
+                new MultiResponseDto<>(
+                        userMapper.usersToUserGetResponseDtos(users.getContent()),
+                        users
+                ),
+                HttpStatus.OK
+        );
+    }
+
+    @GetMapping("/{user-id}")
+    public ResponseEntity getUser(@PathVariable("user-id") Long userId) {
+        User findUser = userService.findUser(userId);
+        return new ResponseEntity<>(userMapper.userToUserGetResponseDto(findUser), HttpStatus.OK);
+    }
+
+    @PatchMapping("/{user-id}")
+    public ResponseEntity patchUser(@PathVariable("user-id") Long userId,
+                                    @Valid @RequestBody UserPatchDto requestBody) {
+        User user = userMapper.userPatchDtoToUser(requestBody);
+        User updateUser = userService.updateUser(user);
+        return new ResponseEntity<>(userMapper.userToUserPatchResponseDto(updateUser), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{user-id}/delete") // TODO : Security 적용 이후 "/delete"로 경로 변경 의논 필요
+    public ResponseEntity deleteUser(@PathVariable("user-id") Long userId) {
+        userService.removeUser(userId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
