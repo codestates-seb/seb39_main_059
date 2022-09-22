@@ -25,7 +25,8 @@ public class User extends DateTable {
     private String email;
 
     @Setter
-    @Column(name = "PASSWORD", nullable = false, length = 25)
+//    @Column(name = "PASSWORD", nullable = false, length = 25)
+    @Column(name = "PASSWORD", length = 25)
     @JsonIgnore
     private String password;
 
