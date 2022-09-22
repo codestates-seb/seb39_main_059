@@ -1,6 +1,6 @@
 import { FC } from 'react'
 import { CSSProp } from 'styled-components'
-import { CircleImage, Container, Name } from './styles'
+import * as S from './Avatar.style'
 
 export interface Props {
   diameter: string
@@ -11,10 +11,14 @@ export interface Props {
 }
 
 const Avatar: FC<Props> = ({ diameter, fontSize, imageUrl, name, cssProp }) => (
-  <Container cssProp={cssProp}>
-    <CircleImage width={diameter} height={diameter} backgroundImage={imageUrl} />
-    {name && <Name fontSize={fontSize}>{name}</Name>}
-  </Container>
+  <S.AvatarLayout cssProp={cssProp}>
+    <S.CircleImage
+      width={diameter}
+      height={diameter}
+      backgroundImage={imageUrl}
+    />
+    {name && <S.Name fontSize={fontSize}>{name}</S.Name>}
+  </S.AvatarLayout>
 )
 
 export default Avatar

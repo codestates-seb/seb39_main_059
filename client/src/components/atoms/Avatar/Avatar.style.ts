@@ -2,7 +2,7 @@ import styled, { css, CSSProp } from "styled-components";
 
 import defaultProfile from "@Assets/default-profile.jpeg";
 
-export const Container = styled.div<{ cssProp?: CSSProp }>(
+export const AvatarLayout = styled.div<{ cssProp?: CSSProp }>(
   ({ cssProp }) => css`
   display: inline-flex;
   justify-content: center;
