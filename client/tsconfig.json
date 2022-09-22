@@ -16,10 +16,12 @@
     "jsx": "react-jsx",
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"],
       "@Types/*": ["./src/@types/*"],
       "@Api/*": ["./src/api/*"],
       "@Assets/*": ["./src/assets/*"],
+      "@Atoms/*": ["./src/components/atoms/*"],
+      "@Modules/*": ["./src/components/modules/*"],
+      "@Template/*": ["./src/components/template/*"],
       "@Components/*": ["./src/components/*"],
       "@Hooks/*": ["./src/hooks/*"],
       "@Layout/*": ["./src/layout/*"],
@@ -28,6 +30,7 @@
       "@Stores/*": ["./src/stores/*"],
       "@Style/*": ["./src/style/*"],
       "@Utils/*": ["./src/utils/*"],
+      "@/*": ["./src/*"],
     }
   },
   "include": ["src"],
