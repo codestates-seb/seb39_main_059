@@ -24,7 +24,7 @@ const color = {
 }
 
 export type FontSizeTypes = typeof fontSize
-export type fontWeightTypes = typeof fontWeight
+export type FontWeightTypes = typeof fontWeight
 export type ColorTypes = typeof color
 
 const theme = {
