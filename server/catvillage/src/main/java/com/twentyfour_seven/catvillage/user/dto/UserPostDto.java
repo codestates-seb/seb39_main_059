@@ -1,10 +1,12 @@
 package com.twentyfour_seven.catvillage.user.dto;
 
+import com.twentyfour_seven.catvillage.user.entity.User;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.validation.constraints.Email;
 

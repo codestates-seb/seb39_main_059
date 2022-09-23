@@ -23,6 +23,7 @@ public class UserService {
     }
 
     public User createUser(User user) {
+        // TODO: 비밀번호 암호화 후 저장 필요
         verifiedExistedEmail(user.getEmail());
         verifiedExistedName(user.getName());
         return userRepository.save(user);

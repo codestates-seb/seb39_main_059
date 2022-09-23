@@ -1,4 +1,4 @@
-package com.twentyfour_seven.catvillage.security;
+package com.twentyfour_seven.catvillage.security.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
