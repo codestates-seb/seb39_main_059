@@ -46,7 +46,11 @@
 </details>
 <br /> <br /> <br /><br><br>
 
-  <h1>기술스택</h1>  
+  <h1>기술스택</h1>
+  <br>
+  <img src="https://user-images.githubusercontent.com/104193237/191916831-033c08f1-883e-43ea-9a82-fa2b6e7d430a.png" width="500">
+
+  
   <br><br><br>
   <h1>인프라</h1>
   
