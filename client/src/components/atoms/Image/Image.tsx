@@ -1,3 +1,4 @@
+import { FC } from 'react'
 import styled from 'styled-components'
 
 export interface Props {
@@ -10,7 +11,7 @@ export const Img = styled.img`
   object-fit: cover;
 `
 
-const Image = ({ src }: Props): React.ReactElement => {
+const Image: FC<Props> = ({ src }) => {
   return <Img src={src} />
 }
 

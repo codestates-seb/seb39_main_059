@@ -1,4 +1,4 @@
-import { ButtonHTMLAttributes, PropsWithChildren } from 'react'
+import { ButtonHTMLAttributes, FC } from 'react'
 import * as S from './Button.style'
 
 export interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
@@ -9,8 +9,6 @@ export interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode
 }
 
-const Button = ({ children, ...props }: PropsWithChildren<Props>): JSX.Element => (
-  <S.Button {...props}>{children}</S.Button>
-)
+const Button: FC<Props> = ({ children, ...props }) => <S.Button {...props}>{children}</S.Button>
 
 export default Button

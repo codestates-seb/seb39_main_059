@@ -1,7 +1,7 @@
-import { TextareaHTMLAttributes } from 'react'
+import { FC, TextareaHTMLAttributes } from 'react'
 import styled from 'styled-components'
 
-export type TextareaProps = TextareaHTMLAttributes<HTMLTextAreaElement>
+export type Props = TextareaHTMLAttributes<HTMLTextAreaElement>
 
 const TextareaLayout = styled.textarea`
   width: 100%;
@@ -14,7 +14,7 @@ const TextareaLayout = styled.textarea`
   }
 `
 
-const Textarea = (props: TextareaProps) => {
+const Textarea: FC<Props> = props => {
   return <TextareaLayout {...props} />
 }
 
