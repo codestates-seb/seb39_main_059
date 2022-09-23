@@ -14,9 +14,9 @@ on:
   push:
     paths-ignore: [ "client/**" ]
     branches: [ "dev" ]
-  pull_request:
-    paths-ignore: [ "client/**" ]
-    branches: [ "dev" ]
+#  pull_request:
+ #   paths-ignore: [ "client/**" ]
+  #  branches: [ "dev" ]
 
 permissions:
   contents: read

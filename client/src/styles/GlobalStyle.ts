@@ -9,7 +9,7 @@ export const GlobalStyle = createGlobalStyle`
   }
 
   html, body {
-    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI Adjusted","Segoe UI","Liberation Sans",sans-serif;
+    font-family: 'Noto Sans KR', sans-serif !important;
   }
 
   body {
