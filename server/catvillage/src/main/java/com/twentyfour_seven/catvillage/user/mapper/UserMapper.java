@@ -3,18 +3,20 @@ package com.twentyfour_seven.catvillage.user.mapper;
 import com.twentyfour_seven.catvillage.user.dto.*;
 import com.twentyfour_seven.catvillage.user.entity.User;
 import org.mapstruct.Mapper;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface UserMapper {
-    default User userPostDtoToUser(UserPostDto requestBody) {
+    default User userPostDtoToUser(UserPostDto requestBody, PasswordEncoder passwordEncoder) {
         if(requestBody == null) {
             return null;
         } else {
+            String encodedPassword = passwordEncoder.encode(requestBody.getPassword());
             return User.builder()
                     .email(requestBody.getEmail())
-                    .password(requestBody.getPassword())
+                    .password(encodedPassword)
                     .name(requestBody.getName())
                     .profileImage(requestBody.getProfileImage())
                     .location(requestBody.getLocation())

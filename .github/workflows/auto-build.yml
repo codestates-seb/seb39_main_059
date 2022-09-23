@@ -33,11 +33,20 @@ jobs:
       with:
         java-version: '11'
         distribution: 'temurin'
+
+    - name: Set yaml file
+      uses: microsoft/variable-substitution@v1
+      with:
+        files: ${{ env.RESOURCE_PATH }}
+      env:
+        jwt.secret: ${{ secrets.JWT_SECRET }}
     
-    # build gradle
+    # grant execute permission for gradlew
     - name : Grant execute permission for gradlew
       run: chmod +x server/catvillage/gradlew
       shell: bash
+
+    # build gradlew
     - name: Build with Gradle
       run: cd server/catvillage; ./gradlew build
       shell: bash

@@ -29,12 +29,12 @@ public class UserController {
         this.userMapper = userMapper;
     }
 
-    @PostMapping
-    public ResponseEntity postUser(@Valid @RequestBody UserPostDto userPostDto) {
-        User user = userMapper.userPostDtoToUser(userPostDto);
-        User createUser = userService.createUser(user);
-        return new ResponseEntity<>(userMapper.userToUserPostResponseDto(createUser), HttpStatus.CREATED);
-    }
+//    @PostMapping
+//    public ResponseEntity postUser(@Valid @RequestBody UserPostDto userPostDto) {
+////        User user = userMapper.userPostDtoToUser(userPostDto);
+////        User createUser = userService.createUser(user);
+////        return new ResponseEntity<>(userMapper.userToUserPostResponseDto(createUser), HttpStatus.CREATED);
+//    }
 
     @GetMapping("/names")
     public ResponseEntity getNameCheck(@RequestParam String name) {
