@@ -48,7 +48,7 @@
 
   <h1>기술스택</h1>
   <br>
-  <img src="https://user-images.githubusercontent.com/104193237/191916831-033c08f1-883e-43ea-9a82-fa2b6e7d430a.png" width="500">
+  <img src="https://user-images.githubusercontent.com/104193237/192124591-8a478b5d-ba15-4997-ae5d-692de20fbe62.png" width="500">
 
   
   <br><br><br>
@@ -129,17 +129,21 @@
 <br><br>
 
 ## commit 전략
-`feat`: 새로운 기능<br>
-`fix`: 버그 수정<br>
-`docs`: README, wiki 등 문서 수정<br>
-`style`: 코드 변경 없이 스타일 변경 (CSS 파일 등)<br>
-`refactor`: 리팩토링 (클린 코드)<br>
-`chore`: 동작에 영향이 없는 코드 변경 없는 변경사항(주석 추가 등등)<br>
+| commit 이름 | 전략 |
+|:--------:|:--------:|
+| `feat` | 새로운 기능 |
+| `fix`  | 버그 수정 |
+| `docs` | README, wiki 등 문서 수정 |
+| `style` | 코드 변경 없이 스타일 변경 (CSS 파일 등) |
+| `refactor` | 리팩토링 (클린 코드) |
+| `chore` | 동작에 영향이 없는 코드 변경 없는 변경사항(주석 추가 등등) |
 
 <br><br>
 
 ## Pull Request Merge 전략<br>
-feat → dev : Merge Commit<br>
-dev → main : Squash and Merge<br>
+| source branch ➡️ definition branch | Merge 전략 |
+|:--------:|:--------:|
+| feat(or fix) ➡️ dev | Merge Commit |
+| dev ➡️ main | Squash and Merge |
 
 </div>
