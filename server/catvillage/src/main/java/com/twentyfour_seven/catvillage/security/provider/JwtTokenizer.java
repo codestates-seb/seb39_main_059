@@ -49,17 +49,12 @@ public class JwtTokenizer {
     // accessToken 생성
     public String generateAccessToken(Authentication authentication) {
         // claim 생성
-        String authority = "";
         String authorities = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(","));
-        if (authorities.startsWith("ROLE_USER")) {
-            authority = "ROLE_USER";
-        } else if (authorities.startsWith("ROLE_ADMIN")) {
-            authority = "ROLE_ADMIN";
-        }
+
         Map<String, String> claims = new HashMap<>();
-        claims.put("auth", authority);
+        claims.put("auth", authorities);
 
         long now = (new Date()).getTime();
 
@@ -107,7 +102,6 @@ public class JwtTokenizer {
             throw new RuntimeException("권한 정보가 없는 토큰입니다.");
         }
 
-        // claim에서 권한 정보 가져오기
         // 클레임에서 권한 정보 가져오기
         Collection<? extends GrantedAuthority> authorities =
                 Arrays.stream(claims.get("auth").toString().split(","))
