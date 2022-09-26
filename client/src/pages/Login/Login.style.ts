@@ -28,7 +28,7 @@ export const Description = styled.span`
 `
 
 export const InputBox = styled.div`
-  padding: 40px;
+  padding: 40px 0;
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -70,21 +70,19 @@ export const LoginButton = styled(Button)`
   border-radius: 42px;
 `
 
-export const TextBox = styled.div`
+export const ButtonBox = styled.div`
   width: 304px;
   padding: 0 20px;
   display: flex;
   justify-content: space-between;
 `
 
-export const SignupText = styled.button`
+export const SignupButton = styled.button`
   font-size: ${({ theme }) => theme.fontSize.sm};
   font-weight: ${({ theme }) => theme.fontWeight.regular};
   color: ${({ theme }) => theme.color.black};
 `
 
-export const FindText = styled.button`
-  font-size: ${({ theme }) => theme.fontSize.sm};
-  font-weight: ${({ theme }) => theme.fontWeight.regular};
+export const FindButton = styled(SignupButton)`
   color: ${({ theme }) => theme.color.softGray};
 `

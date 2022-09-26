@@ -61,10 +61,10 @@ const Login = () => {
       >
         로그인
       </S.LoginButton>
-      <S.TextBox>
-        <S.FindText>아이디/비밀번호 찾기</S.FindText>
-        <S.SignupText>회원가입</S.SignupText>
-      </S.TextBox>
+      <S.ButtonBox>
+        <S.FindButton>아이디/비밀번호 찾기</S.FindButton>
+        <S.SignupButton>회원가입</S.SignupButton>
+      </S.ButtonBox>
       <SocialLoginButton onClick={handleSocialLogin} />
     </S.LoginLayout>
   )
