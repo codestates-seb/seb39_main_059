@@ -83,10 +83,10 @@ public class Board extends DateTable {
     }
 
     @Builder
-    public Board(Long boardId, User userId, String title, String body) {
+    public Board(Long boardId, User user, String title, String body) {
         this();
         this.boardId = boardId;
-        this.userId = userId;
+        this.user = user;
         this.title = title;
         this.body = body;
     }
