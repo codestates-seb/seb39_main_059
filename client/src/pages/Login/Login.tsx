@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/label-has-associated-control */
 import { ChangeEvent, useState } from 'react'
 import SocialLoginButton from '@Modules/SocialLoginButton'
 import * as S from './Login.style'
@@ -32,7 +31,7 @@ const Login = () => {
     <S.LoginLayout>
       <S.Logo />
       <S.Description>여러분의 고양이를 자랑해보세요</S.Description>
-      <S.InputBox>
+      <S.InputForm>
         <S.LoginInput
           type="text"
           inputName="id"
@@ -48,24 +47,30 @@ const Login = () => {
           onChange={handlePasswordChange}
         />
         <S.Checkbox>
-          <input type="checkbox" checked={isShown} onChange={togglePassword} />
-          <label htmlFor="checkbox">비밀번호 보기</label>
+          <label htmlFor="password">
+            <input
+              type="checkbox"
+              checked={isShown}
+              onChange={togglePassword}
+            />
+            비밀번호 보기
+          </label>
         </S.Checkbox>
-      </S.InputBox>
-      <S.LoginButton
-        backgroundColor="primary"
-        fontSize="lg"
-        fontWeight="bold"
-        color="white"
-        onClick={handleLogin}
-      >
-        로그인
-      </S.LoginButton>
-      <S.ButtonBox>
-        <S.FindButton>아이디/비밀번호 찾기</S.FindButton>
-        <S.SignupButton>회원가입</S.SignupButton>
-      </S.ButtonBox>
-      <SocialLoginButton onClick={handleSocialLogin} />
+        <S.LoginButton
+          backgroundColor="primary"
+          fontSize="lg"
+          fontWeight="bold"
+          color="white"
+          onClick={handleLogin}
+        >
+          로그인
+        </S.LoginButton>
+        <S.ButtonBox>
+          <S.FindButton>아이디/비밀번호 찾기</S.FindButton>
+          <S.SignupButton>회원가입</S.SignupButton>
+        </S.ButtonBox>
+        <SocialLoginButton onClick={handleSocialLogin} />
+      </S.InputForm>
     </S.LoginLayout>
   )
 }

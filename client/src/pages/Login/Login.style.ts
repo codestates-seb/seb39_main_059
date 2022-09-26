@@ -27,7 +27,7 @@ export const Description = styled.span`
   color: ${({ theme }) => theme.color.black};
 `
 
-export const InputBox = styled.div`
+export const InputForm = styled.form`
   padding: 40px 0;
   display: flex;
   flex-direction: column;
