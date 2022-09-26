@@ -49,9 +49,9 @@ public interface UserMapper {
                     .profileImage(user.getProfileImage())
                     .location(user.getLocation())
                     .catCount(user.getCats().size())
-                    .contentCount(0) // TODO : edit after adding feed & board mapping
-                    .followerCount(user.getFollower().size())
-                    .followingCount(user.getFollowing().size())
+                    .contentCount(user.getContentCount()) // TODO : edit after adding feed & board mapping
+                    .followerCount(user.getFollowerCount())
+                    .followingCount(user.getFollowingCount())
                     .build();
         }
     }
