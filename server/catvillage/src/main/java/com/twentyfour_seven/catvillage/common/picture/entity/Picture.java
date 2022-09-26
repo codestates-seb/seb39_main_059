@@ -1,6 +1,7 @@
 package com.twentyfour_seven.catvillage.common.picture.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.twentyfour_seven.catvillage.feed.entity.Feed;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,11 +18,10 @@ public class Picture {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long pictureId;
 
-    // TODO: Feed entity 추가 후 주석 제거 필요
-//    @ManyToOne
-//    @JoinColumn(name = "FEED_ID")
-//    @JsonBackReference
-//    private Feed feedId;
+    @ManyToOne
+    @JoinColumn(name = "FEED_ID")
+    @JsonBackReference
+    private Feed feed;
 
     // TODO: Board entity 추가 후 주석 제거 필요
 //    @ManyToOne
