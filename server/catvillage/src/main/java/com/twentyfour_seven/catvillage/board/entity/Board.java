@@ -1,7 +1,9 @@
 package com.twentyfour_seven.catvillage.board.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.twentyfour_seven.catvillage.audit.DateTable;
+import com.twentyfour_seven.catvillage.common.picture.entity.Picture;
 import com.twentyfour_seven.catvillage.user.entity.User;
 import lombok.Builder;
 import lombok.Getter;
@@ -9,6 +11,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -43,6 +47,10 @@ public class Board extends DateTable {
     @Setter
     @Column(name = "COMMENT_COUNT", nullable = false)
     private Long commentCount;
+
+    @OneToMany(mappedBy = "boardId", cascade = CascadeType.REMOVE)
+    @JsonManagedReference
+    private final List<Picture> pictures = new ArrayList<>();
 
     public Board() {
         likeCount = 0L;
