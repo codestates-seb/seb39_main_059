@@ -22,7 +22,6 @@ public class FeedTag {
     @Column(name = "TAG_NAME", length = 15, nullable = false)
     private String tagName;
 
-    @Setter
     @OneToMany(mappedBy = "feedTag", cascade = CascadeType.REMOVE)
     @JsonManagedReference
     private List<TagToFeed> tagToFeeds = new ArrayList<>();

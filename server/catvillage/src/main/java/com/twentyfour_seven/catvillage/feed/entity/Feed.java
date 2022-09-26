@@ -40,12 +40,10 @@ public class Feed extends DateTable {
     @JsonBackReference
     private User user;
 
-    @Setter
     @OneToMany(mappedBy = "feed", cascade = CascadeType.REMOVE)
     @JsonManagedReference
     private List<TagToFeed> tagToFeeds = new ArrayList<>();
 
-    @Setter
     @OneToMany(mappedBy = "feed", cascade = CascadeType.REMOVE)
     @JsonManagedReference
     private List<Picture> pictures = new ArrayList<>();
