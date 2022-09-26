@@ -14,7 +14,7 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
+@Entity(name = "BOARD")
 @Getter
 public class Board extends DateTable {
     @Id
@@ -51,6 +51,24 @@ public class Board extends DateTable {
     @OneToMany(mappedBy = "boardId", cascade = CascadeType.REMOVE)
     @JsonManagedReference
     private final List<Picture> pictures = new ArrayList<>();
+
+    @OneToMany(mappedBy = "boardID", cascade = CascadeType.REMOVE)
+    @JsonManagedReference
+    private final List<BoardComment> boardComments = new ArrayList<>();
+
+    @OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE)
+    @JsonManagedReference
+    private final List<TagToBoard> tagToBoards = new ArrayList<>();
+
+    // TODO: Like 구현 후 주석 제거 필요
+//    @OneToMany(mappedBy = "boardId", cascade = CascadeType.REMOVE)
+//    @JsonManagedReference
+//    private final List<Like> likes = new ArrayList<>();
+
+    // TODO: Save 구현 후 주석 제거 필요
+//    @OneToMany(mappedBy = "boardId", cascade = CascadeType.REMOVE)
+//    @JsonManagedReference
+//    private final List<Save> saves = new ArrayList<>();
 
     public Board() {
         likeCount = 0L;
