@@ -39,7 +39,9 @@ public class SecurityConfig {
                 .headers()
                 .frameOptions()
                 .sameOrigin()
-                // TODO: formLogin 관련 설정 필요
+                .and()
+                .formLogin()
+                .loginProcessingUrl("/login")
                 .and()
                 .addFilter(corsFilter)
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
