@@ -1,6 +1,7 @@
 package com.twentyfour_seven.catvillage.board.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -23,4 +24,10 @@ public class BoardTag {
     @OneToMany(mappedBy = "boardTag", cascade = CascadeType.REMOVE)
     @JsonManagedReference
     private final List<TagToBoard> tagToBoards = new ArrayList<>();
+
+    @Builder
+    public BoardTag(Long boardTagId, String tagName) {
+        this.boardTagId = boardTagId;
+        this.tagName = tagName;
+    }
 }

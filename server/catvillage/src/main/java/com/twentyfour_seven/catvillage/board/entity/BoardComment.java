@@ -3,6 +3,7 @@ package com.twentyfour_seven.catvillage.board.entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.twentyfour_seven.catvillage.audit.DateTable;
 import com.twentyfour_seven.catvillage.user.entity.User;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -32,4 +33,13 @@ public class BoardComment extends DateTable {
 
     @Column(name = "LIKE_COUNT", nullable = false)
     private Long likeCount;
+
+    @Builder
+    public BoardComment(Long boardCommentId, Board board, User user, String body, Long likeCount) {
+        this.boardCommentId = boardCommentId;
+        this.board = board;
+        this.user = user;
+        this.body = body;
+        this.likeCount = likeCount;
+    }
 }
