@@ -15,12 +15,12 @@ public class UserGetResponseDto {
     private String profileImage;
     private String location;
     private Integer catCount;
-    private Integer contentCount;
-    private Integer followingCount;
-    private Integer followerCount;
+    private Long contentCount;
+    private Long followingCount;
+    private Long followerCount;
 
     @Builder
-    public UserGetResponseDto(Long userId, String email, String name, String profileImage, String location, Integer catCount, Integer contentCount, Integer followingCount, Integer followerCount) {
+    public UserGetResponseDto(Long userId, String email, String name, String profileImage, String location, Integer catCount, Long contentCount, Long followingCount, Long followerCount) {
         this.userId = userId;
         this.email = email;
         this.name = name;

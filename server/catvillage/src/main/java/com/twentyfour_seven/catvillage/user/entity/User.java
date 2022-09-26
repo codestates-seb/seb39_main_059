@@ -42,10 +42,6 @@ public class User extends DateTable {
     private String location;
 
     @Setter
-    @Column(name = "CAT_COUNT")
-    private long catCount;
-
-    @Setter
     @Column(name = "CONTENT_COUNT")
     private long contentCount;
 
@@ -78,7 +74,6 @@ public class User extends DateTable {
     private final List<Cat> cats = new ArrayList<>();
 
     public User() {
-        catCount = 0;
         contentCount = 0;
         followerCount = 0;
         followingCount = 0;
