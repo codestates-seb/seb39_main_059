@@ -20,12 +20,12 @@ public class BoardComment extends DateTable {
     @ManyToOne
     @JoinColumn(name = "BOARD_ID")
     @JsonBackReference
-    private Board boardId;
+    private Board board;
 
     @ManyToOne
     @JoinColumn(name = "USER_ID")
     @JsonBackReference
-    private User userId;
+    private User user;
 
     @Column(name = "BODY", length = 500, nullable = false)
     private String body;

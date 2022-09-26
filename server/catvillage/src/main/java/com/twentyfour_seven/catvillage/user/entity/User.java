@@ -66,11 +66,11 @@ public class User extends DateTable {
     @Column(name = "EXPIRY_DATE")
     private Date expiryDate;
 
-    @OneToMany(mappedBy = "memberId", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
     @JsonManagedReference
     private final List<Follow> following = new ArrayList<>();
 
-    @OneToMany(mappedBy = "targetId", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "target", cascade = CascadeType.REMOVE)
     @JsonManagedReference
     private final List<Follow> follower = new ArrayList<>();
 
@@ -82,16 +82,15 @@ public class User extends DateTable {
     @JsonManagedReference
     private final List<Feed> feeds = new ArrayList<>();
 
-    @Setter
     @JsonManagedReference
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private final List<FeedComment> feedComments = new ArrayList<>();
 
-    @OneToMany(mappedBy = "userId")
+    @OneToMany(mappedBy = "user")
     @JsonManagedReference
     private final List<Board> boards = new ArrayList<>();
 
-    @OneToMany(mappedBy = "userId")
+    @OneToMany(mappedBy = "user")
     @JsonManagedReference
     private final List<BoardComment> boardComments = new ArrayList<>();
 

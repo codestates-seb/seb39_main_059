@@ -26,7 +26,7 @@ public class Board extends DateTable {
     @JoinColumn(name = "USER_ID")
     @JsonBackReference
     @Setter
-    private User userId;
+    private User user;
 
     @Setter
     @Column(name = "TITLE", length = 64, nullable = false)
@@ -48,11 +48,11 @@ public class Board extends DateTable {
     @Column(name = "COMMENT_COUNT", nullable = false)
     private Long commentCount;
 
-    @OneToMany(mappedBy = "boardId", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE)
     @JsonManagedReference
     private final List<Picture> pictures = new ArrayList<>();
 
-    @OneToMany(mappedBy = "boardID", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE)
     @JsonManagedReference
     private final List<BoardComment> boardComments = new ArrayList<>();
 
@@ -61,12 +61,12 @@ public class Board extends DateTable {
     private final List<TagToBoard> tagToBoards = new ArrayList<>();
 
     // TODO: Like 구현 후 주석 제거 필요
-//    @OneToMany(mappedBy = "boardId", cascade = CascadeType.REMOVE)
+//    @OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE)
 //    @JsonManagedReference
 //    private final List<Like> likes = new ArrayList<>();
 
     // TODO: Save 구현 후 주석 제거 필요
-//    @OneToMany(mappedBy = "boardId", cascade = CascadeType.REMOVE)
+//    @OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE)
 //    @JsonManagedReference
 //    private final List<Save> saves = new ArrayList<>();
 
