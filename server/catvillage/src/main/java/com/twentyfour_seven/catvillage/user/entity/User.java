@@ -3,6 +3,8 @@ package com.twentyfour_seven.catvillage.user.entity;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.twentyfour_seven.catvillage.audit.DateTable;
 import com.twentyfour_seven.catvillage.cat.entity.Cat;
+import com.twentyfour_seven.catvillage.feed.entity.Feed;
+import com.twentyfour_seven.catvillage.feed.entity.FeedComment;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -72,6 +74,16 @@ public class User extends DateTable {
     @JsonManagedReference
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private final List<Cat> cats = new ArrayList<>();
+
+    @Setter
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    @JsonManagedReference
+    private final List<Feed> feeds = new ArrayList<>();
+
+    @Setter
+    @JsonManagedReference
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    private final List<FeedComment> feedComments = new ArrayList<>();
 
     public User() {
         contentCount = 0;
