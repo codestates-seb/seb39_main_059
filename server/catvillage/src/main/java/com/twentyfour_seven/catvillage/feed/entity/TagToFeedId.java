@@ -1,5 +1,4 @@
-package com.twentyfour_seven.catvillage.cat.entity;
-
+package com.twentyfour_seven.catvillage.feed.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,7 +9,7 @@ import java.io.Serializable;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class TagToCatId implements Serializable {
-    private CatTag catTag;
-    private Cat cat;
+public class TagToFeedId implements Serializable {
+    private Feed feed;
+    private FeedTag feedTag;
 }

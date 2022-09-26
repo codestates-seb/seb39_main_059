@@ -6,6 +6,8 @@ import com.twentyfour_seven.catvillage.audit.DateTable;
 import com.twentyfour_seven.catvillage.board.entity.Board;
 import com.twentyfour_seven.catvillage.board.entity.BoardComment;
 import com.twentyfour_seven.catvillage.cat.entity.Cat;
+import com.twentyfour_seven.catvillage.feed.entity.Feed;
+import com.twentyfour_seven.catvillage.feed.entity.FeedComment;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -75,6 +77,15 @@ public class User extends DateTable {
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     @JsonManagedReference
     private final List<Cat> cats = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    @JsonManagedReference
+    private final List<Feed> feeds = new ArrayList<>();
+
+    @Setter
+    @JsonManagedReference
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    private final List<FeedComment> feedComments = new ArrayList<>();
 
     @OneToMany(mappedBy = "userId")
     @JsonManagedReference
