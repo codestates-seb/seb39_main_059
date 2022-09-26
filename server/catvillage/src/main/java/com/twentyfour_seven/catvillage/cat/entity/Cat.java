@@ -46,11 +46,12 @@ public class Cat {
     @JsonBackReference
     private User user;
 
-    @Setter
-    @ManyToOne
-    @JoinColumn(name = "BREED_ID")
-    @JsonBackReference
-    private Breed breed;
+    // TODO: CatInfo 구현 후 주석 제거 필요
+//    @Setter
+//    @ManyToOne
+//    @JoinColumn(name = "BREED_ID")
+//    @JsonBackReference
+//    private CatInfo breed;
 
     @OneToMany(mappedBy = "cat", cascade = CascadeType.REMOVE)
     @JsonManagedReference

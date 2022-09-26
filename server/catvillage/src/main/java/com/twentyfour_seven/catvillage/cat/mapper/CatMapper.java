@@ -37,7 +37,9 @@ public interface CatMapper {
                 birthDate.getYear(),
                 birthDate.getMonthValue(),
                 birthDate.getDayOfMonth(),
-                cat.getBreed().getKorName(),
+                // TODO: CatInfo 구현 후 주석 제거 필요
+//                cat.getCatInfo().getKorName(),
+                "임시 품종 이름",
                 cat.getSex(),
                 cat.getWeight(),
                 cat.getImage(),
