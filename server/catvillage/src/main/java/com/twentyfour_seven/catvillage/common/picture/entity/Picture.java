@@ -2,6 +2,7 @@ package com.twentyfour_seven.catvillage.common.picture.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.twentyfour_seven.catvillage.feed.entity.Feed;
+import com.twentyfour_seven.catvillage.board.entity.Board;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,11 +24,10 @@ public class Picture {
     @JsonBackReference
     private Feed feed;
 
-    // TODO: Board entity 추가 후 주석 제거 필요
-//    @ManyToOne
-//    @JoinColumn(name = "BOARD_ID")
-//    @JsonBackReference
-//    private Board boardId;
+    @ManyToOne
+    @JoinColumn(name = "BOARD_ID")
+    @JsonBackReference
+    private Board boardId;
 
     @Column(name = "PATH", length = 100)
     private String path;
