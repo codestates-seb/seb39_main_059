@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import { ChangeEvent, useState } from 'react'
-import SocialLoginButton from '@Atoms/SocialLoginButton'
+import SocialLoginButton from '@Modules/SocialLoginButton'
 import * as S from './Login.style'
 
 const Login = () => {
