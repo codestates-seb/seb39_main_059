@@ -17,10 +17,10 @@ public class Follow {
     @ManyToOne
     @JoinColumn(name = "MEMBER_ID")
     @JsonBackReference
-    private User memberId;
+    private User member;
 
     @ManyToOne
     @JoinColumn(name = "TARGET_ID")
     @JsonBackReference
-    private User targetId;
+    private User target;
 }

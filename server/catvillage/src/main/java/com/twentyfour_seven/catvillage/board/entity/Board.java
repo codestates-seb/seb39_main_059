@@ -14,7 +14,7 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
+@Entity(name = "BOARD")
 @Getter
 public class Board extends DateTable {
     @Id
@@ -26,7 +26,7 @@ public class Board extends DateTable {
     @JoinColumn(name = "USER_ID")
     @JsonBackReference
     @Setter
-    private User userId;
+    private User user;
 
     @Setter
     @Column(name = "TITLE", length = 64, nullable = false)
@@ -48,9 +48,27 @@ public class Board extends DateTable {
     @Column(name = "COMMENT_COUNT", nullable = false)
     private Long commentCount;
 
-    @OneToMany(mappedBy = "boardId", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE)
     @JsonManagedReference
     private final List<Picture> pictures = new ArrayList<>();
+
+    @OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE)
+    @JsonManagedReference
+    private final List<BoardComment> boardComments = new ArrayList<>();
+
+    @OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE)
+    @JsonManagedReference
+    private final List<TagToBoard> tagToBoards = new ArrayList<>();
+
+    // TODO: Like 구현 후 주석 제거 필요
+//    @OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE)
+//    @JsonManagedReference
+//    private final List<Like> likes = new ArrayList<>();
+
+    // TODO: Save 구현 후 주석 제거 필요
+//    @OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE)
+//    @JsonManagedReference
+//    private final List<Save> saves = new ArrayList<>();
 
     public Board() {
         likeCount = 0L;
@@ -65,10 +83,10 @@ public class Board extends DateTable {
     }
 
     @Builder
-    public Board(Long boardId, User userId, String title, String body) {
+    public Board(Long boardId, User user, String title, String body) {
         this();
         this.boardId = boardId;
-        this.userId = userId;
+        this.user = user;
         this.title = title;
         this.body = body;
     }

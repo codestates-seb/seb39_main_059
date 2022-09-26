@@ -1,7 +1,10 @@
 package com.twentyfour_seven.catvillage.user.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.twentyfour_seven.catvillage.audit.DateTable;
+import com.twentyfour_seven.catvillage.board.entity.Board;
+import com.twentyfour_seven.catvillage.board.entity.BoardComment;
 import com.twentyfour_seven.catvillage.cat.entity.Cat;
 import com.twentyfour_seven.catvillage.feed.entity.Feed;
 import com.twentyfour_seven.catvillage.feed.entity.FeedComment;
@@ -63,27 +66,33 @@ public class User extends DateTable {
     @Column(name = "EXPIRY_DATE")
     private Date expiryDate;
 
+    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
     @JsonManagedReference
-    @OneToMany(mappedBy = "memberId", cascade = CascadeType.REMOVE)
     private final List<Follow> following = new ArrayList<>();
 
+    @OneToMany(mappedBy = "target", cascade = CascadeType.REMOVE)
     @JsonManagedReference
-    @OneToMany(mappedBy = "targetId", cascade = CascadeType.REMOVE)
     private final List<Follow> follower = new ArrayList<>();
 
-    @JsonManagedReference
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    @JsonManagedReference
     private final List<Cat> cats = new ArrayList<>();
 
-    @Setter
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     @JsonManagedReference
     private final List<Feed> feeds = new ArrayList<>();
 
-    @Setter
     @JsonManagedReference
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private final List<FeedComment> feedComments = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    @JsonManagedReference
+    private final List<Board> boards = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    @JsonManagedReference
+    private final List<BoardComment> boardComments = new ArrayList<>();
 
     public User() {
         contentCount = 0;

@@ -27,7 +27,7 @@ public class Picture {
     @ManyToOne
     @JoinColumn(name = "BOARD_ID")
     @JsonBackReference
-    private Board boardId;
+    private Board board;
 
     @Column(name = "PATH", length = 100)
     private String path;
