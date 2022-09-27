@@ -55,9 +55,6 @@ export const Checkbox = styled.div`
     font-weight: ${({ theme }) => theme.fontWeight.regular};
     color: ${({ theme }) => theme.color.softGray};
   }
-
-  input {
-  }
 `
 
 export const SignupButton = styled(Button)`
@@ -76,13 +73,11 @@ export const Box = styled.div`
   padding: 0 20px;
   display: flex;
   justify-content: center;
-
   span {
     font-size: ${({ theme }) => theme.fontSize.sm};
     color: ${({ theme }) => theme.color.black};
     margin-right: 0.5rem;
   }
-
   & :nth-child(2) {
     text-decoration: underline;
   }
