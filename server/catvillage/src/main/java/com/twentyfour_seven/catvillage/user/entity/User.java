@@ -78,10 +78,6 @@ public class User extends DateTable {
     @JsonManagedReference
     private final List<Cat> cats = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
-    @JsonManagedReference
-    private final List<Feed> feeds = new ArrayList<>();
-
     @JsonManagedReference
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private final List<FeedComment> feedComments = new ArrayList<>();
