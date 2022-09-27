@@ -59,7 +59,7 @@ public class UserService {
         return findUser.orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
     }
 
-    private User findVerifiedEmail(String email) {
+    public User findVerifiedEmail(String email) {
         Optional<User> findUser = userRepository.findByEmail(email);
         return findUser.orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
     }

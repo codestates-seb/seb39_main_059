@@ -10,6 +10,8 @@ import com.twentyfour_seven.catvillage.cat.mapper.CatTagMapper;
 import com.twentyfour_seven.catvillage.cat.service.CatService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -34,6 +36,18 @@ public class CatController {
         this.catTagMapper = catTagMapper;
     }
 
+    @PostMapping
+    public ResponseEntity postCat(@Valid @RequestBody CatPostDto catPostDto,
+                                  @AuthenticationPrincipal User user) {
+        Cat cat = catMapper.catPostDtoToCat(catPostDto);
+        String breed = catPostDto.getBreed();
+        List<CatTag> catTags = catTagMapper.catTagPostDtosToCatTags(catPostDto.getTags());
+        Cat createCat = catService.createCat(cat, breed, catTags, user.getUsername());
+        CatResponseDto catResponseDto = catMapper.catToCatResponseDto(createCat);
+        catResponseDto.setTags(catTagMapper.tagToCatsToCatTagResponseDtos(createCat.getTagToCats()));
+        return new ResponseEntity<>(catResponseDto, HttpStatus.CREATED);
+    }
+
     @GetMapping("/{cats-id}")
     public ResponseEntity getCat(@PathVariable("cats-id") @Positive long catId) {
         Cat cat = catService.findCat(catId);
@@ -46,12 +60,12 @@ public class CatController {
 
     @PatchMapping("/{cats-id}")
     public ResponseEntity patchCat(@PathVariable("cats-id") @Positive long catId,
-                                   @Valid @RequestBody CatPostDto catPostDto) {
+                                   @Valid @RequestBody CatPostDto catPostDto,
+                                   @AuthenticationPrincipal User user) {
         Cat cat = catMapper.catPostDtoToCat(catPostDto);
         String breed = catPostDto.getBreed();
         List<CatTag> catTags = catTagMapper.catTagPostDtosToCatTags(catPostDto.getTags());
-        // 토큰에서 User 정보 불러와서 Cat에 저장 필요!
-        Cat saveCat = catService.updateCat(cat, breed, catTags);
+        Cat saveCat = catService.updateCat(cat, breed, catTags, user.getUsername());
         return new ResponseEntity<>(catMapper.catToCatResponseDto(saveCat), HttpStatus.OK);
     }
 

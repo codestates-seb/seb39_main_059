@@ -1,13 +1,12 @@
 package com.twentyfour_seven.catvillage.cat.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 
 @Getter
 @Setter
+@NoArgsConstructor
 @AllArgsConstructor
 public class CatResponseDto {
     long catId;
