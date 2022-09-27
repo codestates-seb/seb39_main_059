@@ -1,9 +1,11 @@
 package com.twentyfour_seven.catvillage.board.service;
 
+import com.twentyfour_seven.catvillage.board.dto.BoardTagDto;
 import com.twentyfour_seven.catvillage.board.entity.Board;
 import com.twentyfour_seven.catvillage.board.entity.TagToBoard;
 import com.twentyfour_seven.catvillage.board.repository.BoardRepository;
 import com.twentyfour_seven.catvillage.board.repository.BoardTagRepository;
+import com.twentyfour_seven.catvillage.common.picture.dto.PictureDto;
 import com.twentyfour_seven.catvillage.common.picture.entity.Picture;
 import com.twentyfour_seven.catvillage.common.picture.service.PictureService;
 import com.twentyfour_seven.catvillage.utils.CustomBeanUtils;
@@ -29,7 +31,7 @@ public class BoardService {
         this.beanUtils = beanUtils;
     }
 
-    public Board createBoard(Board board, List<String> tags, List<String> pictures) {
+    public Board createBoard(Board board, List<BoardTagDto> tags, List<PictureDto> pictures) {
         // ID를 얻기 위한 저장 로직
         Board createdBoard = boardRepository.save(board);
 
@@ -42,7 +44,7 @@ public class BoardService {
         List<Picture> pictureList = pictures.stream().map(e ->
                 pictureService.createPicture(Picture.builder()
                         .board(createdBoard)
-                        .path(e)
+                        .path(e.getPicture())
                         .build())
         ).collect(Collectors.toList());
         createdBoard.getPictures().addAll(pictureList);

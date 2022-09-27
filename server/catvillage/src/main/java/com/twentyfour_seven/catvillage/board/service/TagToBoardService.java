@@ -1,5 +1,6 @@
 package com.twentyfour_seven.catvillage.board.service;
 
+import com.twentyfour_seven.catvillage.board.dto.BoardTagDto;
 import com.twentyfour_seven.catvillage.board.entity.Board;
 import com.twentyfour_seven.catvillage.board.entity.BoardTag;
 import com.twentyfour_seven.catvillage.board.entity.TagToBoard;
@@ -25,7 +26,7 @@ public class TagToBoardService {
         this.boardTagService = boardTagService;
     }
 
-    public List<TagToBoard> createTagToBoard(Board board, List<String> tags) {
+    public List<TagToBoard> createTagToBoard(Board board, List<BoardTagDto> tags) {
         List<BoardTag> boardTags = boardTagService.getBoardTags(tags);
         return boardTags.stream().map(e -> {
                     TagToBoard tagToBoard = TagToBoard.builder()

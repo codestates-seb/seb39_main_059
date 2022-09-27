@@ -1,5 +1,6 @@
 package com.twentyfour_seven.catvillage.board.service;
 
+import com.twentyfour_seven.catvillage.board.dto.BoardTagDto;
 import com.twentyfour_seven.catvillage.board.entity.BoardTag;
 import com.twentyfour_seven.catvillage.board.repository.BoardTagRepository;
 import com.twentyfour_seven.catvillage.exception.BusinessLogicException;
@@ -31,8 +32,8 @@ public class BoardTagService {
 //        }).collect(Collectors.toList());
 //    }
 
-    public List<BoardTag> getBoardTags(List<String> boardTags) {
-        return boardTags.stream().map(this::findVerifiedTagName)
+    public List<BoardTag> getBoardTags(List<BoardTagDto> boardTags) {
+        return boardTags.stream().map(e -> findVerifiedTagName(e.getTag()))
                 .collect(Collectors.toList());
     }
 
