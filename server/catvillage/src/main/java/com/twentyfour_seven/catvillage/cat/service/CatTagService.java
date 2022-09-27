@@ -5,6 +5,7 @@ import com.twentyfour_seven.catvillage.cat.entity.CatTag;
 import com.twentyfour_seven.catvillage.cat.entity.TagToCat;
 import com.twentyfour_seven.catvillage.cat.repository.CatTagRepository;
 import com.twentyfour_seven.catvillage.cat.repository.TagToCatRepository;
+import com.twentyfour_seven.catvillage.utils.CustomBeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,9 +16,13 @@ public class CatTagService {
     private final CatTagRepository catTagRepository;
     private final TagToCatRepository tagToCatRepository;
 
-    public CatTagService(CatTagRepository catTagRepository, TagToCatRepository tagToCatRepository) {
+    private final CustomBeanUtils beanUtils;
+
+    public CatTagService(CatTagRepository catTagRepository, TagToCatRepository tagToCatRepository,
+                         CustomBeanUtils beanUtils) {
         this.catTagRepository = catTagRepository;
         this.tagToCatRepository = tagToCatRepository;
+        this.beanUtils = beanUtils;
     }
 
     public List<CatTag> saveTag(List<CatTag> catTags, Cat cat) {
@@ -42,5 +47,23 @@ public class CatTagService {
 
     public void removeTagToCats(List<TagToCat> tagToCats) {
         tagToCatRepository.deleteAll(tagToCats);
+    }
+
+    public List<CatTag> updateTag (List<CatTag> catTags, Cat cat) {
+        catTags.forEach(
+                catTag -> {
+                    catTag = findExistCatTag(catTag);
+                    TagToCat tagToCat = new TagToCat(catTag, cat);
+                    findExistTagToCat(tagToCat);
+                }
+        );
+        return catTags;
+    }
+
+    public TagToCat findExistTagToCat (TagToCat tagToCat) {
+        Optional<TagToCat> optionalTagToCat =
+                tagToCatRepository.findByCatTagAndCat(tagToCat.getCatTag(), tagToCat.getCat());
+        TagToCat createTagToCat = optionalTagToCat.orElse(tagToCatRepository.save(tagToCat));
+        return createTagToCat;
     }
 }
