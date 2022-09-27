@@ -2,6 +2,7 @@ package com.twentyfour_seven.catvillage.cat.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.twentyfour_seven.catvillage.feed.entity.Feed;
 import com.twentyfour_seven.catvillage.user.entity.User;
 import lombok.Builder;
 import lombok.Getter;
@@ -45,6 +46,10 @@ public class Cat {
     @JoinColumn(name = "USER_ID")
     @JsonBackReference
     private User user;
+
+    @OneToMany(mappedBy = "cat", cascade = CascadeType.REMOVE)
+    @JsonManagedReference
+    private final List<Feed> feeds = new ArrayList<>();
 
     // TODO: CatInfo 구현 후 주석 제거 필요
 //    @Setter

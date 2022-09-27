@@ -3,6 +3,7 @@ package com.twentyfour_seven.catvillage.feed.entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.twentyfour_seven.catvillage.audit.DateTable;
+import com.twentyfour_seven.catvillage.cat.entity.Cat;
 import com.twentyfour_seven.catvillage.common.picture.entity.Picture;
 import com.twentyfour_seven.catvillage.user.entity.User;
 import lombok.Getter;
@@ -36,9 +37,9 @@ public class Feed extends DateTable {
 
     @Setter
     @ManyToOne
-    @JoinColumn(name = "USER_ID")
+    @JoinColumn(name = "CAT_ID")
     @JsonBackReference
-    private User user;
+    private Cat cat;
 
     @OneToMany(mappedBy = "feed", cascade = CascadeType.REMOVE)
     @JsonManagedReference
