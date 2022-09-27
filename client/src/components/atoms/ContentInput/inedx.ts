@@ -1,3 +1,3 @@
-import ContentInput from "./ContentInput";
+import ContentInput from './ContentInput'
 
 export default ContentInput
