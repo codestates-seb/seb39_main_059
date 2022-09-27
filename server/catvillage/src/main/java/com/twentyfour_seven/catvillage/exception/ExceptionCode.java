@@ -9,6 +9,8 @@ public enum ExceptionCode {
     BREED_NOT_FOUND(404, "Breed not found"),
     CAT_NOT_FOUND(409, "Cat not found"),
     PICTURE_NOT_FOUND(409, "Picture not found"),
+    BOARD_NOT_FOUND(409, "Board not found"),
+    BOARD_TAG_NOT_FOUND(409, "Board tag not found"),
     INVALID_USER(405, "Method not allowed");
 
     @Getter
