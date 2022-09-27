@@ -1,6 +1,6 @@
 import { ButtonHTMLAttributes, FC } from 'react'
+import { FontSizeTypes, FontWeightTypes, ColorTypes } from '@Styles/theme'
 import * as S from './Button.style'
-import { FontSizeTypes, FontWeightTypes, ColorTypes } from '@/styles/theme'
 
 export interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
   fontSize: keyof FontSizeTypes
