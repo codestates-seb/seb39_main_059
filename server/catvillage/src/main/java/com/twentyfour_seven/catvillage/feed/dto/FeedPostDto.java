@@ -1,0 +1,18 @@
+package com.twentyfour_seven.catvillage.feed.dto;
+
+import com.twentyfour_seven.catvillage.common.picture.dto.PictureDto;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.util.List;
+
+@Getter
+@Setter
+@NoArgsConstructor
+public class FeedPostDto {
+    private long catId;
+    private List<PictureDto> pictures;
+    private String body;
+    private List<FeedTagDto> tags;
+}
