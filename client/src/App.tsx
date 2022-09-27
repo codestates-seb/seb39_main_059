@@ -1,7 +1,7 @@
 import { ThemeProvider } from 'styled-components'
-import { GlobalStyle } from './styles/GlobalStyle'
-import theme from './styles/theme'
-import { Iphone11ProContainer } from './styles/Iphone11ProContainer'
+import { GlobalStyle } from '@Styles/GlobalStyle'
+import theme from '@Styles/theme'
+import { Iphone11ProContainer } from '@Styles/Iphone11ProContainer'
 
 const App = () => {
   return (
