@@ -1,5 +1,6 @@
 package com.twentyfour_seven.catvillage.board.mapper;
 
+import com.twentyfour_seven.catvillage.board.dto.BoardPatchDto;
 import com.twentyfour_seven.catvillage.board.dto.BoardPostDto;
 import com.twentyfour_seven.catvillage.board.dto.BoardPostResponseDto;
 import com.twentyfour_seven.catvillage.board.dto.BoardTagDto;
@@ -38,6 +39,18 @@ public interface BoardMapper {
                 response.getPicture().add(new PictureDto(e));
             });
             return response;
+        }
+    }
+
+    default Board boardPatchDtoToBoard(BoardPatchDto requestBody) {
+        if(requestBody == null) {
+            return null;
+        } else {
+            return Board.builder()
+                    .boardId(requestBody.getBoardId())
+                    .title(requestBody.getTitle())
+                    .body(requestBody.getBody())
+                    .build();
         }
     }
 }

@@ -4,7 +4,6 @@ import com.twentyfour_seven.catvillage.board.dto.BoardTagDto;
 import com.twentyfour_seven.catvillage.board.entity.Board;
 import com.twentyfour_seven.catvillage.board.entity.TagToBoard;
 import com.twentyfour_seven.catvillage.board.repository.BoardRepository;
-import com.twentyfour_seven.catvillage.board.repository.BoardTagRepository;
 import com.twentyfour_seven.catvillage.common.picture.dto.PictureDto;
 import com.twentyfour_seven.catvillage.common.picture.entity.Picture;
 import com.twentyfour_seven.catvillage.common.picture.service.PictureService;
@@ -22,13 +21,11 @@ public class BoardService {
     private BoardRepository boardRepository;
     private TagToBoardService tagToBoardService;
     private PictureService pictureService;
-    private CustomBeanUtils<Board> beanUtils;
 
-    public BoardService(BoardRepository boardRepository, TagToBoardService tagToBoardService, PictureService pictureService, CustomBeanUtils<Board> beanUtils) {
+    public BoardService(BoardRepository boardRepository, TagToBoardService tagToBoardService, PictureService pictureService) {
         this.boardRepository = boardRepository;
         this.tagToBoardService = tagToBoardService;
         this.pictureService = pictureService;
-        this.beanUtils = beanUtils;
     }
 
     public Board createBoard(Board board, List<BoardTagDto> tags, List<PictureDto> pictures) {
@@ -50,6 +47,48 @@ public class BoardService {
         createdBoard.getPictures().addAll(pictureList);
 
         return createdBoard;
+    }
+
+    public Board updateBoard(Board board, List<BoardTagDto> tags, List<PictureDto> pictures) {
+        Board findBoard = findVerifiedBoard(board.getBoardId());
+        if(!findBoard.getUser().equals(board.getUser())) {
+            throw new BusinessLogicException(ExceptionCode.INVALID_USER);
+        }
+
+        // 제거된 태그 삭제
+        findBoard.getTagToBoards().forEach(e -> {
+            if(!tags.contains(new BoardTagDto(e.getBoardTag()))) {
+                tagToBoardService.deleteTagToBoard(e);
+            }
+        });
+        findBoard.getTagToBoards().removeIf(e -> !tags.contains(new BoardTagDto(e.getBoardTag())));
+
+        // 추가된 태그 리스트만 반환
+        List<TagToBoard> tagToBoards = tagToBoardService.updateTagToBoard(findBoard, tags);
+        findBoard.getTagToBoards().addAll(tagToBoards);
+
+        // 사진 경로 리스트에서 기존에 존재하던 사진 항목은 제거
+        // 삭제된 사진 경로는 DB 및 리스트에서 제거
+        findBoard.getPictures().forEach(e -> {
+            PictureDto dto = new PictureDto(e);
+            if(pictures.contains(dto)) {
+                pictures.remove(dto);
+            } else {
+                pictureService.removePicture(e.getPictureId());
+            }
+        });
+        findBoard.getPictures().removeIf(e -> !pictures.contains(new PictureDto(e)));
+
+        // 추가된 사진 경로 저장
+        List<Picture> pictureList = pictures.stream().map(e ->
+                pictureService.createPicture(Picture.builder()
+                        .board(findBoard)
+                        .path(e.getPicture())
+                        .build())
+        ).collect(Collectors.toList());
+        findBoard.getPictures().addAll(pictureList);
+
+        return boardRepository.save(findBoard);
     }
 
     private Board findVerifiedBoard(Long boardId) {
