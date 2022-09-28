@@ -8,6 +8,7 @@ import com.twentyfour_seven.catvillage.board.service.BoardCommentService;
 import com.twentyfour_seven.catvillage.board.service.BoardService;
 import com.twentyfour_seven.catvillage.user.entity.User;
 import com.twentyfour_seven.catvillage.user.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -36,6 +37,8 @@ public class BoardController {
         this.boardCommentService = boardCommentService;
     }
 
+    @Operation(summary = "집사생활 새 글 작성하기",
+            description = "집사생활에 등록되지 않은 태그로 요청이 들어올 경우 에러가 납니다.")
     @PostMapping
     public ResponseEntity postBoard(@AuthenticationPrincipal org.springframework.security.core.userdetails.User user,
                                     @Valid @RequestBody BoardPostDto requestBody) {
@@ -53,6 +56,8 @@ public class BoardController {
                 HttpStatus.CREATED);
     }
 
+    @Operation(summary = "집사생활 글 수정하기",
+            description = "집사생활에 등록되지 않은 태그로 요청이 들어올 경우 에러가 납니다. 처음에 글을 작성했던 유저와 로그인 되어 있는 유저가 다를 경우 405 에러가 납니다.")
     @PatchMapping("/{boards-id}")
     public ResponseEntity patchBoard(@AuthenticationPrincipal org.springframework.security.core.userdetails.User user,
                                      @Positive @PathVariable("boards-id") Long boardId,
