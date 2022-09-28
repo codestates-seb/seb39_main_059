@@ -53,7 +53,7 @@
   <br><br><br>
   <h1>인프라</h1>
   <br>
-  <img src="https://user-images.githubusercontent.com/104193237/192577133-d8bee625-5d65-40df-8aba-6488419964ab.png" width="850">
+  <img src="https://user-images.githubusercontent.com/104193237/192691288-d53147ad-45a9-4a43-93eb-70ca073b24f8.png" width="850">
 
   
 <br /> <br /> <br /><br><br>
