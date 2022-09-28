@@ -1,5 +1,6 @@
 package com.twentyfour_seven.catvillage.board.controller;
 
+import com.twentyfour_seven.catvillage.board.dto.BoardPatchDto;
 import com.twentyfour_seven.catvillage.board.dto.BoardPostDto;
 import com.twentyfour_seven.catvillage.board.entity.Board;
 import com.twentyfour_seven.catvillage.board.mapper.BoardMapper;
@@ -11,13 +12,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
+import javax.validation.constraints.Positive;
 import java.util.List;
 
 @RestController
@@ -52,5 +51,18 @@ public class BoardController {
         return new ResponseEntity<>(
                 boardMapper.boardToBoardPostResponseDto(createdBoard),
                 HttpStatus.CREATED);
+    }
+
+    @PatchMapping("/{boards-id}")
+    public ResponseEntity patchBoard(@AuthenticationPrincipal org.springframework.security.core.userdetails.User user,
+                                     @Positive @PathVariable("boards-id") Long boardId,
+                                     @Valid @RequestBody BoardPatchDto requestBody) {
+        Board board = boardMapper.boardPatchDtoToBoard(requestBody);
+        User findUser = userService.findVerifiedEmail(user.getUsername());
+        board.setUser(findUser);
+        Board updateBoard = boardService.updateBoard(board, requestBody.getTag(), requestBody.getPicture());
+        return new ResponseEntity<>(
+                boardMapper.boardToBoardPostResponseDto(updateBoard),
+                HttpStatus.OK);
     }
 }

@@ -18,8 +18,8 @@ import java.util.stream.Collectors;
 @Service
 public class TagToBoardService {
 
-    private TagToBoardRepository tagToBoardRepository;
-    private BoardTagService boardTagService;
+    private final TagToBoardRepository tagToBoardRepository;
+    private final BoardTagService boardTagService;
 
     public TagToBoardService(TagToBoardRepository tagToBoardRepository, BoardTagService boardTagService) {
         this.tagToBoardRepository = tagToBoardRepository;
@@ -29,12 +29,31 @@ public class TagToBoardService {
     public List<TagToBoard> createTagToBoard(Board board, List<BoardTagDto> tags) {
         List<BoardTag> boardTags = boardTagService.getBoardTags(tags);
         return boardTags.stream().map(e -> {
-                    TagToBoard tagToBoard = TagToBoard.builder()
-                            .board(board)
-                            .boardTag(e)
-                            .build();
-                    return tagToBoardRepository.save(tagToBoard);
-                }
-        ).collect(Collectors.toList());
+            TagToBoard tagToBoard = TagToBoard.builder()
+                    .board(board)
+                    .boardTag(e)
+                    .build();
+            return tagToBoardRepository.save(tagToBoard);
+        }).collect(Collectors.toList());
+    }
+
+    public void deleteTagToBoard(TagToBoard tag) {
+        tagToBoardRepository.delete(tag);
+    }
+
+    public List<TagToBoard> updateTagToBoard(Board board, List<BoardTagDto> tags) {
+        List<BoardTag> boardTags = boardTagService.getBoardTags(tags);
+
+        // 기존에 존재하는 태그는 리스트에서 제거
+        board.getTagToBoards().forEach(e -> boardTags.remove(e.getBoardTag()));
+
+        // 추가된 태그만 저장 후 반환
+        return boardTags.stream().map(e -> {
+            TagToBoard tagToBoard = TagToBoard.builder()
+                    .board(board)
+                    .boardTag(e)
+                    .build();
+            return tagToBoardRepository.save(tagToBoard);
+        }).collect(Collectors.toList());
     }
 }
