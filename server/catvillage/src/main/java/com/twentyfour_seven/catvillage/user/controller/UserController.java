@@ -6,6 +6,7 @@ import com.twentyfour_seven.catvillage.user.dto.UserPostDto;
 import com.twentyfour_seven.catvillage.user.entity.User;
 import com.twentyfour_seven.catvillage.user.mapper.UserMapper;
 import com.twentyfour_seven.catvillage.user.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,12 +37,16 @@ public class UserController {
 ////        return new ResponseEntity<>(userMapper.userToUserPostResponseDto(createUser), HttpStatus.CREATED);
 //    }
 
+    @Operation(summary = "유저 이름(displayName) 중복 검사",
+            description = "이미 등록되어 있는 이름일 경우 409 에러가 납니다.")
     @GetMapping("/names")
     public ResponseEntity getNameCheck(@RequestParam String name) {
         userService.nameDuplicateCheck(name);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @Operation(summary = "유저 정보 가져오기(pagination)",
+            description = "등록되어 있는 모든 유저 정보를 페이지화하여 반환합니다. 로그인되지 않은 사용자도 요청 가능합니다.")
     @GetMapping
     public ResponseEntity getUsers(@RequestParam @Positive int page,
                                    @RequestParam @Positive int size) {
@@ -56,12 +61,16 @@ public class UserController {
         );
     }
 
+    @Operation(summary = "유저 정보 불러오기",
+            description = "로그인되지 않은 사용자도 요청 가능합니다.")
     @GetMapping("/{user-id}")
     public ResponseEntity getUser(@PathVariable("user-id") Long userId) {
         User findUser = userService.findUser(userId);
         return new ResponseEntity<>(userMapper.userToUserGetResponseDto(findUser), HttpStatus.OK);
     }
 
+    @Operation(summary = "유저 정보 변경",
+            description = "로그인된 유저가 정보를 변경하려는 유저와 다른 경우 405 에러가 납니다.")
     @PatchMapping("/{user-id}")
     public ResponseEntity patchUser(@PathVariable("user-id") Long userId,
                                     @Valid @RequestBody UserPatchDto requestBody) {
@@ -70,6 +79,8 @@ public class UserController {
         return new ResponseEntity<>(userMapper.userToUserPatchResponseDto(updateUser), HttpStatus.OK);
     }
 
+    @Operation(summary = "유저 탈퇴",
+            description = "유저 정보가 바로 삭제되지 않고 7일동안 유지된 후 삭제됩니다. 그 이전에는 복구 가능합니다.")
     @DeleteMapping("/{user-id}/delete") // TODO : Security 적용 이후 "/delete"로 경로 변경 의논 필요
     public ResponseEntity deleteUser(@PathVariable("user-id") Long userId) {
         userService.removeUser(userId);
