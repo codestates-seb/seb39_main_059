@@ -1,5 +1,5 @@
 import { FC, useCallback, useRef } from 'react'
-import * as S from './ContentInput.style'
+import * as S from './FormTextInput.style'
 
 export interface Props {
   /** name of input */
@@ -14,6 +14,8 @@ export interface Props {
   placeholder?: string
   /** input value(state) */
   value?: string | number
+  /** rows number */
+  rows?: number
   /** onFocusOut handler */
   onFocusOut?: (e: React.FocusEvent<HTMLInputElement>) => void
 }
@@ -32,7 +34,7 @@ const ContentInput: FC<Props> = ({ inputName, ...props }) => {
       name={inputName}
       {...props}
       onInput={handleResizeHeight}
-      rows={10}
+      // rows={10}
     />
   )
 }
