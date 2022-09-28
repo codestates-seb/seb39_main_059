@@ -8,6 +8,7 @@ import com.twentyfour_seven.catvillage.feed.mapper.FeedTagMapper;
 import com.twentyfour_seven.catvillage.feed.service.FeedCommentService;
 import com.twentyfour_seven.catvillage.feed.service.FeedService;
 import com.twentyfour_seven.catvillage.feed.service.FeedTagService;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,6 +43,7 @@ public class FeedController {
         this.feedTagMapper = feedTagMapper;
     }
 
+    @Operation(summary = "냥이생활 피드 작성하기")
     @PostMapping
     public ResponseEntity postFeed (@RequestBody @Valid FeedPostDto feedPostDto) {
         Feed feed = feedMapper.feedPostDtoToFeed(feedPostDto);

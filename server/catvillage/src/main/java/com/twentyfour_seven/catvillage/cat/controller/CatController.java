@@ -8,6 +8,7 @@ import com.twentyfour_seven.catvillage.cat.entity.CatTag;
 import com.twentyfour_seven.catvillage.cat.mapper.CatMapper;
 import com.twentyfour_seven.catvillage.cat.mapper.CatTagMapper;
 import com.twentyfour_seven.catvillage.cat.service.CatService;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -36,6 +37,8 @@ public class CatController {
         this.catTagMapper = catTagMapper;
     }
 
+    @Operation(summary = "고양이 등록하기",
+            description = "로그인한 유저 정보를 꺼내와서 유저에 고양이를 추가합니다. 만약 등록되지 않은 유저일 경우 404 에러가 납니다.")
     @PostMapping
     public ResponseEntity postCat(@Valid @RequestBody CatPostDto catPostDto,
                                   @AuthenticationPrincipal User user) {
@@ -48,6 +51,8 @@ public class CatController {
         return new ResponseEntity<>(catResponseDto, HttpStatus.CREATED);
     }
 
+    @Operation(summary = "고양이 프로필 정보 불러오기",
+            description = "로그인 하지 않은 유저도 요청 가능합니다." )
     @GetMapping("/{cats-id}")
     public ResponseEntity getCat(@PathVariable("cats-id") @Positive long catId) {
         Cat cat = catService.findCat(catId);
@@ -58,6 +63,8 @@ public class CatController {
         return new ResponseEntity<>(catResponseDto, HttpStatus.OK);
     }
 
+    @Operation(summary = "고양이 프로필 수정하기",
+            description = "로그인된 유저 정보와 처음 고양이를 등록했던 유저 정보가 일치하지 않을 경우 405 에러가 납니다.")
     @PatchMapping("/{cats-id}")
     public ResponseEntity patchCat(@PathVariable("cats-id") @Positive long catId,
                                    @Valid @RequestBody CatPostDto catPostDto,
@@ -69,6 +76,8 @@ public class CatController {
         return new ResponseEntity<>(catMapper.catToCatResponseDto(saveCat), HttpStatus.OK);
     }
 
+    @Operation(summary = "고양이 프로필 삭제하기",
+            description = "로그인된 유저 정보와 처음 고양이를 등록했던 유저 정보가 일치하지 않을 경우 405 에러가 납니다.")
     @DeleteMapping("/{cats-id}")
     public ResponseEntity deleteCat(@PathVariable("cats-id") @Positive long catId) {
         catService.removeCat(catId);
