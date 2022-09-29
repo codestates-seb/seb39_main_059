@@ -10,6 +10,9 @@ import com.twentyfour_seven.catvillage.common.picture.service.PictureService;
 import com.twentyfour_seven.catvillage.utils.CustomBeanUtils;
 import com.twentyfour_seven.catvillage.exception.BusinessLogicException;
 import com.twentyfour_seven.catvillage.exception.ExceptionCode;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,6 +29,15 @@ public class BoardService {
         this.boardRepository = boardRepository;
         this.tagToBoardService = tagToBoardService;
         this.pictureService = pictureService;
+    }
+
+    public Page<Board> findBoards(int page, int size) {
+        PageRequest pageRequest = PageRequest.of(page, size, Sort.by("boardId").descending());
+        return boardRepository.findAll(pageRequest);
+    }
+
+    public Board findBoard(Long boardId) {
+        return findVerifiedBoard(boardId);
     }
 
     public Board createBoard(Board board, List<BoardTagDto> tags, List<PictureDto> pictures) {
