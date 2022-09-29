@@ -11,7 +11,8 @@ public enum ExceptionCode {
     PICTURE_NOT_FOUND(409, "Picture not found"),
     BOARD_NOT_FOUND(409, "Board not found"),
     BOARD_TAG_NOT_FOUND(409, "Board tag not found"),
-    INVALID_USER(405, "Method not allowed");
+    INVALID_USER(405, "Method not allowed"),
+    FEED_NOT_FOUND(409, "Feed not found");
 
     @Getter
     private final int status;
