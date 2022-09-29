@@ -55,6 +55,10 @@
   <br>
   <img src="https://user-images.githubusercontent.com/104193237/192691288-d53147ad-45a9-4a43-93eb-70ca073b24f8.png" width="850">
 
+<br><br><br>
+<h1> 문서 </h1>
+
+[WIKI 바로가기](https://github.com/codestates-seb/seb39_main_059/wiki)
   
 <br /> <br /> <br /><br><br>
 <h1>팀 소개</h1>
