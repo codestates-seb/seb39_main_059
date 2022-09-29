@@ -7,6 +7,7 @@ import com.twentyfour_seven.catvillage.board.repository.BoardRepository;
 import com.twentyfour_seven.catvillage.common.picture.dto.PictureDto;
 import com.twentyfour_seven.catvillage.common.picture.entity.Picture;
 import com.twentyfour_seven.catvillage.common.picture.service.PictureService;
+import com.twentyfour_seven.catvillage.user.entity.User;
 import com.twentyfour_seven.catvillage.utils.CustomBeanUtils;
 import com.twentyfour_seven.catvillage.exception.BusinessLogicException;
 import com.twentyfour_seven.catvillage.exception.ExceptionCode;
@@ -89,6 +90,14 @@ public class BoardService {
         findBoard.getPictures().addAll(pictureList);
 
         return boardRepository.save(findBoard);
+    }
+
+    public void deleteBoard(User user, Long boardId) {
+        Board findBoard = findVerifiedBoard(boardId);
+        if(!findBoard.getUser().equals(user)) {
+            throw new BusinessLogicException(ExceptionCode.INVALID_USER);
+        }
+        boardRepository.delete(findBoard);
     }
 
     private Board findVerifiedBoard(Long boardId) {
