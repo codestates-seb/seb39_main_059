@@ -1,4 +1,4 @@
-import { Iphone11ProLayout } from '@Layout/Iphone11ProLayout'
+import DashBoard from '@Layout/DashBoard'
 import Login from '@pages/Login'
 import Signup from '@pages/Signup'
 import { RouteObject, useRoutes } from 'react-router-dom'
@@ -8,7 +8,7 @@ import { feedRoutes } from './feed.routes'
 
 const appRoutes: RouteObject = {
   path: '/',
-  element: <Iphone11ProLayout />,
+  element: <DashBoard />,
   children: [
     { path: 'login', element: <Login /> },
     { path: 'signup', element: <Signup /> },
