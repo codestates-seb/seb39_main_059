@@ -26,3 +26,15 @@ spring:
             user-name-attribute: id
 jwt:
   secret: ${{ secrets.JWT_SECRET }}
+cloud:
+  aws:
+    credentials:
+      accessKey: ${{ secrets.AWS_ACCESS_KEY }}
+      secretKey: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+    s3:
+      bucket: image.catvillage.shop
+      dir: catvillage/images/
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false

@@ -32,8 +32,6 @@ dependencies {
 	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
 
 	//Swagger REST API Docs
-//	implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
-//	implementation group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
 	implementation 'io.springfox:springfox-boot-starter:3.0.0'
 
 	// Oauth2
@@ -53,6 +51,9 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	testImplementation 'org.springframework.security:spring-security-test'
+
+	// aws sdk
+	implementation 'com.amazonaws:aws-java-sdk-s3:1.12.307'
 }
 
 tasks.named('test') {

@@ -1,7 +1,6 @@
 package com.twentyfour_seven.catvillage.feed.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.twentyfour_seven.catvillage.audit.DateTable;
 import com.twentyfour_seven.catvillage.user.entity.User;
 import lombok.Getter;
@@ -9,7 +8,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 
 @Entity(name = "FEED_COMMENT")
 @Getter
