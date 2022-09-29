@@ -41,6 +41,8 @@ jobs:
         files: ${{ env.RESOURCE_PATH }}
       env:
         jwt.secret: ${{ secrets.JWT_SECRET }}
+        cloud.aws.credentials.accessKey: ${{ secrets.AWS_ACCESS_KEY }}
+        cloud.aws.credentials.secretKey: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
     
     # grant execute permission for gradlew
     - name : Grant execute permission for gradlew
