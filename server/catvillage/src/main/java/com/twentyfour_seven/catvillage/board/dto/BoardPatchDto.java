@@ -16,13 +16,15 @@ public class BoardPatchDto {
     private String title;
     @Length(max = 1000)
     private String body;
-    private List<BoardTagDto> tag = new ArrayList<>();
-    private List<PictureDto> picture = new ArrayList<>();
+    private List<BoardTagDto> tag;
+    private List<PictureDto> picture;
 
     @Builder
-    public BoardPatchDto(Long boardId, String title, String body) {
+    public BoardPatchDto(Long boardId, String title, String body, List<BoardTagDto> tag, List<PictureDto> picture) {
         this.boardId = boardId;
         this.title = title;
         this.body = body;
+        this.tag = tag;
+        this.picture = picture;
     }
 }
