@@ -7,6 +7,7 @@ import com.twentyfour_seven.catvillage.feed.repository.FeedTagRepository;
 import com.twentyfour_seven.catvillage.feed.repository.TagToFeedRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -19,7 +20,7 @@ public class FeedTagService {
         this.tagToFeedRepository = tagToFeedRepository;
     }
 
-    public List<FeedTag> createTags (Feed feed, List<FeedTag> feedTags) {
+    public List<FeedTag> createTags(Feed feed, List<FeedTag> feedTags) {
         feedTags.forEach(feedTag -> {
             FeedTag createFeedTag = createTag(feedTag);
             createTagToFeed(new TagToFeed(feed, createFeedTag));
@@ -27,11 +28,17 @@ public class FeedTagService {
         return feedTags;
     }
 
-    public FeedTag createTag (FeedTag feedTag) {
+    public FeedTag createTag(FeedTag feedTag) {
         return feedTagRepository.save(feedTag);
     }
 
-    public TagToFeed createTagToFeed (TagToFeed tagToFeed) {
+    public TagToFeed createTagToFeed(TagToFeed tagToFeed) {
         return tagToFeedRepository.save(tagToFeed);
+    }
+
+    public List<FeedTag> findFeedTags(Feed feed) {
+        List<FeedTag> feedTags = new ArrayList<>();
+        feed.getTagToFeeds().forEach(tagToFeed -> feedTags.add(tagToFeed.getFeedTag()));
+        return feedTags;
     }
 }

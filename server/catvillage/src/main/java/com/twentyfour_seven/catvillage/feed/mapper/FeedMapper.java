@@ -2,6 +2,7 @@ package com.twentyfour_seven.catvillage.feed.mapper;
 
 import com.twentyfour_seven.catvillage.common.picture.dto.PictureDto;
 import com.twentyfour_seven.catvillage.common.picture.entity.Picture;
+import com.twentyfour_seven.catvillage.feed.dto.FeedGetResponseDto;
 import com.twentyfour_seven.catvillage.feed.dto.FeedPostDto;
 import com.twentyfour_seven.catvillage.feed.dto.FeedResponseDto;
 import com.twentyfour_seven.catvillage.feed.entity.Feed;
@@ -39,4 +40,20 @@ public interface FeedMapper {
         );
         return feed;
     }
+
+    default FeedGetResponseDto feedToFeedGetResponseDto(Feed feed) {
+        if (feed == null) {
+            return null;
+        }
+        return FeedGetResponseDto.builder()
+                .feedId(feed.getFeedId())
+                .catId(feed.getCat().getCatId())
+                .body(feed.getBody())
+                .likeCount(feed.getLikeCount())
+                .viewCount(feed.getViewCount())
+                .commentCount(feed.getCommentCount())
+                .build();
+    }
+
+    List<FeedGetResponseDto> feedsToFeedGetResponseDtos(List<Feed> feeds);
 }
