@@ -1,31 +1,32 @@
-import { ChangeEvent, useState } from 'react'
+import { useState, FC, useRef } from 'react'
 import SocialLoginButton from '@Modules/SocialLoginButton'
+import { useForm, SubmitHandler } from 'react-hook-form'
 import * as S from './Signup.style'
 
-const Login = () => {
-  const [id, setId] = useState('')
-  const [password, setPassword] = useState('')
-  const [passwordCheck, setPasswordCheck] = useState('')
+export interface FormValue {
+  email: string
+  password: string
+  passwordCheck?: string
+}
+
+const Signup: FC = () => {
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm<FormValue>()
+
   const [isShown, setIsSHown] = useState(false)
+  const passwordRef = useRef<string | null>(null)
+  passwordRef.current = watch('password')
 
   const togglePassword = () => {
     setIsSHown(isShown => !isShown)
   }
 
-  const handleIdChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setId(e.target.value)
-  }
-
-  const handlePasswordChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setPassword(e.target.value)
-  }
-
-  const handlePasswordCheckChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setPasswordCheck(e.target.value)
-  }
-
-  const handleSignup = () => {
-    /* 일반 회원가입 로직 */
+  const onSubmitHandler: SubmitHandler<FormValue> = data => {
+    console.log(data)
   }
 
   const handleSocialLogin = () => {
@@ -36,28 +37,50 @@ const Login = () => {
     <S.SignupLayout>
       <S.Logo />
       <S.Description>여러분의 고양이를 자랑해보세요</S.Description>
-      <S.InputForm>
+      <S.InputForm onSubmit={handleSubmit(onSubmitHandler)} method="post">
         <S.SignupInput
           type="text"
-          inputName="id"
-          value={id}
-          placeholder="아이디"
-          onChange={handleIdChange}
+          inputName="email"
+          placeholder="이메일"
+          {...register('email', { required: true, pattern: /^\S+@\S+$/i })}
         />
+        {errors.email && errors.email.type === 'required' && (
+          <S.validationSpan>이메일을 입력해 주세요.</S.validationSpan>
+        )}
+        {errors.email && errors.email.type === 'pattern' && (
+          <S.validationSpan>올바른 이메일 형식이 아닙니다.</S.validationSpan>
+        )}
         <S.SignupInput
           type={isShown ? 'text' : 'password'}
           inputName="password"
-          value={password}
           placeholder="비밀번호"
-          onChange={handlePasswordChange}
+          {...register('password', {
+            required: true,
+            maxLength: 20,
+            minLength: 5,
+          })}
         />
+        {errors.password && errors.password.type === 'required' && (
+          <S.validationSpan>비밀번호를 입력해 주세요.</S.validationSpan>
+        )}
+        {errors.password && errors.password.type === 'maxLength' && (
+          <S.validationSpan>비밀번호는 20자 이하입니다.</S.validationSpan>
+        )}
+        {errors.password && errors.password.type === 'minLength' && (
+          <S.validationSpan>비밀번호는 5자 이상입니다.</S.validationSpan>
+        )}
         <S.SignupInput
           type={isShown ? 'text' : 'password'}
           inputName="passwordCheck"
-          value={passwordCheck}
           placeholder="비밀번호 확인"
-          onChange={handlePasswordCheckChange}
+          {...register('passwordCheck', {
+            required: true,
+            validate: value => value === passwordRef.current,
+          })}
         />
+        {errors.passwordCheck && errors.passwordCheck.type === 'validate' && (
+          <S.validationSpan>비밀번호가 일치하지 않습니다.</S.validationSpan>
+        )}
         <S.Checkbox>
           <label htmlFor="password">
             <input
@@ -73,18 +96,18 @@ const Login = () => {
           fontSize="lg"
           fontWeight="bold"
           color="white"
-          onClick={handleSignup}
+          type="submit"
         >
           회원가입
         </S.SignupButton>
-        <S.Box>
-          <span>이미 가입하셨나요?</span>
-          <S.LoginButton>로그인</S.LoginButton>
-        </S.Box>
-        <SocialLoginButton onClick={handleSocialLogin} />
       </S.InputForm>
+      <S.Box>
+        <span>이미 가입하셨나요?</span>
+        <S.LoginButton>로그인</S.LoginButton>
+      </S.Box>
+      <SocialLoginButton onClick={handleSocialLogin} />
     </S.SignupLayout>
   )
 }
 
-export default Login
+export default Signup
