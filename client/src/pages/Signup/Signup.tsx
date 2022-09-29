@@ -37,7 +37,7 @@ const Signup: FC = () => {
     <S.SignupLayout>
       <S.Logo />
       <S.Description>여러분의 고양이를 자랑해보세요</S.Description>
-      <S.InputForm onSubmit={handleSubmit(onSubmitHandler)}>
+      <S.InputForm onSubmit={handleSubmit(onSubmitHandler)} method="post">
         <S.SignupInput
           type="text"
           inputName="email"
