@@ -29,7 +29,7 @@ public class Picture {
     @JsonBackReference
     private Board board;
 
-    @Column(name = "PATH", length = 100)
+    @Column(name = "PATH", length = 500)
     private String path;
 
     @Builder
