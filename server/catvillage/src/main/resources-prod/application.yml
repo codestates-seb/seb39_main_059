@@ -1,10 +1,14 @@
 spring:
+  profiles:
+    active: prod
+    include: common
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
     url: jdbc:mariadb://${{ secrets.ENDPOINT }}:${{ secrets.PORT }}/cat-village?serverTimezone=UTC&characterEncoding=utf8mb4
     username: ${{ secrets.USER }}
     password: ${{ secrets.PASSWORD }}
   jpa:
+    database-platform: org.hibernate.dialect.MariaDB103Dialect
     open-in-view: false
     show-sql: true
     hibernate:
