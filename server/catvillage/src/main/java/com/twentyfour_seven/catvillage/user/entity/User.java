@@ -1,12 +1,10 @@
 package com.twentyfour_seven.catvillage.user.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.twentyfour_seven.catvillage.audit.DateTable;
 import com.twentyfour_seven.catvillage.board.entity.Board;
 import com.twentyfour_seven.catvillage.board.entity.BoardComment;
 import com.twentyfour_seven.catvillage.cat.entity.Cat;
-import com.twentyfour_seven.catvillage.feed.entity.Feed;
 import com.twentyfour_seven.catvillage.feed.entity.FeedComment;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,8 +12,8 @@ import lombok.Setter;
 import net.minidev.json.annotate.JsonIgnore;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Entity(name = "USERS")
@@ -39,7 +37,7 @@ public class User extends DateTable {
     private String name;
 
     @Setter
-    @Column(name = "PROFILE_IMAGE", length = 100)
+    @Column(name = "PROFILE_IMAGE", length = 500)
     private String profileImage;
 
     @Setter
@@ -64,7 +62,7 @@ public class User extends DateTable {
 
     @Setter
     @Column(name = "EXPIRY_DATE")
-    private Date expiryDate;
+    private LocalDateTime expiryDate;
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
     @JsonManagedReference

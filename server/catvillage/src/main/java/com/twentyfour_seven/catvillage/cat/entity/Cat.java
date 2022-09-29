@@ -35,7 +35,7 @@ public class Cat {
     @Column(name = "WEIGHT")
     private int weight;
 
-    @Column(name = "IMAGE", length = 50)
+    @Column(name = "IMAGE", length = 500)
     private String image;
 
     @Column(name = "BODY", length = 1000)

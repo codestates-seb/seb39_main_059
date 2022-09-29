@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.twentyfour_seven.catvillage.audit.DateTable;
 import com.twentyfour_seven.catvillage.cat.entity.Cat;
 import com.twentyfour_seven.catvillage.common.picture.entity.Picture;
-import com.twentyfour_seven.catvillage.user.entity.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
