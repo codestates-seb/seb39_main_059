@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import React, { FC, forwardRef, RefObject } from 'react'
 import * as S from './Input.style'
 
 export interface Props {
@@ -20,10 +20,15 @@ export interface Props {
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
   /** onFocusOut handler */
   onFocusOut?: (e: React.FocusEvent<HTMLInputElement>) => void
+  ref?:
+    | ((e: HTMLInputElement | null) => void)
+    | RefObject<HTMLInputElement>
+    | null
+    | undefined
 }
 
-const Input: FC<Props> = ({ inputName, ...props }) => {
-  return <S.Input name={inputName} {...props} autoComplete="off" />
-}
+const Input: FC<Props> = forwardRef(({ inputName, ...props }, ref) => {
+  return <S.Input name={inputName} {...props} ref={ref} autoComplete="off" />
+})
 
 export default Input
