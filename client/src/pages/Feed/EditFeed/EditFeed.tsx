@@ -1,6 +1,4 @@
 const EditFeed = () => {
-  return (
-    <div>EditFeed</div>
-  )
+  return <div>EditFeed</div>
 }
 export default EditFeed

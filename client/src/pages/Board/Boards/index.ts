@@ -1,3 +1,3 @@
-import Boards from "./Boards";
+import Boards from './Boards'
 
 export default Boards

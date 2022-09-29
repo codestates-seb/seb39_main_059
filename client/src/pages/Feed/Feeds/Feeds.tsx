@@ -1,6 +1,4 @@
 const Feeds = () => {
-  return (
-    <div>Feeds</div>
-  )
+  return <div>Feeds</div>
 }
 export default Feeds

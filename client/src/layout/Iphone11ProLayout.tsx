@@ -13,7 +13,7 @@ export const Iphone11ProBox = styled.div`
 `
 
 export const Iphone11ProLayout = () => (
-    <Iphone11ProBox>
-      <Outlet />
-    </Iphone11ProBox>
+  <Iphone11ProBox>
+    <Outlet />
+  </Iphone11ProBox>
 )

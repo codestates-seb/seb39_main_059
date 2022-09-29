@@ -5,4 +5,3 @@ export * from './feed.routes'
 export * from './board.routes'
 
 export default AppRoutes
-

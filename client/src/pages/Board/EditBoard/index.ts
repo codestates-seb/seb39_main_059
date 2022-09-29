@@ -1,3 +1,3 @@
-import EditBoard from "./EditBoard";
+import EditBoard from './EditBoard'
 
 export default EditBoard

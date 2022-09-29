@@ -1,3 +1,3 @@
-import BoardDetail from "./BoardDetail";
+import BoardDetail from './BoardDetail'
 
 export default BoardDetail

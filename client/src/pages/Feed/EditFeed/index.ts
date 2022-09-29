@@ -1,3 +1,3 @@
-import EditFeed from "./EditFeed";
+import EditFeed from './EditFeed'
 
 export default EditFeed

@@ -10,11 +10,11 @@ const appRoutes: RouteObject = {
   path: '/',
   element: <Iphone11ProLayout />,
   children: [
-    {path: 'login', element:<Login/>},
-    {path: 'signup', element:<Signup/>},
-    feedRoutes, 
-    BoardRoutes, 
-    errorRoutes
+    { path: 'login', element: <Login /> },
+    { path: 'signup', element: <Signup /> },
+    feedRoutes,
+    BoardRoutes,
+    errorRoutes,
   ],
 }
 

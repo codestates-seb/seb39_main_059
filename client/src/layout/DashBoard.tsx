@@ -4,8 +4,6 @@ import { Link, Outlet } from 'react-router-dom'
 import styled from 'styled-components'
 import { Iphone11ProBox } from './Iphone11ProLayout'
 
-
-
 const NavBar = styled.nav`
   background-color: beige;
   padding: 10px 10px;

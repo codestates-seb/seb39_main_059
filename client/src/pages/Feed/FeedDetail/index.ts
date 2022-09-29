@@ -1,3 +1,3 @@
-import FeedDetail from "./FeedDetail";
+import FeedDetail from './FeedDetail'
 
 export default FeedDetail

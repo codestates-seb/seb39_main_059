@@ -1,3 +1,3 @@
-import NewFeed from "./NewFeed";
+import NewFeed from './NewFeed'
 
 export default NewFeed
