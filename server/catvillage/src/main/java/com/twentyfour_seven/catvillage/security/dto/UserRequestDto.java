@@ -2,6 +2,7 @@ package com.twentyfour_seven.catvillage.security.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -9,6 +10,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 @Getter
 @Setter
 @AllArgsConstructor
+@NoArgsConstructor
 public class UserRequestDto {
     @Length(max = 50)
     String username;

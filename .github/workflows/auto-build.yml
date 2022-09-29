@@ -9,7 +9,7 @@ name: Java CI with Gradle
 
 env:
   S3_BUCKET_NAME: image.catvillage.shop
-  RESOURCE_PATH: ./server/catvillage/src/main/resources/application.yml
+  RESOURCE_PATH: ./server/catvillage/src/main/resources-prod/application.yml
 
 on:
   push:
@@ -51,7 +51,7 @@ jobs:
 
     # build gradlew
     - name: Build with Gradle
-      run: cd server/catvillage; ./gradlew build
+      run: cd server/catvillage; ./gradlew build -Pprofile=prod
       shell: bash
 
     # build한 후 프로젝트를 압축합니다.

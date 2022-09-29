@@ -1,5 +1,8 @@
 
 spring:
+  profiles:
+    active: dev
+    include: local, common
   h2:
     console:
       enabled: true

@@ -1,11 +1,14 @@
 spring:
+  profiles:
+    active: prod
+    include: common
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
     url: jdbc:mariadb://${{ secrets.ENDPOINT }}:${{ secrets.PORT }}/cat-village?serverTimezone=UTC&characterEncoding=utf8mb4
     username: ${{ secrets.USER }}
     password: ${{ secrets.PASSWORD }}
-
   jpa:
+    database-platform: org.hibernate.dialect.MariaDB103Dialect
     open-in-view: false
     show-sql: true
     hibernate:
@@ -14,7 +17,13 @@ spring:
     properties:
       hibernate:
         format_sql: true
-
+  security:
+    oauth2:
+      client:
+        registration:
+          kakao:
+            client-id: ${{ secrets.KAKAO_REST_API_KEY }}
+            client-secret: ${{ secrets.KAKAO_CLIENT_SECRET }}
 logging:
   level:
     org:
@@ -24,3 +33,10 @@ logging:
           descriptor:
             sql:
               BasicBinder: TRACE
+jwt:
+  secret: ${{ secrets.JWT_SECRET }}
+cloud:
+  aws:
+    credentials:
+      accessKey: ${{ secrets.AWS_ACCESS_KEY }}
+      secretKey: ${{ secrets.AWS_SECRET_ACCESS_KEY }}

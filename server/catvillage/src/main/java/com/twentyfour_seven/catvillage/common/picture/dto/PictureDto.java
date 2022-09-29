@@ -4,6 +4,7 @@ import com.twentyfour_seven.catvillage.common.picture.entity.Picture;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.Max;
 
@@ -11,7 +12,7 @@ import javax.validation.constraints.Max;
 @Setter
 @NoArgsConstructor
 public class PictureDto {
-    @Max(500)
+    @Length(max = 500)
     private String picture;
 
     public PictureDto(Picture picture) {

@@ -10,21 +10,27 @@ import java.util.List;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface FeedTagMapper {
-    default FeedTag tagToFeedToFeedTag (TagToFeed tagToFeed) {
+    default FeedTag tagToFeedToFeedTag(TagToFeed tagToFeed) {
         if (tagToFeed == null) {
             return null;
         }
         return new FeedTag(tagToFeed.getFeedTag().getTagName());
     }
 
-    List<FeedTag> tagToFeedsToFeedTags (List<TagToFeed> tagToFeeds);
+    List<FeedTag> tagToFeedsToFeedTags(List<TagToFeed> tagToFeeds);
 
-    default FeedTag feedTagDtoToFeedTag (FeedTagDto feedTagDto) {
+    default FeedTag feedTagDtoToFeedTag(FeedTagDto feedTagDto) {
         if (feedTagDto == null) {
             return null;
         }
         return new FeedTag(feedTagDto.getTag());
     }
 
-    List<FeedTag> feedTagDtosToFeedTags (List<FeedTagDto> feedTagDtos);
+    List<FeedTag> feedTagDtosToFeedTags(List<FeedTagDto> feedTagDtos);
+
+    default FeedTagDto feedTagToFeedTagDto(FeedTag feedTag) {
+         return new FeedTagDto(feedTag);
+    }
+
+    List<FeedTagDto> feedTagsToFeedTagDtos(List<FeedTag> feedTags);
 }

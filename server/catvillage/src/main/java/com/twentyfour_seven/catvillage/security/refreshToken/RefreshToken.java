@@ -17,10 +17,10 @@ import javax.persistence.Table;
 public class RefreshToken extends DateTable {
 
     @Id
-    @Column(name = "RT_KEY")
+    @Column(name = "RT_KEY", length = 700)
     private String key;
 
-    @Column(name = "RT_VALUE")
+    @Column(name = "RT_VALUE", length = 700)
     private String value;
 
     @Builder
