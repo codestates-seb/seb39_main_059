@@ -97,6 +97,7 @@ public interface BoardMapper {
                     .likeCount(board.getLikeCount())
                     .commentCount(board.getCommentCount())
                     .createdDate(board.getCreatedDate())
+                    .isLike(false)  // TODO: Like 기능 추가 후 수정 필요
                     .build();
         }
     }

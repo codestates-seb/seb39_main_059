@@ -26,10 +26,10 @@ public class BoardGetResponseDto {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdDate;
     private Boolean isLike;
-    private List<BoardCommentResponseDto> comments;
+    private List<BoardUserCommentResponseDto> comments;
 
     @Builder
-    public BoardGetResponseDto(Long boardId, String title, String body, String name, List<BoardTagDto> tags, List<PictureDto> pictures, Long viewCount, Long likeCount, Long commentCount, LocalDateTime createdDate, Boolean isLike, List<BoardCommentResponseDto> comments) {
+    public BoardGetResponseDto(Long boardId, String title, String body, String name, List<BoardTagDto> tags, List<PictureDto> pictures, Long viewCount, Long likeCount, Long commentCount, LocalDateTime createdDate, Boolean isLike, List<BoardUserCommentResponseDto> comments) {
         this.boardId = boardId;
         this.title = title;
         this.body = body;

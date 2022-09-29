@@ -1,9 +1,11 @@
 package com.twentyfour_seven.catvillage.board.controller;
 
+import com.twentyfour_seven.catvillage.board.dto.BoardGetResponseDto;
 import com.twentyfour_seven.catvillage.board.dto.BoardMultiGetResponse;
 import com.twentyfour_seven.catvillage.board.dto.BoardPatchDto;
 import com.twentyfour_seven.catvillage.board.dto.BoardPostDto;
 import com.twentyfour_seven.catvillage.board.entity.Board;
+import com.twentyfour_seven.catvillage.board.mapper.BoardCommentMapper;
 import com.twentyfour_seven.catvillage.board.mapper.BoardMapper;
 import com.twentyfour_seven.catvillage.board.service.BoardCommentService;
 import com.twentyfour_seven.catvillage.board.service.BoardService;
@@ -28,12 +30,14 @@ import javax.validation.constraints.Positive;
 @Validated
 public class BoardController {
     private BoardMapper boardMapper;
+    private BoardCommentMapper boardCommentMapper;
     private BoardService boardService;
     private UserService userService;
     private BoardCommentService boardCommentService;
 
-    public BoardController(BoardMapper boardMapper, BoardService boardService, UserService userService, BoardCommentService boardCommentService) {
+    public BoardController(BoardMapper boardMapper, BoardCommentMapper boardCommentMapper, BoardService boardService, UserService userService, BoardCommentService boardCommentService) {
         this.boardMapper = boardMapper;
+        this.boardCommentMapper = boardCommentMapper;
         this.boardService = boardService;
         this.userService = userService;
         this.boardCommentService = boardCommentService;
@@ -56,7 +60,9 @@ public class BoardController {
     @GetMapping("/{boards-id}")
     public ResponseEntity getBoard(@Positive @PathVariable("boards-id") Long boardId) {
         Board board = boardService.findBoard(boardId);
-        return new ResponseEntity<>(boardMapper.boardToBoardGetResponseDto(board), HttpStatus.OK);
+        BoardGetResponseDto responseDto = boardMapper.boardToBoardGetResponseDto(board);
+        responseDto.setComments(boardCommentMapper.boardCommentsToBoardUserCommentResponseDtos(board.getBoardComments()));
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
     @Operation(summary = "집사생활 새 글 작성하기",
