@@ -56,21 +56,21 @@ const Login = () => {
             비밀번호 보기
           </label>
         </S.Checkbox>
-        <S.LoginButton
-          backgroundColor="primary"
-          fontSize="lg"
-          fontWeight="bold"
-          color="white"
-          onClick={handleLogin}
-        >
-          로그인
-        </S.LoginButton>
-        <S.ButtonBox>
-          <S.FindButton>아이디/비밀번호 찾기</S.FindButton>
-          <S.SignupButton>회원가입</S.SignupButton>
-        </S.ButtonBox>
-        <SocialLoginButton onClick={handleSocialLogin} />
       </S.InputForm>
+      <S.LoginButton
+        backgroundColor="primary"
+        fontSize="lg"
+        fontWeight="bold"
+        color="white"
+        onClick={handleLogin}
+      >
+        로그인
+      </S.LoginButton>
+      <S.ButtonBox>
+        <S.FindButton>아이디/비밀번호 찾기</S.FindButton>
+        <S.SignupButton>회원가입</S.SignupButton>
+      </S.ButtonBox>
+      <SocialLoginButton onClick={handleSocialLogin} />
     </S.LoginLayout>
   )
 }
