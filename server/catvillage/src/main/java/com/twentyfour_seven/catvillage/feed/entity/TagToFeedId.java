@@ -10,6 +10,6 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TagToFeedId implements Serializable {
-    private Feed feed;
-    private FeedTag feedTag;
+    private Long feed;
+    private Long feedTag;
 }

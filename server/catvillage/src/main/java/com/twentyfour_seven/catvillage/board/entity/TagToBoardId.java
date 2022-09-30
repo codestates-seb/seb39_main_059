@@ -10,6 +10,6 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TagToBoardId implements Serializable {
-    private Board board;
-    private BoardTag boardTag;
+    private Long board;
+    private Long boardTag;
 }

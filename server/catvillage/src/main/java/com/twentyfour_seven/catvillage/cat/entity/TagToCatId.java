@@ -11,6 +11,6 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TagToCatId implements Serializable {
-    private CatTag catTag;
-    private Cat cat;
+    private Long catTag;
+    private Long cat;
 }
