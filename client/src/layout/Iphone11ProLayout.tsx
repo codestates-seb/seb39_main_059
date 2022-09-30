@@ -1,6 +1,7 @@
+import { Outlet } from 'react-router-dom'
 import styled from 'styled-components'
 
-export const Iphone11ProContainer = styled.div`
+export const Iphone11ProBox = styled.div`
   border: 3px solid black;
   width: 375px;
   height: 812px;
@@ -10,3 +11,9 @@ export const Iphone11ProContainer = styled.div`
     display: none;
   }
 `
+
+export const Iphone11ProLayout = () => (
+  <Iphone11ProBox>
+    <Outlet />
+  </Iphone11ProBox>
+)

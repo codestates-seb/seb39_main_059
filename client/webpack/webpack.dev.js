@@ -7,6 +7,7 @@ module.exports = (_env, prod) => {
     devtool: 'inline-source-map',
     output: {
       filename: 'static/js/build.js',
+      publicPath: '/',
     },
     devServer: {
       static: path.join(__dirname, '../build'),
