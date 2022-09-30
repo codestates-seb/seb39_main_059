@@ -55,7 +55,10 @@ public class FeedService {
     }
 
     private Feed findVerifiedFeed(long feedId) {
-        return null;
+        Optional<Feed> optionalFeed = feedRepository.findById(feedId);
+        Feed findFeed = optionalFeed
+                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.FEED_NOT_FOUND));
+        return findFeed;
     }
 
     public Page<Feed> findFeeds(int page, int size) {
