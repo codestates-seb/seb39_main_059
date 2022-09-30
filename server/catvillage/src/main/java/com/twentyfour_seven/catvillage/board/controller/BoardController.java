@@ -70,4 +70,15 @@ public class BoardController {
                 boardMapper.boardToBoardPostResponseDto(updateBoard),
                 HttpStatus.OK);
     }
+
+    @Operation(summary = "집사생활 글 삭제하기",
+    description = "존재하지 않는 글의 식별자가 들어올 경우 에러가 납니다. 글 작성자가 아닌 다른 유저가 제거를 요청하면 405 에러가 납니다.")
+    @DeleteMapping("/{board-id}")
+    public ResponseEntity deleteBoard(@AuthenticationPrincipal org.springframework.security.core.userdetails.User user,
+                                      @Positive @PathVariable("board-id") Long boardId)
+    {
+        User findUser = userService.findVerifiedEmail(user.getUsername());
+        boardService.deleteBoard(findUser, boardId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }
