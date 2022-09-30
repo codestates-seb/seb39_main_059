@@ -3,11 +3,13 @@ package com.twentyfour_seven.catvillage.feed.mapper;
 import com.twentyfour_seven.catvillage.common.picture.dto.PictureDto;
 import com.twentyfour_seven.catvillage.common.picture.entity.Picture;
 import com.twentyfour_seven.catvillage.feed.dto.FeedGetResponseDto;
+import com.twentyfour_seven.catvillage.feed.dto.FeedMultiGetResponseDto;
 import com.twentyfour_seven.catvillage.feed.dto.FeedPostDto;
 import com.twentyfour_seven.catvillage.feed.dto.FeedResponseDto;
 import com.twentyfour_seven.catvillage.feed.entity.Feed;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
+import org.springframework.data.domain.Page;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,4 +58,11 @@ public interface FeedMapper {
     }
 
     List<FeedGetResponseDto> feedsToFeedGetResponseDtos(List<Feed> feeds);
+
+    default FeedMultiGetResponseDto feedToFeedMultiGetResponseDto(Feed feed) {
+        return new FeedMultiGetResponseDto(
+                feed.getFeedId(),
+                feed.getPictures().get(0).getPath());
+    }
+    List<FeedMultiGetResponseDto> feedsToFeedMultiGetResponseDtos(List<Feed> feeds);
 }
