@@ -1,14 +1,19 @@
 package com.twentyfour_seven.catvillage.board.controller;
 
+import com.twentyfour_seven.catvillage.board.dto.BoardGetResponseDto;
+import com.twentyfour_seven.catvillage.board.dto.BoardMultiGetResponse;
 import com.twentyfour_seven.catvillage.board.dto.BoardPatchDto;
 import com.twentyfour_seven.catvillage.board.dto.BoardPostDto;
 import com.twentyfour_seven.catvillage.board.entity.Board;
+import com.twentyfour_seven.catvillage.board.mapper.BoardCommentMapper;
 import com.twentyfour_seven.catvillage.board.mapper.BoardMapper;
 import com.twentyfour_seven.catvillage.board.service.BoardCommentService;
 import com.twentyfour_seven.catvillage.board.service.BoardService;
+import com.twentyfour_seven.catvillage.dto.MultiResponseDto;
 import com.twentyfour_seven.catvillage.user.entity.User;
 import com.twentyfour_seven.catvillage.user.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -18,7 +23,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
-import java.util.List;
 
 @RestController
 @RequestMapping("/집사생활")
@@ -26,15 +30,39 @@ import java.util.List;
 @Validated
 public class BoardController {
     private BoardMapper boardMapper;
+    private BoardCommentMapper boardCommentMapper;
     private BoardService boardService;
     private UserService userService;
     private BoardCommentService boardCommentService;
 
-    public BoardController(BoardMapper boardMapper, BoardService boardService, UserService userService, BoardCommentService boardCommentService) {
+    public BoardController(BoardMapper boardMapper, BoardCommentMapper boardCommentMapper, BoardService boardService, UserService userService, BoardCommentService boardCommentService) {
         this.boardMapper = boardMapper;
+        this.boardCommentMapper = boardCommentMapper;
         this.boardService = boardService;
         this.userService = userService;
         this.boardCommentService = boardCommentService;
+    }
+
+    @Operation(summary = "집사생활 전체 게시글 보기")
+    @GetMapping
+    public ResponseEntity getBoards(@RequestParam @Positive int page,
+                                     @RequestParam @Positive int size) {
+        Page<Board> boards = boardService.findBoards(page - 1, size);
+        return new ResponseEntity<>(
+                new MultiResponseDto<BoardMultiGetResponse>(
+                        boardMapper.boardsToBoardMultiGetResponseDtos(boards.getContent()),
+                        boards
+                ),
+                HttpStatus.OK);
+    }
+
+    @Operation(summary = "집사생활 특정 게시글 보기")
+    @GetMapping("/{boards-id}")
+    public ResponseEntity getBoard(@Positive @PathVariable("boards-id") Long boardId) {
+        Board board = boardService.findBoard(boardId);
+        BoardGetResponseDto responseDto = boardMapper.boardToBoardGetResponseDto(board);
+        responseDto.setComments(boardCommentMapper.boardCommentsToBoardUserCommentResponseDtos(board.getBoardComments()));
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
     @Operation(summary = "집사생활 새 글 작성하기",
