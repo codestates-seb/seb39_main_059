@@ -4,9 +4,9 @@ spring:
     include: common
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
-    url: jdbc:mariadb://${{ secrets.ENDPOINT }}:${{ secrets.PORT }}/cat-village?serverTimezone=UTC&characterEncoding=utf8mb4
-    username: ${{ secrets.USER }}
-    password: ${{ secrets.PASSWORD }}
+    url: jdbc:mariadb://${RDS_ENDPOINT}:${RDS_PORT}/cat-village?serverTimezone=UTC&characterEncoding=utf8mb4
+    username: ${RDS_USER}
+    password: ${RDS_PASSWORD}
   jpa:
     database-platform: org.hibernate.dialect.MariaDB103Dialect
     open-in-view: false
@@ -22,8 +22,8 @@ spring:
       client:
         registration:
           kakao:
-            client-id: ${{ secrets.KAKAO_REST_API_KEY }}
-            client-secret: ${{ secrets.KAKAO_CLIENT_SECRET }}
+            client-id: ${KAKAO_API_KEY}
+            client-secret: ${KAKAO_CLIENT_SECRET}
 logging:
   level:
     org:
@@ -34,9 +34,9 @@ logging:
             sql:
               BasicBinder: TRACE
 jwt:
-  secret: ${{ secrets.JWT_SECRET }}
+  secret: ${JWT_SECRET}
 cloud:
   aws:
     credentials:
-      accessKey: ${{ secrets.AWS_ACCESS_KEY }}
-      secretKey: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      accessKey: ${AWS_ACCESS_KEY}
+      secretKey: ${AWS_SECRET_KEY}

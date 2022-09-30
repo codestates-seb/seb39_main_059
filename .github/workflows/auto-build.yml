@@ -35,14 +35,14 @@ jobs:
         java-version: '11'
         distribution: 'temurin'
 
-    - name: Set yaml file
-      uses: microsoft/variable-substitution@v1
-      with:
-        files: ${{ env.RESOURCE_PATH }}
-      env:
-        jwt.secret: ${{ secrets.JWT_SECRET }}
-        cloud.aws.credentials.accessKey: ${{ secrets.AWS_ACCESS_KEY }}
-        cloud.aws.credentials.secretKey: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+#    - name: Set yaml file
+#      uses: microsoft/variable-substitution@v1
+#      with:
+#        files: ${{ env.RESOURCE_PATH }}
+#      env:
+#        jwt.secret: ${{ secrets.JWT_SECRET }}
+#        cloud.aws.credentials.accessKey: ${{ secrets.AWS_ACCESS_KEY }}
+#        cloud.aws.credentials.secretKey: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
     
     # grant execute permission for gradlew
     - name : Grant execute permission for gradlew
@@ -53,6 +53,16 @@ jobs:
     - name: Build with Gradle
       run: cd server/catvillage; ./gradlew build -Pprofile=prod
       shell: bash
+      env:
+        RDS_ENDPOINT: ${{ secrets.ENDPOINT }}
+        RDS_PORT: ${{ secrets.PORT }}
+        RDS_USERNAME: ${{ secrets.USER }}
+        RDS_PASSWORD: ${{ secrets.PASSWORD }}
+        KAKAO_API_KEY: ${{ secrets.KAKAO_REST_API_KEY }}
+        KAKAO_CLIENT_SECRET: ${{ secrets.KAKAO_CLIENT_SECRET }}
+        JWT_SECRET: ${{ secrets.JWT_SECRET }}
+        AWS_ACCESS_KEY: ${{ secrets.AWS_ACCESS_KEY }}
+        AWS_SECRET_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
     # build한 후 프로젝트를 압축합니다.
     - name: Make zip file
