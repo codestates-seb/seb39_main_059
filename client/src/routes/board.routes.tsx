@@ -8,7 +8,7 @@ const EditBoard = lazy(() => import('@pages/Board/EditBoard'))
 
 export const BOARD_PATH = '%EC%A7%91%EC%82%AC%EC%83%9D%ED%99%9C'
 
-export const BoardRoutes: RouteObject = {
+export const boardRoutes: RouteObject = {
   path: BOARD_PATH,
   children: [
     { index: true, element: <Boards /> },
