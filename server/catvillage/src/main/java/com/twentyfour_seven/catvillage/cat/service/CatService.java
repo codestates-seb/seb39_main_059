@@ -9,7 +9,6 @@ import com.twentyfour_seven.catvillage.user.entity.User;
 import com.twentyfour_seven.catvillage.user.service.UserService;
 import com.twentyfour_seven.catvillage.utils.CustomBeanUtils;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.MethodNotAllowedException;
 
 import java.util.List;
 import java.util.Optional;
