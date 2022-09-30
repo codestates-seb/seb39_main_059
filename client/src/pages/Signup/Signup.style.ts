@@ -88,7 +88,7 @@ export const LoginButton = styled.button`
   color: ${({ theme }) => theme.color.black};
 `
 
-export const validationSpan = styled.span`
+export const ValidationSpan = styled.span`
   font-size: ${({ theme }) => theme.fontSize.sm};
   font-weight: ${({ theme }) => theme.fontWeight.regular};
   color: ${({ theme }) => theme.color.red};
