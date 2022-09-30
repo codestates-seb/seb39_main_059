@@ -23,7 +23,7 @@ public class CatPostDto {
 
     private String breed;
 
-    @Pattern(regexp = "\\^[mf]\\$")
+    @Pattern(regexp = "^[mf]$")
     private String sex;
 
     private int weight;
