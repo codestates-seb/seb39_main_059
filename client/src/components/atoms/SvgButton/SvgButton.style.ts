@@ -1,6 +1,6 @@
 import styled, { css, CSSProp } from 'styled-components'
 
-export const SvgIconBox = styled.div<{
+export const SvgButtonBox = styled.div<{
   isClickable: boolean
   cssProp?: CSSProp
 }>(

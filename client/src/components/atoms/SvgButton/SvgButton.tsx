@@ -14,14 +14,14 @@ export type Props = {
   onClick?: () => void
 }
 
-const SvgIcon = ({ icon, cssProp, onClick }: Props) => {
+const SvgButton = ({ icon, cssProp, onClick }: Props) => {
   const SVGIcon = icons[icon]
 
   return (
-    <S.SvgIconBox isClickable={!!onClick} onClick={onClick} cssProp={cssProp}>
+    <S.SvgButtonBox isClickable={!!onClick} onClick={onClick} cssProp={cssProp}>
       <SVGIcon style={{ margin: '0px' }} />
-    </S.SvgIconBox>
+    </S.SvgButtonBox>
   )
 }
 
-export default SvgIcon
+export default SvgButton
