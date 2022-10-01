@@ -102,11 +102,12 @@ public class FeedController {
 
     @Operation(summary = "냥이생활 작성한 글 수정하기", description = "로그인한 유저와 글을 작성했던 유저가 다르면 에러가 납니다.")
     @PatchMapping("{feeds-id}")
-    public ResponseEntity patchFeed(@PathVariable("feeds-id") @Positive long feedsId,
+    public ResponseEntity patchFeed(@PathVariable("feeds-id") @Positive long feedId,
                                     @RequestBody @Valid FeedPostDto feedPostDto,
                                     @AuthenticationPrincipal User user) {
         // feedService의 updateFeed 메서드에서 feed, pictures update
-        Feed updateFeed = feedService.updateFeed(feedMapper.feedPostDtoToFeed(feedPostDto), user.getUsername());
+        Feed feed = feedMapper.feedPostDtoToFeed(feedPostDto);
+        Feed updateFeed = feedService.updateFeed(feedId, feed, user.getUsername());
 
         // FeedPostDto의 FeedTagDto 리스트를 FeedTag 리스트로 변환
         List<FeedTag> feedTags = feedTagMapper.feedTagDtosToFeedTags(feedPostDto.getTags());
