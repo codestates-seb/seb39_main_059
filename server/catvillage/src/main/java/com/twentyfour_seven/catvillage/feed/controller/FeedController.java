@@ -120,4 +120,12 @@ public class FeedController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @Operation(summary = "냥이생활 작성한 글 삭제하기", description = "로그인한 유저와 글을 작성한 유저가 다를 경우: 405에러, 글이 존재하지 않을 경우: 409")
+    @DeleteMapping("{feeds-id}")
+    public ResponseEntity deleteFeed(@PathVariable("feeds-id") @Positive long feedId,
+                                     @AuthenticationPrincipal User user) {
+        // 이메일과 feedId 서비스에 전달
+        feedService.removeFeed(feedId, user.getUsername());
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }
