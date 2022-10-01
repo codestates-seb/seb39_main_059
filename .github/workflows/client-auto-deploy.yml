@@ -9,7 +9,7 @@ on:
       - "client/**"  
   push:
     branches:
-      - feat/CI-test
+      - chore/CI-test
 
 env:
   WORKING_DIRECTORY: ./client
