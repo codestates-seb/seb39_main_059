@@ -41,6 +41,7 @@ module.exports = {
       2,
       { namedComponents: 'arrow-function' }, // 함수형 컴포넌트 형식 정의
     ],
+    'no-param-reassign': 0,
     'react/require-default-props': 'off',
   },
 }
