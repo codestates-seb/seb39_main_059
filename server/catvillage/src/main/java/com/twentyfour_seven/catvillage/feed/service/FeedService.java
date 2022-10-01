@@ -115,10 +115,10 @@ public class FeedService {
                 picture -> {
                     if (!picturePaths1.contains(picture.getPath())) {
                         pictureService.removePicture(picture.getPictureId());
-                        findFeed.getPictures().remove(picture);
                     }
                 }
         );
+        findFeed.getPictures().removeIf(picture -> !picturePaths1.contains(picture.getPath()));
 
         // 추가된 이미지는 DB에 추가 후 리스트에도 추가
         feed.getPictures().forEach(
