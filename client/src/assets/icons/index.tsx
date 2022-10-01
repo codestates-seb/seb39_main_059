@@ -1,2 +1,7 @@
 export { ReactComponent as HeartIcon } from './heart.svg'
 export { ReactComponent as CameraIcon } from './camera.svg'
+export { ReactComponent as HomeIcon } from './home.svg'
+export { ReactComponent as SearchIcon } from './search.svg'
+export { ReactComponent as NewIcon } from './new.svg'
+export { ReactComponent as TabBarHeartIcon } from './tabBarHeart.svg'
+export { ReactComponent as MyProfileIcon } from './myProfile.svg'
