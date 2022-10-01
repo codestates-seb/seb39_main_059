@@ -1,10 +1,6 @@
 package com.twentyfour_seven.catvillage.feed.controller;
 
-import com.twentyfour_seven.catvillage.dto.MultiResponseDto;
-import com.twentyfour_seven.catvillage.feed.dto.FeedGetResponseDto;
-import com.twentyfour_seven.catvillage.feed.dto.FeedMultiGetResponseDto;
-import com.twentyfour_seven.catvillage.feed.dto.FeedMultiResponseDto;
-import com.twentyfour_seven.catvillage.feed.dto.FeedPostDto;
+import com.twentyfour_seven.catvillage.feed.dto.*;
 import com.twentyfour_seven.catvillage.feed.entity.Feed;
 import com.twentyfour_seven.catvillage.feed.entity.FeedComment;
 import com.twentyfour_seven.catvillage.feed.entity.FeedTag;
@@ -15,7 +11,6 @@ import com.twentyfour_seven.catvillage.feed.service.FeedCommentService;
 import com.twentyfour_seven.catvillage.feed.service.FeedService;
 import com.twentyfour_seven.catvillage.feed.service.FeedTagService;
 import com.twentyfour_seven.catvillage.user.dto.FollowFeedGetDto;
-import com.twentyfour_seven.catvillage.user.entity.Follow;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -104,4 +99,26 @@ public class FeedController {
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
+    @Operation(summary = "냥이생활 작성한 글 수정하기", description = "로그인한 유저와 글을 작성했던 유저가 다르면 에러가 납니다.")
+    @PatchMapping("{feeds-id}")
+    public ResponseEntity patchFeed(@PathVariable("feeds-id") @Positive long feedId,
+                                    @RequestBody @Valid FeedPostDto feedPostDto,
+                                    @AuthenticationPrincipal User user) {
+        // feedService의 updateFeed 메서드에서 feed, pictures update
+        Feed feed = feedMapper.feedPostDtoToFeed(feedPostDto);
+        Feed updateFeed = feedService.updateFeed(feedId, feed, user.getUsername());
+
+        // FeedPostDto의 FeedTagDto 리스트를 FeedTag 리스트로 변환
+        List<FeedTag> feedTags = feedTagMapper.feedTagDtosToFeedTags(feedPostDto.getTags());
+
+        // feedTagService의 메서드에서 FeedTag와 TagToFeed update
+        List<FeedTag> updateTags = feedTagService.updateTags(updateFeed, feedTags);
+
+        // responseDto 생성하여 값 대입
+        FeedResponseDto response = feedMapper.feedToFeedResponseDto(updateFeed);
+        response.setTags(feedTagMapper.feedTagsToFeedTagDtos(updateTags));
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 }
