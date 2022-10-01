@@ -1,6 +1,6 @@
 import styled, { css, CSSProp } from 'styled-components'
 
-import defaultProfile from '@Assets/default-profile.jpeg'
+import defaultProfile from '@Assets/default-profile.png'
 
 export const AvatarLayout = styled.div<{ cssProp?: CSSProp }>(
   ({ cssProp }) => css`

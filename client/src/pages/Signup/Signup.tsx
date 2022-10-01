@@ -2,6 +2,8 @@ import { useState, FC, useRef } from 'react'
 import SocialLoginButton from '@Modules/SocialLoginButton'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import * as S from './Signup.style'
+import { useAppDispatch } from '@/redux/store'
+import { signupAsync } from '@/redux/actions/userAction'
 
 export interface FormValue {
   email: string
@@ -20,13 +22,24 @@ const Signup: FC = () => {
   const [isShown, setIsSHown] = useState(false)
   const passwordRef = useRef<string | null>(null)
   passwordRef.current = watch('password')
+  const dispatch = useAppDispatch()
 
   const togglePassword = () => {
     setIsSHown(isShown => !isShown)
   }
 
   const onSubmitHandler: SubmitHandler<FormValue> = data => {
-    console.log(data)
+    const defaultName = `집사${Math.floor(Math.random() * 10000) + 1}`
+
+    dispatch(
+      signupAsync({
+        email: data.email,
+        password: data.password,
+        location: null,
+        name: defaultName,
+        profileImage: null,
+      }),
+    )
   }
 
   const handleSocialLogin = () => {
@@ -45,10 +58,10 @@ const Signup: FC = () => {
           {...register('email', { required: true, pattern: /^\S+@\S+$/i })}
         />
         {errors.email && errors.email.type === 'required' && (
-          <S.validationSpan>이메일을 입력해 주세요.</S.validationSpan>
+          <S.ValidationSpan>이메일을 입력해 주세요.</S.ValidationSpan>
         )}
         {errors.email && errors.email.type === 'pattern' && (
-          <S.validationSpan>올바른 이메일 형식이 아닙니다.</S.validationSpan>
+          <S.ValidationSpan>올바른 이메일 형식이 아닙니다.</S.ValidationSpan>
         )}
         <S.SignupInput
           type={isShown ? 'text' : 'password'}
@@ -61,13 +74,13 @@ const Signup: FC = () => {
           })}
         />
         {errors.password && errors.password.type === 'required' && (
-          <S.validationSpan>비밀번호를 입력해 주세요.</S.validationSpan>
+          <S.ValidationSpan>비밀번호를 입력해 주세요.</S.ValidationSpan>
         )}
         {errors.password && errors.password.type === 'maxLength' && (
-          <S.validationSpan>비밀번호는 20자 이하입니다.</S.validationSpan>
+          <S.ValidationSpan>비밀번호는 20자 이하입니다.</S.ValidationSpan>
         )}
         {errors.password && errors.password.type === 'minLength' && (
-          <S.validationSpan>비밀번호는 5자 이상입니다.</S.validationSpan>
+          <S.ValidationSpan>비밀번호는 5자 이상입니다.</S.ValidationSpan>
         )}
         <S.SignupInput
           type={isShown ? 'text' : 'password'}
@@ -79,7 +92,7 @@ const Signup: FC = () => {
           })}
         />
         {errors.passwordCheck && errors.passwordCheck.type === 'validate' && (
-          <S.validationSpan>비밀번호가 일치하지 않습니다.</S.validationSpan>
+          <S.ValidationSpan>비밀번호가 일치하지 않습니다.</S.ValidationSpan>
         )}
         <S.Checkbox>
           <label htmlFor="password">

@@ -82,9 +82,9 @@ public class FeedService {
         return followCats;
     }
 
-    public Feed updateFeed(Feed feed, String email) {
+    public Feed updateFeed(long feedId, Feed feed, String email) {
         // feedId로 저장되있던 feed 정보를 불러옴
-        Feed findFeed = findVerifiedFeed(feed.getFeedId());
+        Feed findFeed = findVerifiedFeed(feedId);
 
         // 글을 처음 작성한 유저와 로그인한 유저가 동일한지 확인하고 아니면 Exception throw
         if (!findFeed.getCat().getUser().getEmail().equals(email)) {
@@ -115,10 +115,10 @@ public class FeedService {
                 picture -> {
                     if (!picturePaths1.contains(picture.getPath())) {
                         pictureService.removePicture(picture.getPictureId());
-                        findFeed.getPictures().remove(picture);
                     }
                 }
         );
+        findFeed.getPictures().removeIf(picture -> !picturePaths1.contains(picture.getPath()));
 
         // 추가된 이미지는 DB에 추가 후 리스트에도 추가
         feed.getPictures().forEach(
