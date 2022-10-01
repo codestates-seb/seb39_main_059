@@ -12,7 +12,6 @@ spring:
         registration:
           kakao:
             client-name: Kakao
-            redirect-uri: https://catvillage.shop/login/oauth2/code/kakao
             scope: profile_nickname, profile_image, account_email
             authorization-grant-type: authorization_code
             client-authentication-method: POST

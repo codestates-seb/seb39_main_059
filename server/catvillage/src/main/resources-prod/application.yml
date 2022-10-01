@@ -25,6 +25,7 @@ spring:
           kakao:
             client-id: $KAKAO_API_KEY
             client-secret: $KAKAO_CLIENT_SECRET
+            redirect-uri: https://catvillage.tk/login/oauth2/code/kakao
 logging:
   level:
     org:

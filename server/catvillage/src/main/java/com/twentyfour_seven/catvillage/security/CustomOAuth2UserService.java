@@ -32,13 +32,17 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 
         // OAuth2 Service ID (google, kakao, naver)
         String registrationId = userRequest.getClientRegistration().getRegistrationId();
+
         // OAuth2 로그인 진행 시 키가 되는 필드 값(PK)
         String userNameAttributeName = userRequest.getClientRegistration().getProviderDetails().getUserInfoEndpoint().getUserNameAttributeName();
+
+        // Test code
+//        System.out.println(oAuth2User.getAttributes().toString());
 
         // OAuth2UserService
         OAuthAttributes authAttributes = OAuthAttributes.of(registrationId, userNameAttributeName, oAuth2User.getAttributes());
         User user = saveOfUpdate(authAttributes);
-        httpSession.setAttribute("user", new SessionUser(user));    // 직렬화된 dto 클래스 사용
+//        httpSession.setAttribute("user", new SessionUser(user));    // 직렬화된 dto 클래스 사용
 
         return new DefaultOAuth2User(
                 Collections.singleton(new SimpleGrantedAuthority(user.getRole())),
