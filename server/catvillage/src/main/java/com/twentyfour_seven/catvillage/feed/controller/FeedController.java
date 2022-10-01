@@ -101,7 +101,7 @@ public class FeedController {
     }
 
     @Operation(summary = "냥이생활 작성한 글 수정하기", description = "로그인한 유저와 글을 작성했던 유저가 다르면 에러가 납니다.")
-    @PatchMapping("{feeds-id}")
+    @PatchMapping("/{feeds-id}")
     public ResponseEntity patchFeed(@PathVariable("feeds-id") @Positive long feedsId,
                                     @RequestBody @Valid FeedPostDto feedPostDto,
                                     @AuthenticationPrincipal User user) {
@@ -121,7 +121,7 @@ public class FeedController {
     }
 
     @Operation(summary = "냥이생활 작성한 글 삭제하기", description = "로그인한 유저와 글을 작성한 유저가 다를 경우: 405에러, 글이 존재하지 않을 경우: 409")
-    @DeleteMapping("{feeds-id}")
+    @DeleteMapping("/{feeds-id}")
     public ResponseEntity deleteFeed(@PathVariable("feeds-id") @Positive long feedId,
                                      @AuthenticationPrincipal User user) {
         // 이메일과 feedId 서비스에 전달
