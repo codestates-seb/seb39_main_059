@@ -1,18 +1,20 @@
 package com.twentyfour_seven.catvillage.board.controller;
 
-import com.twentyfour_seven.catvillage.board.dto.BoardGetResponseDto;
-import com.twentyfour_seven.catvillage.board.dto.BoardMultiGetResponse;
-import com.twentyfour_seven.catvillage.board.dto.BoardPatchDto;
-import com.twentyfour_seven.catvillage.board.dto.BoardPostDto;
+import com.twentyfour_seven.catvillage.board.dto.*;
 import com.twentyfour_seven.catvillage.board.entity.Board;
 import com.twentyfour_seven.catvillage.board.mapper.BoardCommentMapper;
 import com.twentyfour_seven.catvillage.board.mapper.BoardMapper;
 import com.twentyfour_seven.catvillage.board.service.BoardCommentService;
 import com.twentyfour_seven.catvillage.board.service.BoardService;
+import com.twentyfour_seven.catvillage.dto.MultiBoardResponseDto;
 import com.twentyfour_seven.catvillage.dto.MultiResponseDto;
 import com.twentyfour_seven.catvillage.user.entity.User;
 import com.twentyfour_seven.catvillage.user.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +26,7 @@ import javax.transaction.Transactional;
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 
+//@Tag(name = "Board", description = "집사생활 API")
 @RestController
 @RequestMapping("/집사생활")
 @Transactional
@@ -43,7 +46,10 @@ public class BoardController {
         this.boardCommentService = boardCommentService;
     }
 
-    @Operation(summary = "집사생활 전체 게시글 보기")
+    @Operation(summary = "집사생활 전체 게시글 보기",
+    responses = {
+            @ApiResponse(responseCode = "200", description = "집사생활 전체 게시글 조회 성공", content = @Content(schema = @Schema(implementation = MultiBoardResponseDto.class)))
+    })
     @GetMapping
     public ResponseEntity getBoards(@RequestParam @Positive int page,
                                      @RequestParam @Positive int size) {
@@ -56,7 +62,11 @@ public class BoardController {
                 HttpStatus.OK);
     }
 
-    @Operation(summary = "집사생활 특정 게시글 보기")
+    @Operation(summary = "집사생활 특정 게시글 보기",
+    responses = {
+            @ApiResponse(responseCode = "200", description = "집사생활 게시글 조회 성공", content = @Content(schema = @Schema(implementation = BoardGetResponseDto.class))),
+            @ApiResponse(responseCode = "404", description = "존재하지 않는 게시글")
+    })
     @GetMapping("/{boards-id}")
     public ResponseEntity getBoard(@Positive @PathVariable("boards-id") Long boardId) {
         Board board = boardService.findBoard(boardId);
@@ -66,7 +76,11 @@ public class BoardController {
     }
 
     @Operation(summary = "집사생활 새 글 작성하기",
-            description = "집사생활에 등록되지 않은 태그로 요청이 들어올 경우 에러가 납니다.")
+            description = "집사생활에 등록되지 않은 태그로 요청이 들어올 경우 에러가 납니다.",
+    responses = {
+            @ApiResponse(responseCode = "201", description = "집사생활 게시글 등록 성공", content = @Content(schema = @Schema(implementation = BoardPostResponseDto.class))),
+            @ApiResponse(responseCode = "404", description = "존재하지 않는 유저 정보\n존재하지 않는 태그")
+    })
     @PostMapping
     public ResponseEntity postBoard(@AuthenticationPrincipal org.springframework.security.core.userdetails.User user,
                                     @Valid @RequestBody BoardPostDto requestBody) {
@@ -85,7 +99,12 @@ public class BoardController {
     }
 
     @Operation(summary = "집사생활 글 수정하기",
-            description = "집사생활에 등록되지 않은 태그로 요청이 들어올 경우 에러가 납니다. 처음에 글을 작성했던 유저와 로그인 되어 있는 유저가 다를 경우 405 에러가 납니다.")
+            description = "집사생활에 등록되지 않은 태그로 요청이 들어올 경우 에러가 납니다. 처음에 글을 작성했던 유저와 로그인 되어 있는 유저가 다를 경우 405 에러가 납니다.",
+    responses = {
+            @ApiResponse(responseCode = "200", description = "집사생활 게시글 수정 성공", content = @Content(schema = @Schema(implementation = BoardPostResponseDto.class))),
+            @ApiResponse(responseCode = "404", description = "존재하지 않는 유저 정보\n존재하지 않는 게시글"),
+            @ApiResponse(responseCode = "405", description = "유저 정보 불일치")
+    })
     @PatchMapping("/{boards-id}")
     public ResponseEntity patchBoard(@AuthenticationPrincipal org.springframework.security.core.userdetails.User user,
                                      @Positive @PathVariable("boards-id") Long boardId,
@@ -100,7 +119,12 @@ public class BoardController {
     }
 
     @Operation(summary = "집사생활 글 삭제하기",
-    description = "존재하지 않는 글의 식별자가 들어올 경우 에러가 납니다. 글 작성자가 아닌 다른 유저가 제거를 요청하면 405 에러가 납니다.")
+    description = "존재하지 않는 글의 식별자가 들어올 경우 에러가 납니다. 글 작성자가 아닌 다른 유저가 제거를 요청하면 405 에러가 납니다.",
+    responses = {
+            @ApiResponse(responseCode = "204", description = "집사생활 게시글 삭제 성공"),
+            @ApiResponse(responseCode = "404", description = "존재하지 않는 게시글"),
+            @ApiResponse(responseCode = "405", description = "유저 정보 불일치")
+    })
     @DeleteMapping("/{board-id}")
     public ResponseEntity deleteBoard(@AuthenticationPrincipal org.springframework.security.core.userdetails.User user,
                                       @Positive @PathVariable("board-id") Long boardId)
