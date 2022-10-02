@@ -158,7 +158,7 @@ public class BoardController {
                     @ApiResponse(responseCode = "404", description = "존재하지 않는 집사생활 댓글")
             })
     @GetMapping("/{comments-id}")
-    public ResponseEntity<?> getBoardComment(@Valid @PathVariable("comments-id") Long boardCommentId) {
+    public ResponseEntity<?> getBoardComment(@Positive @PathVariable("comments-id") Long boardCommentId) {
         BoardComment findBoardComment = boardCommentService.findBoardComment(boardCommentId);
         return new ResponseEntity<>(
                 boardCommentMapper.boardCommentToBoardCommentPostResponseDto(findBoardComment),
@@ -173,7 +173,7 @@ public class BoardController {
             })
     @PatchMapping("/{comments-id}")
     public ResponseEntity<?> patchBoardComment(@Valid @RequestBody BoardCommentPatchDto requestBody,
-                                               @Valid @Positive @PathVariable("comments-id") Long boardCommentId,
+                                               @Positive @PathVariable("comments-id") Long boardCommentId,
                                                @AuthenticationPrincipal org.springframework.security.core.userdetails.User user) {
         requestBody.setBoardCommentId(boardCommentId);
         BoardComment boardComment = boardCommentMapper.boardCommentPatchDtoToBoardComment(requestBody);
@@ -190,7 +190,7 @@ public class BoardController {
                     @ApiResponse(responseCode = "405", description = "유저 정보 불일치")
             })
     @DeleteMapping("/{comments-id}")
-    public ResponseEntity<?> deleteBoardComment(@Valid @PathVariable("comments-id") Long boardCommentId,
+    public ResponseEntity<?> deleteBoardComment(@Positive @PathVariable("comments-id") Long boardCommentId,
                                                 @AuthenticationPrincipal org.springframework.security.core.userdetails.User user) {
         boardCommentService.deleteBoardComment(user.getUsername(), boardCommentId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
