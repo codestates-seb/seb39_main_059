@@ -1,7 +1,10 @@
 package com.twentyfour_seven.catvillage.board.controller;
 
 import com.twentyfour_seven.catvillage.board.dto.*;
+import com.twentyfour_seven.catvillage.board.dto.comment.BoardCommentPostDto;
+import com.twentyfour_seven.catvillage.board.dto.comment.BoardCommentPostResponseDto;
 import com.twentyfour_seven.catvillage.board.entity.Board;
+import com.twentyfour_seven.catvillage.board.entity.BoardComment;
 import com.twentyfour_seven.catvillage.board.mapper.BoardCommentMapper;
 import com.twentyfour_seven.catvillage.board.mapper.BoardMapper;
 import com.twentyfour_seven.catvillage.board.service.BoardCommentService;
@@ -14,7 +17,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -132,5 +134,20 @@ public class BoardController {
         User findUser = userService.findVerifiedEmail(user.getUsername());
         boardService.deleteBoard(findUser, boardId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @Operation(summary = "집사생활 댓글 작성",
+        responses = {
+                @ApiResponse(responseCode = "200", description = "집사생활 댓글 작성 성공", content = @Content(schema = @Schema(implementation = BoardCommentPostResponseDto.class))),
+                @ApiResponse(responseCode = "404", description = "존재하지 않는 유저")
+        })
+    @PostMapping("/{boards-id}/comments")
+    public ResponseEntity<?> postBoardComment(@AuthenticationPrincipal org.springframework.security.core.userdetails.User user,
+                                              @Positive @PathVariable("boards-id") Long boardId,
+                                              @Valid @RequestBody BoardCommentPostDto requestBody) {
+        requestBody.setBoardId(boardId);
+        BoardComment boardComment = boardCommentMapper.boardCommentPostDtoToBoardComment(requestBody);
+        BoardComment saveComment = boardCommentService.createBoardComment(user.getUsername(), boardComment);
+        return new ResponseEntity<>(boardCommentMapper.boardCommentToBoardCommentPostResponseDto(saveComment), HttpStatus.CREATED);
     }
 }
