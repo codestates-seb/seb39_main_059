@@ -24,21 +24,27 @@ public class Cat {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long catId;
 
+    @Setter
     @Column(name = "NAME", length = 16, nullable = false)
     private String name;
 
+    @Setter
     @Column(name = "BIRTH_DATE")
     private LocalDateTime birthDate;
 
+    @Setter
     @Column(name = "SEX", length = 1)
     private String sex;
 
+    @Setter
     @Column(name = "WEIGHT")
     private int weight;
 
+    @Setter
     @Column(name = "IMAGE", length = 500)
     private String image;
 
+    @Setter
     @Column(name = "BODY", length = 1000)
     private String body;
 
@@ -68,12 +74,13 @@ public class Cat {
     private List<TagToCat> tagToCats = new ArrayList<>();
 
     @Builder
-    public Cat(String name, LocalDateTime birthDate, String sex, int weight, String body) {
+    public Cat(String name, LocalDateTime birthDate, String sex, int weight, String body, String image) {
         this.name = name;
         this.birthDate = birthDate;
         this.sex = sex;
         this.weight = weight;
         this.body = body;
+        this.image = image;
     }
 
     public Cat(Long catId) {

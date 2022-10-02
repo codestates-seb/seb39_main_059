@@ -17,24 +17,20 @@ import java.util.Optional;
 public class CatService {
     private final CatRepository catRepository;
     private final UserService userService;
-    private final CatTagService catTagService;
     private final CustomBeanUtils<Cat> beanUtils;
 
-    public CatService(CatRepository catRepository, UserService userService, CatTagService catTagService,
-                      CustomBeanUtils beanUtils) {
+    public CatService(CatRepository catRepository, UserService userService, CustomBeanUtils beanUtils) {
         this.catRepository = catRepository;
         this.userService = userService;
-        this.catTagService = catTagService;
         this.beanUtils = beanUtils;
     }
 
-    public Cat createCat(Cat cat, String breed, List<CatTag> catTags, String email) {
+    public Cat createCat(Cat cat, String breed, String email) {
         // TODO: breed(CatInfo) 정보 꺼내서 Cat 에 저장 필요
         User findUser = userService.findVerifiedEmail(email);
         cat.setUser(findUser);
-        Cat createdCat = catRepository.save(cat);
-        catTagService.saveTag(catTags, createdCat);
-        return createdCat;
+
+        return catRepository.save(cat);
     }
 
 
@@ -60,17 +56,17 @@ public class CatService {
         catRepository.delete(findCat);
     }
 
-    public Cat updateCat(Cat cat, String breed, List<CatTag> catTags, String email) {
-        Cat findCat = findVerifiedCat(cat.getCatId());
+    public Cat updateCat(long catId, Cat cat, String breed, String email) {
+        Cat findCat = findVerifiedCat(catId);
         // TODO:  CatInfo 구현 후 주석 제거 필요
 //        CatInfo findBreed = breedService.findByKorName(breed);
 //        cat.setBreed(findBreed);
         // 요청을 보낸 User 가 등록한 User 와 동일한지 확인
-        if (findCat.getUser().getEmail() != email) {
+        if (!findCat.getUser().getEmail().equals(email)) {
             throw new BusinessLogicException(ExceptionCode.INVALID_USER);
         }
+
         Cat updatingCat = beanUtils.copyNonNullProperties(cat, findCat);
-        catTagService.updateTag(catTags, updatingCat);
         return catRepository.save(updatingCat);
     }
 }
