@@ -1,19 +1,20 @@
-export interface User {
+export interface UserInitialState {
   isLoading: boolean
   isSignup: boolean
-  userInfo: UserInfo | null
+  isLogin: boolean
+  userInfo: UserInfo
 }
 
 export interface UserInfo {
-  email: string
-  password: string
-  location: null
+  email?: string
+  password?: string
+  location?: null
   name: string
   profileImage: string | null
+  userId?: string
 }
 
-// 로그인 요청 페이로드의 타입을 미리 생성했습니다.
-// export interface LoginPayload {
-//   email: string
-//   password: string
-// }
+export interface LoginPayload {
+  email: string
+  password: string
+}
