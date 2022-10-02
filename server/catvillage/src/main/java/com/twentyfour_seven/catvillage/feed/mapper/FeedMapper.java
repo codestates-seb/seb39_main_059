@@ -37,9 +37,11 @@ public interface FeedMapper {
             return null;
         }
         Feed feed = new Feed(feedPostDto.getBody());
-        feedPostDto.getPictures().forEach(
-                pictureDto -> feed.getPictures().add(Picture.builder().path(pictureDto.getPicture()).build())
-        );
+        if (feedPostDto.getPictures() != null) {
+            feedPostDto.getPictures().forEach(
+                    pictureDto -> feed.getPictures().add(Picture.builder().path(pictureDto.getPicture()).build())
+            );
+        }
         return feed;
     }
 

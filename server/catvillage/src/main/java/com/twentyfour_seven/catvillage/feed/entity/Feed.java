@@ -56,7 +56,6 @@ public class Feed extends DateTable {
 //    private List<Like> likes = new ArrayList<>();
 
     public Feed(String body) {
-        pictures = new ArrayList<>();
         this.body = body;
     }
 }

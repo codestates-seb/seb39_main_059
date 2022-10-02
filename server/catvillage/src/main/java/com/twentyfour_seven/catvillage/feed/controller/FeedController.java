@@ -62,11 +62,14 @@ public class FeedController {
             @ApiResponse(responseCode = "404", description = "존재하지 않는 고양이 정보")
     })
     @PostMapping
-    public ResponseEntity postFeed(@RequestBody @Valid FeedPostDto feedPostDto) {
+    public ResponseEntity postFeed(@RequestBody @Valid FeedPostDto feedPostDto,
+                                   @AuthenticationPrincipal User user) {
         Feed feed = feedMapper.feedPostDtoToFeed(feedPostDto);
-        Feed createFeed = feedService.createFeed(feed, feedPostDto.getCatId());
+        Feed createFeed = feedService.createFeed(feed, feedPostDto.getCatId(), user.getUsername());
+
         List<FeedTag> feedTags = feedTagMapper.feedTagDtosToFeedTags(feedPostDto.getTags());
         List<FeedTag> createFeedTags = feedTagService.createTags(createFeed, feedTags);
+
         FeedResponseDto feedResponseDto = feedMapper.feedToFeedResponseDto(createFeed);
         feedResponseDto.setTags(feedTagMapper.feedTagsToFeedTagDtos(createFeedTags));
         return new ResponseEntity<>(feedResponseDto, HttpStatus.CREATED);
