@@ -1,11 +1,19 @@
 import { createSlice, Reducer } from '@reduxjs/toolkit'
-import { User } from '@Types/user'
-import { signupAsync } from '../actions/userAction'
+import { UserInitialState } from '@Types/user'
+import { signupAsync, loginAsync } from '../actions/userAction'
 
-const initialState: User = {
+const initialState: UserInitialState = {
   isLoading: true,
   isSignup: false,
-  userInfo: null,
+  isLogin: false,
+  userInfo: {
+    email: '',
+    password: '',
+    location: null,
+    name: '',
+    profileImage: null,
+    userId: '',
+  },
 }
 
 const userSlice = createSlice({
@@ -26,6 +34,21 @@ const userSlice = createSlice({
       .addCase(signupAsync.rejected, state => {
         state.isLoading = false
         alert('회원가입에 실패했습니다.')
+      })
+      // 로그인
+      .addCase(loginAsync.pending, state => {
+        state.isSignup = false
+      })
+      .addCase(loginAsync.fulfilled, (state, { payload }) => {
+        state.isLoading = false
+        state.isSignup = true
+        state.isLogin = true
+        state.userInfo = payload
+        alert('로그인 성공!')
+      })
+      .addCase(loginAsync.rejected, state => {
+        state.isLoading = false
+        alert('로그인 실패')
       })
   },
 })
