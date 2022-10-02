@@ -119,7 +119,7 @@ public class FeedController {
     @Operation(summary = "냥이생활 작성한 글 수정하기", description = "로그인한 유저와 글을 작성했던 유저가 다르면 에러가 납니다.",
     responses = {
             @ApiResponse(responseCode = "200", description = "냥이생활 피드 수정 성공", content = @Content(schema = @Schema(implementation = FeedResponseDto.class))),
-            @ApiResponse(responseCode = "404", description = "존재하지 않는 유저"),
+            @ApiResponse(responseCode = "404", description = "존재하지 않는 피드"),
             @ApiResponse(responseCode = "405", description = "유저 정보 불일치")
     })
     @PatchMapping("{feeds-id}")
