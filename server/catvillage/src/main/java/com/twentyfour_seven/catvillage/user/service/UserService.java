@@ -42,9 +42,9 @@ public class UserService {
         return userRepository.findAll(pageRequest);
     }
 
-    public User updateUser(User user) {
+    public User updateUser(User user, long userId) {
         verifiedExistedName(user.getName());
-        User findUser = findVerifiedUser(user.getUserId());
+        User findUser = findVerifiedUser(userId);
         User updateUser = beanUtils.copyNonNullProperties(user, findUser);
         return userRepository.save(updateUser);
     }

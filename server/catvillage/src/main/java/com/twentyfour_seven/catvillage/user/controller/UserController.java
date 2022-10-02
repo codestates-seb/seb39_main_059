@@ -95,10 +95,10 @@ public class UserController {
                     @ApiResponse(responseCode = "409", description = "이미 사용 중인 이름")
             })
     @PatchMapping("/{user-id}")
-    public ResponseEntity patchUser(@PathVariable("user-id") Long userId,
+    public ResponseEntity patchUser(@PathVariable("user-id") @Positive long userId,
                                     @Valid @RequestBody UserPatchDto requestBody) {
         User user = userMapper.userPatchDtoToUser(requestBody);
-        User updateUser = userService.updateUser(user);
+        User updateUser = userService.updateUser(user, userId);
         return new ResponseEntity<>(userMapper.userToUserPatchResponseDto(updateUser), HttpStatus.OK);
     }
 
