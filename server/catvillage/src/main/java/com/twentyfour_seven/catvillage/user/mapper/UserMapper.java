@@ -83,4 +83,12 @@ public interface UserMapper {
                     .build();
         }
     }
+
+    default UserMyInfoDto userToUserMyInfoDto(User user) {
+        if (user == null) {
+            return null;
+        } else {
+            return new UserMyInfoDto(user.getUserId(), user.getName(), user.getProfileImage());
+        }
+    }
 }
