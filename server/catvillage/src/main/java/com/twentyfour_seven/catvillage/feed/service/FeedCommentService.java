@@ -12,6 +12,7 @@ import com.twentyfour_seven.catvillage.user.service.UserService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class FeedCommentService {
@@ -33,18 +34,38 @@ public class FeedCommentService {
     }
 
     public FeedComment createComment(FeedComment feedComment, String email) {
-        // 댓글을 작성하려는 유저가 request body 의 유저와 일치하는지 검증
+        verifiedUser(feedComment, email);
+
+        return feedCommentRepository.save(feedComment);
+    }
+
+    public FeedComment updateComment(long commentId, FeedComment feedComment, String email) {
+        // 댓글을 작성했던 유저와 요청을 보낸 유저가 동일한지 확인
+        FeedComment findComment = findVerifiedComment(commentId);
+        verifiedUser(findComment, email);
+
+        findComment.setBody(feedComment.getBody());
+
+        return feedCommentRepository.save(findComment);
+    }
+
+    public FeedComment findVerifiedComment(long commentId) {
+        Optional<FeedComment> optionalComment = feedCommentRepository.findById(commentId);
+        return optionalComment.orElseThrow(() -> new BusinessLogicException(ExceptionCode.COMMENT_NOT_FOUND));
+    }
+
+    // 댓글을 작성하려는 유저가 요청을 보낸 유저와 일치하는지 검증
+    private void verifiedUser(FeedComment feedComment, String email) {
         User user = userService.findVerifiedEmail(email);
+
         // feedComment 에 유저(고양이) id만 담겨있으므로 id로만 조회
         if (feedComment.getCat() == null && !feedComment.getUser().getUserId().equals(user.getUserId())) {
-             throw new BusinessLogicException(ExceptionCode.INVALID_USER);
-        } else if (feedComment.getUser() == null){
+            throw new BusinessLogicException(ExceptionCode.INVALID_USER);
+        } else if (feedComment.getUser() == null) {
             Cat cat = catService.findVerifiedCat(feedComment.getCat().getCatId());
             if (!cat.getUser().getEmail().equals(email)) {
                 throw new BusinessLogicException(ExceptionCode.INVALID_USER);
             }
         }
-
-        return feedCommentRepository.save(feedComment);
     }
 }

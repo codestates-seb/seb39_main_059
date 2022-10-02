@@ -2,6 +2,7 @@ package com.twentyfour_seven.catvillage.feed.mapper;
 
 import com.twentyfour_seven.catvillage.cat.entity.Cat;
 import com.twentyfour_seven.catvillage.feed.dto.FeedCommentGetDto;
+import com.twentyfour_seven.catvillage.feed.dto.FeedCommentPatchDto;
 import com.twentyfour_seven.catvillage.feed.dto.FeedCommentPostDto;
 import com.twentyfour_seven.catvillage.feed.entity.Feed;
 import com.twentyfour_seven.catvillage.feed.entity.FeedComment;
@@ -55,4 +56,6 @@ public interface FeedCommentMapper {
         }
         return feedComment;
     }
+
+    FeedComment feedCommentPatchDtoToFeedComment(FeedCommentPatchDto feedCommentPatchDto);
 }

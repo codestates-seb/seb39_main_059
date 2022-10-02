@@ -162,7 +162,8 @@ public class FeedController {
 
     @Operation(summary = "냥이생활 댓글 작성하기", description = "댓글을 작성한 유저와 요청으로 보낸 profileId(유저, 고양이)의 유저가 다를 경우 에러 발생",
             responses = {
-                    @ApiResponse(responseCode = "201", description = "냥이생활 댓글 작성 성공"),
+                    @ApiResponse(responseCode = "201", description = "냥이생활 댓글 작성 성공",
+                            content = @Content(schema = @Schema(implementation = FeedCommentGetDto.class))),
                     @ApiResponse(responseCode = "405", description = "유저 정보 불일치")
             }
     )
@@ -176,5 +177,23 @@ public class FeedController {
         FeedComment createFeedComment = feedCommentService.createComment(feedComment, user.getUsername());
         return new ResponseEntity<>(feedCommentMapper.feedCommentToFeedCommentGetDto(createFeedComment),
                 HttpStatus.CREATED);
+    }
+
+    @Operation(summary = "냥이생활 댓글 수정하기", description = "댓글을 작성한 유저와 요청을 보낸 유저가 다를 경우 에러가 발생, 존재하지 않는 댓글일 경우 에러 발생",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "냥이생활 댓글 수정 성공",
+                            content = @Content(schema = @Schema(implementation = FeedCommentGetDto.class))),
+                    @ApiResponse(responseCode = "405", description = "유저 정보 불일치"),
+                    @ApiResponse(responseCode = "404", description = "존재하지 않는 댓글")
+            }
+    )
+    @PatchMapping("/comments/{comments-id}")
+    public ResponseEntity patchFeedComment(@PathVariable("comments-id") @Positive long commentId,
+                                           @RequestBody @Valid FeedCommentPatchDto feedCommentPatchDto,
+                                           @AuthenticationPrincipal User user) {
+        FeedComment feedComment = feedCommentMapper.feedCommentPatchDtoToFeedComment(feedCommentPatchDto);
+
+        FeedComment updateFeedComment = feedCommentService.updateComment(commentId, feedComment, user.getUsername());
+        return new ResponseEntity<>(feedCommentMapper.feedCommentToFeedCommentGetDto(updateFeedComment), HttpStatus.OK);
     }
 }

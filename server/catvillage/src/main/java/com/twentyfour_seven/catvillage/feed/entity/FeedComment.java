@@ -19,6 +19,7 @@ public class FeedComment extends DateTable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long feedCommentId;
 
+    @Setter
     @Column(name = "BODY", length = 500, nullable = false)
     private String body;
 
