@@ -1,6 +1,6 @@
 import { BOARD_PATH } from '@Routes/board.routes'
 import { FEED_PATH } from '@Routes/feed.routes'
-import { ChangeEvent, FC, useState } from 'react'
+import { ChangeEvent, useState } from 'react'
 import { Link, Outlet } from 'react-router-dom'
 import styled from 'styled-components'
 import * as phoneLayouts from './PhoneLayout'
