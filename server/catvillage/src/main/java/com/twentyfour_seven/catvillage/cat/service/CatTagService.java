@@ -27,8 +27,8 @@ public class CatTagService {
 
     public List<CatTag> saveTag(List<CatTag> catTags, Cat cat) {
         catTags.forEach(catTag -> {
-            catTag = findExistCatTag(catTag);
-            TagToCat tagToCat = new TagToCat(catTag, cat);
+            CatTag saveCatTag = findExistCatTag(catTag);
+            TagToCat tagToCat = new TagToCat(saveCatTag, cat);
             saveTagToCat(tagToCat);
         });
         return catTags;
@@ -40,13 +40,8 @@ public class CatTagService {
         return findCatTag;
     }
 
-    public TagToCat saveTagToCat(TagToCat tagToCat) {
-        TagToCat createdTagToCat = tagToCatRepository.save(tagToCat);
-        return createdTagToCat;
-    }
-
-    public void removeTagToCats(List<TagToCat> tagToCats) {
-        tagToCatRepository.deleteAll(tagToCats);
+    public void saveTagToCat(TagToCat tagToCat) {
+        tagToCatRepository.save(tagToCat);
     }
 
     public List<CatTag> updateTag (List<CatTag> catTags, Cat cat) {

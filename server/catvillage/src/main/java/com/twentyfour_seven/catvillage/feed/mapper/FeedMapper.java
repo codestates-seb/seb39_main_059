@@ -37,9 +37,11 @@ public interface FeedMapper {
             return null;
         }
         Feed feed = new Feed(feedPostDto.getBody());
-        feedPostDto.getPictures().forEach(
-                pictureDto -> feed.getPictures().add(Picture.builder().path(pictureDto.getPicture()).build())
-        );
+        if (feedPostDto.getPictures() != null) {
+            feedPostDto.getPictures().forEach(
+                    pictureDto -> feed.getPictures().add(Picture.builder().path(pictureDto.getPicture()).build())
+            );
+        }
         return feed;
     }
 
@@ -60,9 +62,12 @@ public interface FeedMapper {
     List<FeedGetResponseDto> feedsToFeedGetResponseDtos(List<Feed> feeds);
 
     default FeedMultiGetResponseDto feedToFeedMultiGetResponseDto(Feed feed) {
-        return new FeedMultiGetResponseDto(
-                feed.getFeedId(),
-                feed.getPictures().get(0).getPath());
+        FeedMultiGetResponseDto feedMultiGetResponseDto =  new FeedMultiGetResponseDto();
+        feedMultiGetResponseDto.setFeedId(feed.getFeedId());
+        if(!feed.getPictures().isEmpty()) {
+            feedMultiGetResponseDto.setImage(feed.getPictures().get(0).getPath());
+        }
+        return feedMultiGetResponseDto;
     }
     List<FeedMultiGetResponseDto> feedsToFeedMultiGetResponseDtos(List<Feed> feeds);
 }

@@ -1,9 +1,13 @@
-import { useState, FC } from 'react'
+import { useState, FC, useEffect } from 'react'
 import SocialLoginButton from '@Modules/SocialLoginButton'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { FormValue } from '@pages/Signup/Signup'
 import { ValidationSpan } from '@pages/Signup/Signup.style'
+import { useNavigate } from 'react-router-dom'
+import { FEED_PATH } from '@Routes/feed.routes'
 import * as S from './Login.style'
+import { useAppDispatch, useAppSelector } from '@/redux/store'
+import { loginAsync } from '@/redux/actions/userAction'
 
 const Login: FC = () => {
   const {
@@ -13,13 +17,26 @@ const Login: FC = () => {
   } = useForm<FormValue>()
 
   const [isShown, setIsSHown] = useState(false)
+  const navigate = useNavigate()
+  const dispatch = useAppDispatch()
+
+  const { isLogin } = useAppSelector(state => state.user)
+
+  useEffect(() => {
+    if (isLogin) navigate(`/${FEED_PATH}`)
+  }, [navigate, isLogin])
 
   const togglePassword = () => {
     setIsSHown(isShown => !isShown)
   }
 
   const onSubmitHandler: SubmitHandler<FormValue> = data => {
-    console.log(data)
+    dispatch(
+      loginAsync({
+        email: data.email,
+        password: data.password,
+      }),
+    )
   }
 
   const handleSocialLogin = () => {

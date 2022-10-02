@@ -4,14 +4,15 @@ spring:
     include: common
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
-    url: jdbc:mariadb://${RDS_ENDPOINT}:${RDS_PORT}/cat-village?serverTimezone=UTC&characterEncoding=utf8mb4
-    username: ${RDS_USER}
-    password: ${RDS_PASSWORD}
+    url: jdbc:mariadb://$RDS_ENDPOINT:$RDS_PORT/cat_village?serverTimezone=UTC&characterEncoding=utf8mb4
+    username: $RDS_USER
+    password: $RDS_PASSWORD
   jpa:
-    database-platform: org.hibernate.dialect.MariaDB103Dialect
+    database-platform: org.hibernate.dialect.MariaDB106Dialect
     open-in-view: false
     show-sql: true
     hibernate:
+      ddl-auto: none
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     properties:
@@ -22,8 +23,9 @@ spring:
       client:
         registration:
           kakao:
-            client-id: ${KAKAO_API_KEY}
-            client-secret: ${KAKAO_CLIENT_SECRET}
+            client-id: $KAKAO_API_KEY
+            client-secret: $KAKAO_CLIENT_SECRET
+            redirect-uri: https://catvillage.tk/login/oauth2/code/kakao
 logging:
   level:
     org:
@@ -34,9 +36,9 @@ logging:
             sql:
               BasicBinder: TRACE
 jwt:
-  secret: ${JWT_SECRET}
+  secret: $JWT_SECRET
 cloud:
   aws:
     credentials:
-      accessKey: ${AWS_ACCESS_KEY}
-      secretKey: ${AWS_SECRET_KEY}
+      accessKey: $AWS_ACCESS_KEY
+      secretKey: $AWS_SECRET_KEY

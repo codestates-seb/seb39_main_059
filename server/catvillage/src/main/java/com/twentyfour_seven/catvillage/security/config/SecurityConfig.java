@@ -1,5 +1,6 @@
 package com.twentyfour_seven.catvillage.security.config;
 
+import com.twentyfour_seven.catvillage.security.CustomOAuth2UserService;
 import com.twentyfour_seven.catvillage.security.filter.JwtAccessDeniedHandler;
 import com.twentyfour_seven.catvillage.security.filter.JwtAuthenticationEntryPoint;
 import com.twentyfour_seven.catvillage.security.provider.JwtTokenizer;
@@ -23,6 +24,7 @@ public class SecurityConfig {
     private final JwtTokenizer jwtTokenizer;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
+    private final CustomOAuth2UserService customOAuth2UserService;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -53,7 +55,12 @@ public class SecurityConfig {
                 .antMatchers("/h2/**").permitAll()
                 .anyRequest().authenticated() // 나머지 API 는 모두 인증 필요
                 .and()
-                .apply(new JwtSecurityConfig(jwtTokenizer));
+                .apply(new JwtSecurityConfig(jwtTokenizer))
+                // OAuth2.0 로그인 설정
+                .and()
+                .oauth2Login()
+                .userInfoEndpoint()
+                .userService(customOAuth2UserService);
         return http.build();
     }
 }

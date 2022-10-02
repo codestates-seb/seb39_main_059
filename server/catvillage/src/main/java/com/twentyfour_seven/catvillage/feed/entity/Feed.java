@@ -22,6 +22,7 @@ public class Feed extends DateTable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long feedId;
 
+    @Setter
     @Column(name = "BODY", length = 1000)
     private String body;
 

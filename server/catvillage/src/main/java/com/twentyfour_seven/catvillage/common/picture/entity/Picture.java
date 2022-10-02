@@ -33,7 +33,6 @@ public class Picture {
     private String path;
 
     @Builder
-
     public Picture(Long pictureId, Feed feed, Board board, String path) {
         this.pictureId = pictureId;
         this.feed = feed;

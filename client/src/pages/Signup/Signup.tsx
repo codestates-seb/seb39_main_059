@@ -2,6 +2,8 @@ import { useState, FC, useRef } from 'react'
 import SocialLoginButton from '@Modules/SocialLoginButton'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import * as S from './Signup.style'
+import { useAppDispatch } from '@/redux/store'
+import { signupAsync } from '@/redux/actions/userAction'
 
 export interface FormValue {
   email: string
@@ -20,13 +22,24 @@ const Signup: FC = () => {
   const [isShown, setIsSHown] = useState(false)
   const passwordRef = useRef<string | null>(null)
   passwordRef.current = watch('password')
+  const dispatch = useAppDispatch()
 
   const togglePassword = () => {
     setIsSHown(isShown => !isShown)
   }
 
   const onSubmitHandler: SubmitHandler<FormValue> = data => {
-    console.log(data)
+    const defaultName = `집사${Math.floor(Math.random() * 10000) + 1}`
+
+    dispatch(
+      signupAsync({
+        email: data.email,
+        password: data.password,
+        location: null,
+        name: defaultName,
+        profileImage: null,
+      }),
+    )
   }
 
   const handleSocialLogin = () => {

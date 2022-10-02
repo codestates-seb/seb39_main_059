@@ -7,6 +7,9 @@ on:
     types: [closed]
     paths:
       - "client/**"  
+  push:
+    branches:
+      - chore/CI-test
 
 env:
   WORKING_DIRECTORY: ./client
@@ -48,7 +51,7 @@ jobs:
         run:  | 
           echo "PUBLIC_URL=https://${{ env.AWS_S3_BUCKET }}">>./env/.env.prod
           echo "APP_API=https://${{ env.APP_API }}">>./env/.env.prod
-  
+          cat env/.env.prod
       - name: Build
         run: npm run build
 

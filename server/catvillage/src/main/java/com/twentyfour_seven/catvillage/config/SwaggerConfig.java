@@ -1,5 +1,23 @@
 package com.twentyfour_seven.catvillage.config;
 
+import com.fasterxml.classmate.TypeResolver;
+import com.twentyfour_seven.catvillage.board.dto.BoardGetResponseDto;
+import com.twentyfour_seven.catvillage.board.dto.BoardMultiGetResponse;
+import com.twentyfour_seven.catvillage.board.dto.BoardPostResponseDto;
+import com.twentyfour_seven.catvillage.board.dto.BoardUserCommentResponseDto;
+import com.twentyfour_seven.catvillage.cat.dto.CatResponseDto;
+import com.twentyfour_seven.catvillage.cat.dto.CatTagResponseDto;
+import com.twentyfour_seven.catvillage.dto.MultiBoardResponseDto;
+import com.twentyfour_seven.catvillage.dto.MultiResponseDto;
+import com.twentyfour_seven.catvillage.feed.dto.FeedGetResponseDto;
+import com.twentyfour_seven.catvillage.feed.dto.FeedMultiGetResponseDto;
+import com.twentyfour_seven.catvillage.feed.dto.FeedMultiResponseDto;
+import com.twentyfour_seven.catvillage.feed.dto.FeedResponseDto;
+import com.twentyfour_seven.catvillage.security.dto.TokenDto;
+import com.twentyfour_seven.catvillage.user.dto.UserGetResponseDto;
+import com.twentyfour_seven.catvillage.user.dto.UserMyInfoDto;
+import com.twentyfour_seven.catvillage.user.dto.UserPatchResponseDto;
+import com.twentyfour_seven.catvillage.user.dto.UserPostResponseDto;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
@@ -20,12 +38,15 @@ Swagger Rest API 문서 자동 생성을 위한 설정 클래스 입니다.
  */
 
 @Configuration
-@EnableSwagger2
+// Swagger v3에서는 아래의 어노테이션을 사용하지 않는 것을 권장
+//@EnableSwagger2
 @EnableWebMvc
 public class SwaggerConfig {
 
     @Bean
     public Docket swagger() {
+
+        TypeResolver typeResolver = new TypeResolver();
 
         Parameter parameterBuilder = new ParameterBuilder()
                 .name(HttpHeaders.AUTHORIZATION)
@@ -36,7 +57,27 @@ public class SwaggerConfig {
                 .build();
 
         return new Docket(DocumentationType.SWAGGER_2)
-                .useDefaultResponseMessages(true)
+                .additionalModels(
+                        typeResolver.resolve(UserPostResponseDto.class),
+                        typeResolver.resolve(UserPatchResponseDto.class),
+                        typeResolver.resolve(UserGetResponseDto.class),
+                        typeResolver.resolve(TokenDto.class),
+                        typeResolver.resolve(FeedResponseDto.class),
+                        typeResolver.resolve(FeedGetResponseDto.class),
+                        typeResolver.resolve(FeedMultiGetResponseDto.class),
+                        typeResolver.resolve(FeedMultiResponseDto.class),
+                        typeResolver.resolve(MultiResponseDto.class),
+                        typeResolver.resolve(CatResponseDto.class),
+                        typeResolver.resolve(CatTagResponseDto.class),
+                        typeResolver.resolve(BoardGetResponseDto.class),
+                        typeResolver.resolve(BoardMultiGetResponse.class),
+                        typeResolver.resolve(BoardPostResponseDto.class),
+                        typeResolver.resolve(BoardUserCommentResponseDto.class),
+                        typeResolver.resolve(MultiBoardResponseDto.class),
+                        typeResolver.resolve(UserMyInfoDto.class)
+                )
+//                .useDefaultResponseMessages(true)
+                .useDefaultResponseMessages(false)
                 .apiInfo(apiInfo())
                 .select()
                 .apis(RequestHandlerSelectors.any())
