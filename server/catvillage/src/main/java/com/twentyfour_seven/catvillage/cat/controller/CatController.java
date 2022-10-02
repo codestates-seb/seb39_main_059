@@ -101,8 +101,9 @@ public class CatController {
             @ApiResponse(responseCode = "404", description = "존재하지 않는 고양이 프로필")
     })
     @DeleteMapping("/{cats-id}")
-    public ResponseEntity deleteCat(@PathVariable("cats-id") @Positive long catId) {
-        catService.removeCat(catId);
+    public ResponseEntity deleteCat(@PathVariable("cats-id") @Positive long catId,
+                                    @AuthenticationPrincipal User user) {
+        catService.removeCat(catId, user.getUsername());
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

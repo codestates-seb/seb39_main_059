@@ -131,7 +131,7 @@ public class FeedService {
         );
         return feedRepository.save(updateFeed);
     }
-    
+
     public void removeFeed(long feedId, String email) {
         Feed findFeed = findVerifiedFeed(feedId);
         User findUser = userService.findVerifiedEmail(email);

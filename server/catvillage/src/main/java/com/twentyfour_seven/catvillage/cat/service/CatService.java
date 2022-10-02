@@ -48,7 +48,14 @@ public class CatService {
         return findCat;
     }
 
-    public void removeCat(long catId) {
+    public void removeCat(long catId, String email) {
+        // 요청을 보낸 유저가 적절한지 검증
+        userService.findVerifiedEmail(email);
+        String userEmail = findVerifiedCat(catId).getUser().getEmail();
+        if (email.equals(userEmail)) {
+            throw new BusinessLogicException(ExceptionCode.INVALID_USER);
+        }
+
         Cat findCat = findVerifiedCat(catId);
         catRepository.delete(findCat);
     }
