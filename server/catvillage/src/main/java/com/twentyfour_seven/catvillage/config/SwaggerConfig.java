@@ -15,6 +15,7 @@ import com.twentyfour_seven.catvillage.feed.dto.FeedMultiResponseDto;
 import com.twentyfour_seven.catvillage.feed.dto.FeedResponseDto;
 import com.twentyfour_seven.catvillage.security.dto.TokenDto;
 import com.twentyfour_seven.catvillage.user.dto.UserGetResponseDto;
+import com.twentyfour_seven.catvillage.user.dto.UserMyInfoDto;
 import com.twentyfour_seven.catvillage.user.dto.UserPatchResponseDto;
 import com.twentyfour_seven.catvillage.user.dto.UserPostResponseDto;
 import org.springframework.context.annotation.Bean;
@@ -72,7 +73,8 @@ public class SwaggerConfig {
                         typeResolver.resolve(BoardMultiGetResponse.class),
                         typeResolver.resolve(BoardPostResponseDto.class),
                         typeResolver.resolve(BoardUserCommentResponseDto.class),
-                        typeResolver.resolve(MultiBoardResponseDto.class)
+                        typeResolver.resolve(MultiBoardResponseDto.class),
+                        typeResolver.resolve(UserMyInfoDto.class)
                 )
 //                .useDefaultResponseMessages(true)
                 .useDefaultResponseMessages(false)
