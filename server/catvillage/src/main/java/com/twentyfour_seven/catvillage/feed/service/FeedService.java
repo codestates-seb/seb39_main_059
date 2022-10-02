@@ -42,14 +42,31 @@ public class FeedService {
         this.followService = followService;
     }
 
-    public Feed createFeed(Feed feed, long catId) {
+    public Feed createFeed(Feed feed, long catId, String email) {
+        // 작성한 고양이 프로필이 유효한지 확인
         Cat findCat = catService.findVerifiedCat(catId);
+
+        // 로그인한 유저의 고양이가 아닐경우 에러
+        if (!findCat.getUser().getEmail().equals(email)) {
+            throw new BusinessLogicException(ExceptionCode.INVALID_USER);
+        }
+
+        // feed에 고양이 정보 저장
         feed.setCat(findCat);
+
+        // Picture 저장
         feed.getPictures().forEach(
-                picture -> pictureService.createPicture(picture)
+                picture ->
+                    pictureService.createPicture(
+                            Picture.builder()
+                                    .path(picture.getPath())
+                                    .feed(feed)
+                                    .build())
         );
 
-        return feedRepository.save(feed);
+        // feed 저장 후 반환
+        Feed saveFeed = feedRepository.save(feed);
+        return saveFeed;
     }
 
     public Feed findFeed(long feedId) {

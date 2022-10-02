@@ -24,15 +24,21 @@ public class FeedTagService {
     }
 
     public List<FeedTag> createTags(Feed feed, List<FeedTag> feedTags) {
+        if (feedTags.isEmpty()) {
+            return null;
+        }
+        List<FeedTag> saveFeedTags = new ArrayList<>();
         feedTags.forEach(feedTag -> {
             FeedTag createFeedTag = createTag(feedTag);
             createTagToFeed(new TagToFeed(feed, createFeedTag));
+            saveFeedTags.add(createFeedTag);
         });
-        return feedTags;
+        return saveFeedTags;
     }
 
     public FeedTag createTag(FeedTag feedTag) {
-        return feedTagRepository.save(feedTag);
+        Optional<FeedTag> optionalFeedTag = feedTagRepository.findByTagName(feedTag.getTagName());
+        return optionalFeedTag.orElse(feedTagRepository.save(feedTag));
     }
 
     public TagToFeed createTagToFeed(TagToFeed tagToFeed) {

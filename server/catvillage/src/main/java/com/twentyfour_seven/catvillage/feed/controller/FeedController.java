@@ -62,12 +62,17 @@ public class FeedController {
             @ApiResponse(responseCode = "404", description = "존재하지 않는 고양이 정보")
     })
     @PostMapping
-    public ResponseEntity postFeed(@RequestBody @Valid FeedPostDto feedPostDto) {
+    public ResponseEntity postFeed(@RequestBody @Valid FeedPostDto feedPostDto,
+                                   @AuthenticationPrincipal User user) {
         Feed feed = feedMapper.feedPostDtoToFeed(feedPostDto);
-        Feed createFeed = feedService.createFeed(feed, feedPostDto.getCatId());
+        Feed createFeed = feedService.createFeed(feed, feedPostDto.getCatId(), user.getUsername());
+
         List<FeedTag> feedTags = feedTagMapper.feedTagDtosToFeedTags(feedPostDto.getTags());
         List<FeedTag> createFeedTags = feedTagService.createTags(createFeed, feedTags);
-        return new ResponseEntity<>(feedMapper.feedToFeedResponseDto(createFeed), HttpStatus.CREATED);
+
+        FeedResponseDto feedResponseDto = feedMapper.feedToFeedResponseDto(createFeed);
+        feedResponseDto.setTags(feedTagMapper.feedTagsToFeedTagDtos(createFeedTags));
+        return new ResponseEntity<>(feedResponseDto, HttpStatus.CREATED);
     }
 
     @Operation(summary = "냥이생활 특정 피드 보기",
@@ -139,7 +144,7 @@ public class FeedController {
         // responseDto 생성하여 값 대입
         FeedResponseDto response = feedMapper.feedToFeedResponseDto(updateFeed);
         response.setTags(feedTagMapper.feedTagsToFeedTagDtos(updateTags));
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @Operation(summary = "냥이생활 작성한 글 삭제하기", description = "로그인한 유저와 글을 작성한 유저가 다를 경우: 405에러, 글이 존재하지 않을 경우: 409",
