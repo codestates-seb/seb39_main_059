@@ -33,13 +33,13 @@ public class FeedComment extends DateTable {
 
     @Setter
     @ManyToOne
-    @JoinColumn(name = "USER_ID")
+    @JoinColumn(name = "USER_ID", nullable = true)
     @JsonBackReference
     private User user;
 
     @Setter
     @ManyToOne
-    @JoinColumn(name = "CAT_ID")
+    @JoinColumn(name = "CAT_ID", nullable = true)
     @JsonBackReference
     private Cat cat;
 
