@@ -106,4 +106,8 @@ public class User extends DateTable {
         this.profileImage = profileImage;
         this.location = location;
     }
+
+    public User(Long userId) {
+        this.userId = userId;
+    }
 }
