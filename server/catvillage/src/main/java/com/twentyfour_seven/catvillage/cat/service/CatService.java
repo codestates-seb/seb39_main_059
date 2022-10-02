@@ -56,15 +56,16 @@ public class CatService {
         catRepository.delete(findCat);
     }
 
-    public Cat updateCat(Cat cat, String breed, String email) {
-        Cat findCat = findVerifiedCat(cat.getCatId());
+    public Cat updateCat(long catId, Cat cat, String breed, String email) {
+        Cat findCat = findVerifiedCat(catId);
         // TODO:  CatInfo 구현 후 주석 제거 필요
 //        CatInfo findBreed = breedService.findByKorName(breed);
 //        cat.setBreed(findBreed);
         // 요청을 보낸 User 가 등록한 User 와 동일한지 확인
-        if (findCat.getUser().getEmail() != email) {
+        if (!findCat.getUser().getEmail().equals(email)) {
             throw new BusinessLogicException(ExceptionCode.INVALID_USER);
         }
+
         Cat updatingCat = beanUtils.copyNonNullProperties(cat, findCat);
         return catRepository.save(updatingCat);
     }

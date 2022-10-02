@@ -97,7 +97,7 @@ public class CatController {
         String breed = catPostDto.getBreed();
         List<CatTag> catTags = catTagMapper.catTagPostDtosToCatTags(catPostDto.getTags());
 
-        Cat updateCat = catService.updateCat(cat, breed, user.getUsername());
+        Cat updateCat = catService.updateCat(catId, cat, breed, user.getUsername());
         List<CatTag> updateTag = catTagService.updateTag(catTags, updateCat);
 
         CatResponseDto response = catMapper.catToCatResponseDto(updateCat);
