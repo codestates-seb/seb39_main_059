@@ -49,6 +49,12 @@ public class FeedCommentService {
         return feedCommentRepository.save(findComment);
     }
 
+    public void removeComment(long commentId, String email) {
+        FeedComment findFeedComment = findVerifiedComment(commentId);
+        verifiedUser(findFeedComment, email);
+        feedCommentRepository.delete(findFeedComment);
+    }
+
     public FeedComment findVerifiedComment(long commentId) {
         Optional<FeedComment> optionalComment = feedCommentRepository.findById(commentId);
         return optionalComment.orElseThrow(() -> new BusinessLogicException(ExceptionCode.COMMENT_NOT_FOUND));

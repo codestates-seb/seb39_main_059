@@ -196,4 +196,12 @@ public class FeedController {
         FeedComment updateFeedComment = feedCommentService.updateComment(commentId, feedComment, user.getUsername());
         return new ResponseEntity<>(feedCommentMapper.feedCommentToFeedCommentGetDto(updateFeedComment), HttpStatus.OK);
     }
+
+    @DeleteMapping("/comments/{comments-id}")
+    public ResponseEntity deleteFeedComment(@PathVariable("comments-id") @Positive long commentId,
+                                            @AuthenticationPrincipal User user) {
+        feedCommentService.removeComment(commentId, user.getUsername());
+
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }
