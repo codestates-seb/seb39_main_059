@@ -2,7 +2,6 @@ package com.twentyfour_seven.catvillage.security;
 
 import com.twentyfour_seven.catvillage.exception.BusinessLogicException;
 import com.twentyfour_seven.catvillage.exception.ExceptionCode;
-import com.twentyfour_seven.catvillage.user.dto.SessionUser;
 import com.twentyfour_seven.catvillage.user.entity.User;
 import com.twentyfour_seven.catvillage.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
