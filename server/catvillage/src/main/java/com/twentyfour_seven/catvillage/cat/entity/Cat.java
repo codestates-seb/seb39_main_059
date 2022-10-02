@@ -68,11 +68,12 @@ public class Cat {
     private List<TagToCat> tagToCats = new ArrayList<>();
 
     @Builder
-    public Cat(String name, LocalDateTime birthDate, String sex, int weight, String body) {
+    public Cat(String name, LocalDateTime birthDate, String sex, int weight, String body, String image) {
         this.name = name;
         this.birthDate = birthDate;
         this.sex = sex;
         this.weight = weight;
         this.body = body;
+        this.image = image;
     }
 }
