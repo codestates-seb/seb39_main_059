@@ -30,8 +30,9 @@ public class OAuthAttributes {
     private static OAuthAttributes ofKakao(String userNameAttributeName, Map<String, Object> attributes) {
         // kakao_account에 profile, email 정보 포함
         Map<String, Object> kakaoAccount = (Map<String, Object>)attributes.get("kakao_account");
+
         // profile에 nickname, profile_image 정보 포함
-        Map<String, Object> kakaoProfile = (Map<String, Object>)kakaoAccount.get("prfile");
+        Map<String, Object> kakaoProfile = (Map<String, Object>)kakaoAccount.get("profile");
 
         return OAuthAttributes.builder()
                 .name((String) kakaoProfile.get("nickname"))
@@ -46,7 +47,7 @@ public class OAuthAttributes {
         return User.builder()
                 .name(name)
                 .email(email)
-                .password(picture)
+                .profileImage(picture)
                 .build();
     }
 
