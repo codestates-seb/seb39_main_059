@@ -14,10 +14,13 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
 //@Tag(name = "Auth", description = "인증 API")
@@ -57,5 +60,20 @@ public class AuthController {
     @PostMapping("/reissue")
     public ResponseEntity reissue(@RequestBody TokenRequestDto tokenRequestDto) {
         return new ResponseEntity<>(authService.reissue(tokenRequestDto), HttpStatus.OK);
+    }
+
+    @Operation(summary = "로그아웃",
+        responses = {
+            @ApiResponse(responseCode = "200", description = "로그아웃 성공"),
+            @ApiResponse(responseCode = "404", description = "존재하지 않는 Refresh token")
+        }
+    )
+    @PostMapping("/logout")
+    public ResponseEntity logout(@RequestBody TokenRequestDto tokenRequestDto,
+                                 @AuthenticationPrincipal User user) {
+        if(user != null) {
+            authService.logout(tokenRequestDto);
+        }
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

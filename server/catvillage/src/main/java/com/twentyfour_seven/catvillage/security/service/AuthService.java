@@ -1,5 +1,7 @@
 package com.twentyfour_seven.catvillage.security.service;
 
+import com.twentyfour_seven.catvillage.exception.BusinessLogicException;
+import com.twentyfour_seven.catvillage.exception.ExceptionCode;
 import com.twentyfour_seven.catvillage.security.provider.JwtTokenizer;
 import com.twentyfour_seven.catvillage.security.dto.TokenDto;
 import com.twentyfour_seven.catvillage.security.dto.TokenRequestDto;
@@ -17,6 +19,8 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -91,6 +95,16 @@ public class AuthService {
 
         // 토큰 발급
         return tokenDto;
+    }
+
+    public void logout(TokenRequestDto tokenRequestDto) {
+        // TODO: access token은 black list table에 등록하여 더 이상 해당 토큰으로 로그인 못 하도록 처리 필요
+
+        // Refresh token 제거
+        RefreshToken findRefreshToken = refreshTokenRepository.findByKey(tokenRequestDto.getRefreshToken())
+                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.REFRESH_TOKEN_NOT_FOUND));
+
+        refreshTokenRepository.delete(findRefreshToken);
     }
 
     // 클래스 내부에서만 사용 가능한 토큰 생성하는 로직
