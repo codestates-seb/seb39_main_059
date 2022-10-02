@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import { FC } from 'react'
 import { Outlet } from 'react-router-dom'
 import styled, { css, CSSProp } from 'styled-components'
 
@@ -19,6 +19,7 @@ const phoneSize = {
 
 const PhoneBox = styled.div<{ cssProp?: CSSProp }>(
   ({ cssProp }) => css`
+    position: relative;
     border: 3px solid black;
     width: 100%;
     height: 100%;
