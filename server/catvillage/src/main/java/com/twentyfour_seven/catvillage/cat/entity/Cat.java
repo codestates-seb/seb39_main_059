@@ -75,4 +75,8 @@ public class Cat {
         this.weight = weight;
         this.body = body;
     }
+
+    public Cat(Long catId) {
+        this.catId = catId;
+    }
 }
