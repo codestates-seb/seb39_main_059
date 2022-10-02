@@ -122,7 +122,7 @@ public class FeedController {
             @ApiResponse(responseCode = "404", description = "존재하지 않는 피드"),
             @ApiResponse(responseCode = "405", description = "유저 정보 불일치")
     })
-    @PatchMapping("{feeds-id}")
+    @PatchMapping("/{feeds-id}")
     public ResponseEntity patchFeed(@PathVariable("feeds-id") @Positive long feedId,
                                     @RequestBody @Valid FeedPostDto feedPostDto,
                                     @AuthenticationPrincipal User user) {
@@ -140,6 +140,20 @@ public class FeedController {
         FeedResponseDto response = feedMapper.feedToFeedResponseDto(updateFeed);
         response.setTags(feedTagMapper.feedTagsToFeedTagDtos(updateTags));
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @Operation(summary = "냥이생활 작성한 글 삭제하기", description = "로그인한 유저와 글을 작성한 유저가 다를 경우: 405에러, 글이 존재하지 않을 경우: 409",
+    responses = {
+            @ApiResponse(responseCode = "204", description = "냥이생활 피드 삭제 성공"),
+            @ApiResponse(responseCode = "404", description = "존재하지 않는 게시글"),
+            @ApiResponse(responseCode = "405", description = "유저 정보 불일치")
+    })
+    @DeleteMapping("/{feeds-id}")
+    public ResponseEntity deleteFeed(@PathVariable("feeds-id") @Positive long feedId,
+                                     @AuthenticationPrincipal User user) {
+        // 이메일과 feedId 서비스에 전달
+        feedService.removeFeed(feedId, user.getUsername());
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 }

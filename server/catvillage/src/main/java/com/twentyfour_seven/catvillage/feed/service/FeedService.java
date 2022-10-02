@@ -131,4 +131,14 @@ public class FeedService {
         );
         return feedRepository.save(updateFeed);
     }
+    
+    public void removeFeed(long feedId, String email) {
+        Feed findFeed = findVerifiedFeed(feedId);
+        User findUser = userService.findVerifiedEmail(email);
+        // feed에 저장된 유저와 요청을 보낸 유저가 다르면 INVALID_USER Exception throw
+        if (!findFeed.getCat().getUser().getUserId().equals(findUser.getUserId())) {
+            throw new BusinessLogicException(ExceptionCode.INVALID_USER);
+        }
+        feedRepository.delete(findFeed);
+    }
 }
