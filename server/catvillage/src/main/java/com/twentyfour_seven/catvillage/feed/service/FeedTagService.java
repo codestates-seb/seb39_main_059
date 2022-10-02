@@ -32,7 +32,8 @@ public class FeedTagService {
     }
 
     public FeedTag createTag(FeedTag feedTag) {
-        return feedTagRepository.save(feedTag);
+        Optional<FeedTag> optionalFeedTag = feedTagRepository.findByTagName(feedTag.getTagName());
+        return optionalFeedTag.orElse(feedTagRepository.save(feedTag));
     }
 
     public TagToFeed createTagToFeed(TagToFeed tagToFeed) {
