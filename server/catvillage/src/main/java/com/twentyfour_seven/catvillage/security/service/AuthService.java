@@ -101,7 +101,7 @@ public class AuthService {
         // TODO: access token은 black list table에 등록하여 더 이상 해당 토큰으로 로그인 못 하도록 처리 필요
 
         // Refresh token 제거
-        RefreshToken findRefreshToken = refreshTokenRepository.findByKey(tokenRequestDto.getRefreshToken())
+        RefreshToken findRefreshToken = refreshTokenRepository.findByValue(tokenRequestDto.getRefreshToken())
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.REFRESH_TOKEN_NOT_FOUND));
 
         refreshTokenRepository.delete(findRefreshToken);
