@@ -66,8 +66,6 @@ public class FeedService {
 
         // feed 저장 후 반환
         Feed saveFeed = feedRepository.save(feed);
-        saveFeed.getPictures();
-
         return saveFeed;
     }
 
