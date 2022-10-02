@@ -8,6 +8,7 @@ import com.twentyfour_seven.catvillage.cat.entity.CatTag;
 import com.twentyfour_seven.catvillage.cat.mapper.CatMapper;
 import com.twentyfour_seven.catvillage.cat.mapper.CatTagMapper;
 import com.twentyfour_seven.catvillage.cat.service.CatService;
+import com.twentyfour_seven.catvillage.cat.service.CatTagService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -34,12 +35,14 @@ public class CatController {
     private final CatService catService;
     private final CatMapper catMapper;
     private final CatTagMapper catTagMapper;
+    private final CatTagService catTagService;
 
     public CatController(CatService catService, CatMapper catMapper,
-                         CatTagMapper catTagMapper) {
+                         CatTagMapper catTagMapper, CatTagService catTagService) {
         this.catService = catService;
         this.catMapper = catMapper;
         this.catTagMapper = catTagMapper;
+        this.catTagService = catTagService;
     }
 
     @Operation(summary = "고양이 등록하기",
@@ -54,10 +57,13 @@ public class CatController {
         Cat cat = catMapper.catPostDtoToCat(catPostDto);
         String breed = catPostDto.getBreed();
         List<CatTag> catTags = catTagMapper.catTagPostDtosToCatTags(catPostDto.getTags());
-        Cat createCat = catService.createCat(cat, breed, catTags, user.getUsername());
-        CatResponseDto catResponseDto = catMapper.catToCatResponseDto(createCat);
-        catResponseDto.setTags(catTagMapper.tagToCatsToCatTagResponseDtos(createCat.getTagToCats()));
-        return new ResponseEntity<>(catResponseDto, HttpStatus.CREATED);
+
+        Cat createCat = catService.createCat(cat, breed, user.getUsername());
+        List<CatTag> createCatTags = catTagService.saveTag(catTags, createCat);
+
+        CatResponseDto response = catMapper.catToCatResponseDto(createCat);
+        response.setTags(catTagMapper.catTagsToCatTagResponseDtos(createCatTags));
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
     @Operation(summary = "고양이 프로필 정보 불러오기",
@@ -90,8 +96,13 @@ public class CatController {
         Cat cat = catMapper.catPostDtoToCat(catPostDto);
         String breed = catPostDto.getBreed();
         List<CatTag> catTags = catTagMapper.catTagPostDtosToCatTags(catPostDto.getTags());
-        Cat saveCat = catService.updateCat(cat, breed, catTags, user.getUsername());
-        return new ResponseEntity<>(catMapper.catToCatResponseDto(saveCat), HttpStatus.OK);
+
+        Cat updateCat = catService.updateCat(catId, cat, breed, user.getUsername());
+        List<CatTag> updateTag = catTagService.updateTag(catTags, updateCat);
+
+        CatResponseDto response = catMapper.catToCatResponseDto(updateCat);
+        response.setTags(catTagMapper.catTagsToCatTagResponseDtos(updateTag));
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @Operation(summary = "고양이 프로필 삭제하기",

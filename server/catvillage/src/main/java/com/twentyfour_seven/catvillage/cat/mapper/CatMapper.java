@@ -22,6 +22,7 @@ public interface CatMapper {
                 .sex(catPostDto.getSex())
                 .weight(catPostDto.getWeight())
                 .body(catPostDto.getBody())
+                .image(catPostDto.getImage())
                 .build();
         return cat;
     }
