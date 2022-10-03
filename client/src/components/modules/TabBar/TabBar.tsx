@@ -5,25 +5,39 @@ import {
   SearchIcon,
   TabBarHeartIcon,
 } from '@Assets/icons'
+import { Link,useLocation } from 'react-router-dom'
 import * as S from './TabBar.style'
 
 const TabBar = () => {
+  const tmpLocation = useLocation()
+  console.log(tmpLocation.pathname)
+
   return (
     <S.TabBarLayout>
       <S.IconBox>
-        <HomeIcon />
+        <Link to="/">
+          <HomeIcon />
+        </Link>
       </S.IconBox>
       <S.IconBox>
-        <SearchIcon />
+        <Link to="search">
+          <SearchIcon />
+        </Link>
       </S.IconBox>
       <S.IconBox>
-        <NewIcon />
+        <Link to={`${tmpLocation.pathname}/new`}>
+          <NewIcon />
+        </Link>
       </S.IconBox>
       <S.IconBox>
-        <TabBarHeartIcon />
+        <Link to={`${tmpLocation.pathname}/likes`}>
+          <TabBarHeartIcon />
+        </Link>
       </S.IconBox>
       <S.IconBox>
-        <MyProfileIcon />
+        <Link to="/users">
+          <MyProfileIcon />
+        </Link>
       </S.IconBox>
     </S.TabBarLayout>
   )
