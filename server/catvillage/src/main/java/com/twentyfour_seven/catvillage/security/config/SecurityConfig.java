@@ -60,7 +60,11 @@ public class SecurityConfig {
                 .and()
                 .oauth2Login()
                 .userInfoEndpoint()
-                .userService(customOAuth2UserService);
+                .userService(customOAuth2UserService)
+                .and()
+                .and()
+                .logout()
+                .disable();
         return http.build();
     }
 }
