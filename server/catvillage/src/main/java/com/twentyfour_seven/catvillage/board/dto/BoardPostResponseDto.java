@@ -16,8 +16,8 @@ public class BoardPostResponseDto {
     private Long boardId;
     private String title;
     private String body;
-    private List<BoardTagDto> tag = new ArrayList<>();
-    private List<PictureDto> picture = new ArrayList<>();
+    private List<BoardTagDto> tags = new ArrayList<>();
+    private List<PictureDto> pictures = new ArrayList<>();
 
     @Builder
     public BoardPostResponseDto(Long boardId, String title, String body) {

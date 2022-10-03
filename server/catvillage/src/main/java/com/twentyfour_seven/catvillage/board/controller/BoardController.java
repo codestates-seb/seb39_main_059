@@ -95,7 +95,7 @@ public class BoardController {
         User findUser = userService.findVerifiedEmail(user.getUsername());
         board.setUser(findUser);
 
-        Board createdBoard = boardService.createBoard(board, requestBody.getTag(), requestBody.getPicture());
+        Board createdBoard = boardService.createBoard(board, requestBody.getTags(), requestBody.getPictures());
         return new ResponseEntity<>(
                 boardMapper.boardToBoardPostResponseDto(createdBoard),
                 HttpStatus.CREATED);
@@ -115,7 +115,7 @@ public class BoardController {
         Board board = boardMapper.boardPatchDtoToBoard(requestBody);
         User findUser = userService.findVerifiedEmail(user.getUsername());
         board.setUser(findUser);
-        Board updateBoard = boardService.updateBoard(board, requestBody.getTag(), requestBody.getPicture());
+        Board updateBoard = boardService.updateBoard(board, requestBody.getTags(), requestBody.getPictures());
         return new ResponseEntity<>(
                 boardMapper.boardToBoardPostResponseDto(updateBoard),
                 HttpStatus.OK);
