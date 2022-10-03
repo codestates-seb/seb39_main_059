@@ -8,16 +8,20 @@ import com.twentyfour_seven.catvillage.utils.CustomBeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
 public class UserService {
-    private UserRepository userRepository;
-    private CustomBeanUtils<User> beanUtils;
+    private final PasswordEncoder passwordEncoder;
+    private final UserRepository userRepository;
+    private final CustomBeanUtils<User> beanUtils;
 
-    public UserService(UserRepository userRepository, CustomBeanUtils<User> beanUtils) {
+    public UserService(PasswordEncoder passwordEncoder, UserRepository userRepository, CustomBeanUtils<User> beanUtils) {
+        this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
         this.beanUtils = beanUtils;
     }
@@ -42,16 +46,23 @@ public class UserService {
         return userRepository.findAll(pageRequest);
     }
 
-    public User updateUser(User user, long userId) {
-        verifiedExistedName(user.getName());
-        User findUser = findVerifiedUser(userId);
-        User updateUser = beanUtils.copyNonNullProperties(user, findUser);
+    public User updateUser(User updateData, User loginUser) {
+        verifiedExistedName(updateData.getName());
+        updateData.setPassword(passwordEncoder.encode(updateData.getPassword()));
+        User updateUser = beanUtils.copyNonNullProperties(updateData, loginUser);
         return userRepository.save(updateUser);
     }
 
     public void removeUser(Long userId) {
         User findUser = findVerifiedUser(userId);
         userRepository.delete(findUser);
+    }
+
+    public void expiryUserByEmail(String email) {
+        User findUser = findVerifiedEmail(email);
+        findUser.setRole("ROLE_EXPIRY");
+        findUser.setExpiryDate(LocalDateTime.now().plusDays(7));
+        userRepository.save(findUser);
     }
 
     private User findVerifiedUser(Long id) {
