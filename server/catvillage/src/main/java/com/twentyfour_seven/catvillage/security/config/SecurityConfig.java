@@ -14,13 +14,18 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
+
+import java.util.Arrays;
 
 @EnableWebSecurity
 @Configuration
 @RequiredArgsConstructor
 public class SecurityConfig {
-    private final CorsFilter corsFilter;
+//    private final CorsFilter corsFilter;
     private final JwtTokenizer jwtTokenizer;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
@@ -39,28 +44,42 @@ public class SecurityConfig {
                 .accessDeniedHandler(jwtAccessDeniedHandler)
                 .and()
                 .headers()
-                .frameOptions()
-                .sameOrigin()
+                    .frameOptions()
+                    .sameOrigin()
 //                .and()
 //                .formLogin()
 //                .loginProcessingUrl("/login")
                 .and()
-                .addFilter(corsFilter)
+//                .addFilter(corsFilter)
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/signup").permitAll() // 회원가입을 위한 API 는 토큰 없이도 허용
-                .antMatchers(HttpMethod.POST, "/login").permitAll() // 로그인을 위한 API 는 토큰 없이도 허용
-                .antMatchers(HttpMethod.GET, "/**").permitAll() // GET 요청은 토큰 없이도 허용
-                .antMatchers("/h2/**").permitAll()
-                .anyRequest().authenticated() // 나머지 API 는 모두 인증 필요
+                    .antMatchers("/signup").permitAll() // 회원가입을 위한 API 는 토큰 없이도 허용
+                    .antMatchers(HttpMethod.POST, "/login").permitAll() // 로그인을 위한 API 는 토큰 없이도 허용
+                    .antMatchers(HttpMethod.GET, "/**").permitAll() // GET 요청은 토큰 없이도 허용
+                    .antMatchers("/h2/**").permitAll()
+                    .anyRequest().authenticated() // 나머지 API 는 모두 인증 필요
+                .and()
+                .cors()
                 .and()
                 .apply(new JwtSecurityConfig(jwtTokenizer))
                 // OAuth2.0 로그인 설정
                 .and()
                 .oauth2Login()
-                .userInfoEndpoint()
-                .userService(customOAuth2UserService);
+                    .userInfoEndpoint()
+                    .userService(customOAuth2UserService);
         return http.build();
+    }
+
+    @Bean
+    CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(Arrays.asList("https://catvillage.shop"));
+        configuration.setAllowedHeaders(Arrays.asList("*"));
+        configuration.setAllowCredentials(true);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
 }
