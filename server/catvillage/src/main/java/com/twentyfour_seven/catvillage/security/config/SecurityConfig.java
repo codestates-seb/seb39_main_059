@@ -25,7 +25,7 @@ import java.util.Arrays;
 @Configuration
 @RequiredArgsConstructor
 public class SecurityConfig {
-//    private final CorsFilter corsFilter;
+    private final CorsFilter corsFilter;
     private final JwtTokenizer jwtTokenizer;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
@@ -47,12 +47,12 @@ public class SecurityConfig {
                     .frameOptions()
                     .sameOrigin()
                 .and()
-                .cors()
+//                .cors()
 //                .and()
 //                .formLogin()
 //                .loginProcessingUrl("/login")
-                .and()
-//                .addFilter(corsFilter)
+//                .and()
+                .addFilter(corsFilter)
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
@@ -70,18 +70,5 @@ public class SecurityConfig {
                     .userInfoEndpoint()
                     .userService(customOAuth2UserService);
         return http.build();
-    }
-
-    @Bean
-    CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("https://catvillage.shop"));
-        configuration.setAllowedHeaders(Arrays.asList("*"));
-        configuration.setAllowedMethods(Arrays.asList("*"));
-        configuration.setAllowCredentials(true);
-
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-        return source;
     }
 }
