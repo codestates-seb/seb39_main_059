@@ -33,11 +33,11 @@ public interface BoardMapper {
                     .build();
             // Tag name 등록
             board.getTagToBoards().forEach(e -> {
-                response.getTag().add(new BoardTagDto(e.getBoardTag()));
+                response.getTags().add(new BoardTagDto(e.getBoardTag()));
             });
             // Picture path 등록
             board.getPictures().forEach(e -> {
-                response.getPicture().add(new PictureDto(e));
+                response.getPictures().add(new PictureDto(e));
             });
             return response;
         }
