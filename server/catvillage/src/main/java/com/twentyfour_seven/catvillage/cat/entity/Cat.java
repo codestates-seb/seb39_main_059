@@ -82,4 +82,8 @@ public class Cat {
         this.body = body;
         this.image = image;
     }
+
+    public Cat(Long catId) {
+        this.catId = catId;
+    }
 }

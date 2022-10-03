@@ -58,4 +58,8 @@ public class Feed extends DateTable {
     public Feed(String body) {
         this.body = body;
     }
+
+    public Feed(Long feedId) {
+        this.feedId = feedId;
+    }
 }

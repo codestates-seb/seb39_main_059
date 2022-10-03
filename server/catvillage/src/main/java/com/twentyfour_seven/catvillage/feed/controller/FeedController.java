@@ -15,7 +15,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -57,10 +56,10 @@ public class FeedController {
     }
 
     @Operation(summary = "냥이생활 피드 작성하기",
-    responses = {
-            @ApiResponse(responseCode = "201", description = "냥이생활 피드 등록 성공", content = @Content(schema = @Schema(implementation = FeedResponseDto.class))),
-            @ApiResponse(responseCode = "404", description = "존재하지 않는 고양이 정보")
-    })
+            responses = {
+                    @ApiResponse(responseCode = "201", description = "냥이생활 피드 등록 성공", content = @Content(schema = @Schema(implementation = FeedResponseDto.class))),
+                    @ApiResponse(responseCode = "404", description = "존재하지 않는 고양이 정보")
+            })
     @PostMapping
     public ResponseEntity postFeed(@RequestBody @Valid FeedPostDto feedPostDto,
                                    @AuthenticationPrincipal User user) {
@@ -76,10 +75,10 @@ public class FeedController {
     }
 
     @Operation(summary = "냥이생활 특정 피드 보기",
-    responses = {
-            @ApiResponse(responseCode = "200", description = "냥이생활 피드 정보 조회 성공", content = @Content(schema = @Schema(implementation = FeedGetResponseDto.class))),
-            @ApiResponse(responseCode = "404", description = "존재하지 않는 냥이생활 피드")
-    })
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "냥이생활 피드 정보 조회 성공", content = @Content(schema = @Schema(implementation = FeedGetResponseDto.class))),
+                    @ApiResponse(responseCode = "404", description = "존재하지 않는 냥이생활 피드")
+            })
     @GetMapping("/{feeds-id}")
     public ResponseEntity getFeed(@PathVariable("feeds-id") @Positive long feedId) {
         Feed feed = feedService.findFeed(feedId);
@@ -92,9 +91,9 @@ public class FeedController {
     }
 
     @Operation(summary = "냥이생활 전체 게시글 보기",
-    responses = {
-            @ApiResponse(responseCode = "200", description = "전체 냥이생활 피드 조회 성공", content = @Content(schema = @Schema(implementation = FeedMultiResponseDto.class)))
-    })
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "전체 냥이생활 피드 조회 성공", content = @Content(schema = @Schema(implementation = FeedMultiResponseDto.class)))
+            })
     @GetMapping
     public ResponseEntity getFeeds(@RequestParam @Positive int page,
                                    @RequestParam @Positive int size,
@@ -122,11 +121,11 @@ public class FeedController {
     }
 
     @Operation(summary = "냥이생활 작성한 글 수정하기", description = "로그인한 유저와 글을 작성했던 유저가 다르면 에러가 납니다.",
-    responses = {
-            @ApiResponse(responseCode = "200", description = "냥이생활 피드 수정 성공", content = @Content(schema = @Schema(implementation = FeedResponseDto.class))),
-            @ApiResponse(responseCode = "404", description = "존재하지 않는 피드"),
-            @ApiResponse(responseCode = "405", description = "유저 정보 불일치")
-    })
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "냥이생활 피드 수정 성공", content = @Content(schema = @Schema(implementation = FeedResponseDto.class))),
+                    @ApiResponse(responseCode = "404", description = "존재하지 않는 피드"),
+                    @ApiResponse(responseCode = "405", description = "유저 정보 불일치")
+            })
     @PatchMapping("/{feeds-id}")
     public ResponseEntity patchFeed(@PathVariable("feeds-id") @Positive long feedId,
                                     @RequestBody @Valid FeedPostDto feedPostDto,
@@ -148,11 +147,11 @@ public class FeedController {
     }
 
     @Operation(summary = "냥이생활 작성한 글 삭제하기", description = "로그인한 유저와 글을 작성한 유저가 다를 경우: 405에러, 글이 존재하지 않을 경우: 409",
-    responses = {
-            @ApiResponse(responseCode = "204", description = "냥이생활 피드 삭제 성공"),
-            @ApiResponse(responseCode = "404", description = "존재하지 않는 게시글"),
-            @ApiResponse(responseCode = "405", description = "유저 정보 불일치")
-    })
+            responses = {
+                    @ApiResponse(responseCode = "204", description = "냥이생활 피드 삭제 성공"),
+                    @ApiResponse(responseCode = "404", description = "존재하지 않는 게시글"),
+                    @ApiResponse(responseCode = "405", description = "유저 정보 불일치")
+            })
     @DeleteMapping("/{feeds-id}")
     public ResponseEntity deleteFeed(@PathVariable("feeds-id") @Positive long feedId,
                                      @AuthenticationPrincipal User user) {
@@ -161,4 +160,48 @@ public class FeedController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    @Operation(summary = "냥이생활 댓글 작성하기", description = "댓글을 작성한 유저와 요청으로 보낸 profileId(유저, 고양이)의 유저가 다를 경우 에러 발생",
+            responses = {
+                    @ApiResponse(responseCode = "201", description = "냥이생활 댓글 작성 성공",
+                            content = @Content(schema = @Schema(implementation = FeedCommentGetDto.class))),
+                    @ApiResponse(responseCode = "405", description = "유저 정보 불일치")
+            }
+    )
+    @PostMapping("/{feeds-id}/comments")
+    public ResponseEntity postFeedComment(@PathVariable("feeds-id") @Positive long feedId,
+                                          @RequestBody @Valid FeedCommentPostDto feedCommentPostDto,
+                                          @AuthenticationPrincipal User user) {
+        // feedId, profileId, body 저장하여 feedComment 생성
+        FeedComment feedComment = feedCommentMapper.feedCommentPostDtoToFeedComment(feedId, feedCommentPostDto);
+
+        FeedComment createFeedComment = feedCommentService.createComment(feedComment, user.getUsername());
+        return new ResponseEntity<>(feedCommentMapper.feedCommentToFeedCommentGetDto(createFeedComment),
+                HttpStatus.CREATED);
+    }
+
+    @Operation(summary = "냥이생활 댓글 수정하기", description = "댓글을 작성한 유저와 요청을 보낸 유저가 다를 경우 에러가 발생, 존재하지 않는 댓글일 경우 에러 발생",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "냥이생활 댓글 수정 성공",
+                            content = @Content(schema = @Schema(implementation = FeedCommentGetDto.class))),
+                    @ApiResponse(responseCode = "405", description = "유저 정보 불일치"),
+                    @ApiResponse(responseCode = "404", description = "존재하지 않는 댓글")
+            }
+    )
+    @PatchMapping("/comments/{comments-id}")
+    public ResponseEntity patchFeedComment(@PathVariable("comments-id") @Positive long commentId,
+                                           @RequestBody @Valid FeedCommentPatchDto feedCommentPatchDto,
+                                           @AuthenticationPrincipal User user) {
+        FeedComment feedComment = feedCommentMapper.feedCommentPatchDtoToFeedComment(feedCommentPatchDto);
+
+        FeedComment updateFeedComment = feedCommentService.updateComment(commentId, feedComment, user.getUsername());
+        return new ResponseEntity<>(feedCommentMapper.feedCommentToFeedCommentGetDto(updateFeedComment), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/comments/{comments-id}")
+    public ResponseEntity deleteFeedComment(@PathVariable("comments-id") @Positive long commentId,
+                                            @AuthenticationPrincipal User user) {
+        feedCommentService.removeComment(commentId, user.getUsername());
+
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }
