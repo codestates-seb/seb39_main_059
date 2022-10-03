@@ -1,6 +1,7 @@
 package com.twentyfour_seven.catvillage.board.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.twentyfour_seven.catvillage.board.dto.comment.BoardUserCommentResponseDto;
 import com.twentyfour_seven.catvillage.common.picture.dto.PictureDto;
 import lombok.Builder;
 import lombok.Getter;

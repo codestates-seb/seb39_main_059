@@ -4,7 +4,8 @@ import com.fasterxml.classmate.TypeResolver;
 import com.twentyfour_seven.catvillage.board.dto.BoardGetResponseDto;
 import com.twentyfour_seven.catvillage.board.dto.BoardMultiGetResponse;
 import com.twentyfour_seven.catvillage.board.dto.BoardPostResponseDto;
-import com.twentyfour_seven.catvillage.board.dto.BoardUserCommentResponseDto;
+import com.twentyfour_seven.catvillage.board.dto.comment.BoardCommentPostResponseDto;
+import com.twentyfour_seven.catvillage.board.dto.comment.BoardUserCommentResponseDto;
 import com.twentyfour_seven.catvillage.cat.dto.CatResponseDto;
 import com.twentyfour_seven.catvillage.cat.dto.CatTagResponseDto;
 import com.twentyfour_seven.catvillage.dto.MultiBoardResponseDto;
@@ -28,7 +29,6 @@ import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.Parameter;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 /*
 Swagger Rest API 문서 자동 생성을 위한 설정 클래스 입니다.
@@ -72,6 +72,7 @@ public class SwaggerConfig {
                         typeResolver.resolve(BoardUserCommentResponseDto.class),
                         typeResolver.resolve(MultiBoardResponseDto.class),
                         typeResolver.resolve(UserMyInfoDto.class),
+                        typeResolver.resolve(BoardCommentPostResponseDto.class),
                         typeResolver.resolve(FeedCommentPostDto.class),
                         typeResolver.resolve(FeedCommentGetDto.class)
                 )

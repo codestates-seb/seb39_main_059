@@ -13,6 +13,7 @@ public enum ExceptionCode {
     BOARD_TAG_NOT_FOUND(404, "Board tag not found"),
     INVALID_USER(405, "Method not allowed"),
     FEED_NOT_FOUND(404, "Feed not found"),
+    BOARD_COMMENT_NOT_FOUND(404, "Board comment not found"),
     COMMENT_NOT_FOUND(404, "Comment not found"),
     REFRESH_TOKEN_NOT_FOUND(404, "Refresh token not found");
 

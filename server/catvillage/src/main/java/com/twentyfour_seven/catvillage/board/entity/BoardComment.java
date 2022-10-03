@@ -6,11 +6,11 @@ import com.twentyfour_seven.catvillage.user.entity.User;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 
 @Getter
-@NoArgsConstructor
 @Entity(name = "BOARD_COMMENT")
 public class BoardComment extends DateTable {
     @Id
@@ -21,25 +21,33 @@ public class BoardComment extends DateTable {
     @ManyToOne
     @JoinColumn(name = "BOARD_ID")
     @JsonBackReference
+    @Setter
     private Board board;
 
     @ManyToOne
     @JoinColumn(name = "USER_ID")
     @JsonBackReference
+    @Setter
     private User user;
 
     @Column(name = "BODY", length = 500, nullable = false)
+    @Setter
     private String body;
 
     @Column(name = "LIKE_COUNT", nullable = false)
+    @Setter
     private Long likeCount;
 
+    public BoardComment() {
+        this.likeCount = 0L;
+    }
+
     @Builder
-    public BoardComment(Long boardCommentId, Board board, User user, String body, Long likeCount) {
+    public BoardComment(Long boardCommentId, Board board, User user, String body) {
+        this();
         this.boardCommentId = boardCommentId;
         this.board = board;
         this.user = user;
         this.body = body;
-        this.likeCount = likeCount;
     }
 }

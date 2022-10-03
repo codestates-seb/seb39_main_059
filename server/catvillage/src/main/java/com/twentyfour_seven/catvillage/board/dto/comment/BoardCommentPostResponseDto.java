@@ -1,4 +1,4 @@
-package com.twentyfour_seven.catvillage.board.dto;
+package com.twentyfour_seven.catvillage.board.dto.comment;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Builder;
@@ -11,22 +11,25 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @NoArgsConstructor
-public class BoardUserCommentResponseDto {
+public class BoardCommentPostResponseDto {
     private Long boardCommentId;
-    private String boardTitle;
+    private Long boardId;
+    private Long userId;
     private String body;
     private Long likeCount;
-    private String link;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdDate;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime modifiedDate;
 
     @Builder
-    public BoardUserCommentResponseDto(Long boardCommentId, String boardTitle, String body, Long likeCount, String link, LocalDateTime createdDate) {
+    public BoardCommentPostResponseDto(Long boardCommentId, Long boardId, Long userId, String body, Long likeCount, LocalDateTime createdDate, LocalDateTime modifiedDate) {
         this.boardCommentId = boardCommentId;
-        this.boardTitle = boardTitle;
+        this.boardId = boardId;
+        this.userId = userId;
         this.body = body;
         this.likeCount = likeCount;
-        this.link = link;
         this.createdDate = createdDate;
+        this.modifiedDate = modifiedDate;
     }
 }
