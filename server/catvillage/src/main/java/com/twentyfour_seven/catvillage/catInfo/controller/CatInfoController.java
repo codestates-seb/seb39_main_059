@@ -13,10 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -38,14 +35,19 @@ public class CatInfoController {
             responses = {
                     @ApiResponse(responseCode = "201", description = "고양이 품종 정보 생성 성공",
                             content = @Content(schema = @Schema(implementation = FeedCommentGetDto.class))),
-                    @ApiResponse(responseCode = "405", description = "유저 정보 불일치"),
-                    @ApiResponse(responseCode = "404", description = "존재하지 않는 댓글")
+                    @ApiResponse(responseCode = "409", description = "이미 등록되어 있는 품종(korName)")
             }
     )
     @PostMapping
-    public ResponseEntity postCatInfo (@RequestBody @Valid CatInfoPostDto catInfoPostDto) {
+    public ResponseEntity postCatInfo(@RequestBody @Valid CatInfoPostDto catInfoPostDto) {
         CatInfo catInfo = catInfoMapper.catInfoPostDtoToCatInfo(catInfoPostDto);
         CatInfo createCatInfo = catInfoService.createCatInfo(catInfo);
         return new ResponseEntity<>(catInfoMapper.catInfoToCatInfoResponseDto(createCatInfo), HttpStatus.CREATED);
     }
+
+    @GetMapping
+    public ResponseEntity getCatInfos() {
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 }
