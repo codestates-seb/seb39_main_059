@@ -94,23 +94,25 @@ public class UserController {
                     @ApiResponse(responseCode = "404", description = "해당 유저를 찾을 수 없습니다."),
                     @ApiResponse(responseCode = "409", description = "이미 사용 중인 이름")
             })
-    @PatchMapping("/{user-id}")
-    public ResponseEntity patchUser(@PathVariable("user-id") @Positive long userId,
-                                    @Valid @RequestBody UserPatchDto requestBody) {
-        User user = userMapper.userPatchDtoToUser(requestBody);
-        User updateUser = userService.updateUser(user, userId);
+    @PatchMapping
+    public ResponseEntity patchUser(@Valid @RequestBody UserPatchDto requestBody,
+                                    @AuthenticationPrincipal org.springframework.security.core.userdetails.User user) {
+        User loginUser = userService.findVerifiedEmail(user.getUsername());
+        User requestUser = userMapper.userPatchDtoToUser(requestBody);
+        User updateUser = userService.updateUser(requestUser, loginUser);
         return new ResponseEntity<>(userMapper.userToUserPatchResponseDto(updateUser), HttpStatus.OK);
     }
 
+    // TODO: 복구 기능 구현 필요
     @Operation(summary = "유저 탈퇴",
             description = "유저 정보가 바로 삭제되지 않고 7일동안 유지된 후 삭제됩니다. 그 이전에는 복구 가능합니다.",
             responses = {
                     @ApiResponse(responseCode = "204", description = "유저 탈퇴 성공"),
                     @ApiResponse(responseCode = "404", description = "해당 유저를 찾을 수 없습니다.")
             })
-    @DeleteMapping("/{user-id}/delete") // TODO : Security 적용 이후 "/delete"로 경로 변경 의논 필요
-    public ResponseEntity deleteUser(@PathVariable("user-id") Long userId) {
-        userService.removeUser(userId);
+    @DeleteMapping("/delete")
+    public ResponseEntity deleteUser(@AuthenticationPrincipal org.springframework.security.core.userdetails.User user) {
+        userService.expiryUserByEmail(user.getUsername());
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
