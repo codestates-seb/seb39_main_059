@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -18,14 +17,14 @@ public class BoardPostDto {
     private String title;
     @Length(max = 1000)
     private String body;
-    private List<BoardTagDto> tag;
-    private List<PictureDto> picture;
+    private List<BoardTagDto> tags;
+    private List<PictureDto> pictures;
 
     @Builder
-    public BoardPostDto(String title, String body, List<BoardTagDto> tag, List<PictureDto> picture) {
+    public BoardPostDto(String title, String body, List<BoardTagDto> tags, List<PictureDto> pictures) {
         this.title = title;
         this.body = body;
-        this.tag = tag;
-        this.picture = picture;
+        this.tags = tags;
+        this.pictures = pictures;
     }
 }
