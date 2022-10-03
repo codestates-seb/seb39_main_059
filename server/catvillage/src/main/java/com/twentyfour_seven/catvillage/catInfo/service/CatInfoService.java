@@ -26,4 +26,8 @@ public class CatInfoService {
                     throw new BusinessLogicException(ExceptionCode.BREED_EXISTS);
                 });
     }
+
+    public CatInfo findVerifiedCatInfo(String korName) {
+        return catInfoRepository.findByKorName(korName).orElseThrow(() -> new BusinessLogicException(ExceptionCode.BREED_NOT_FOUND));
+    }
 }
