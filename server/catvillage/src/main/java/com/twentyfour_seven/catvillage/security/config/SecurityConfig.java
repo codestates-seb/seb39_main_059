@@ -56,7 +56,7 @@ public class SecurityConfig {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                    .antMatchers(HttpMethod.OPTIONS, "/**/*").permitAll()
+                    .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                     .antMatchers("/signup").permitAll() // 회원가입을 위한 API 는 토큰 없이도 허용
                     .antMatchers(HttpMethod.POST, "/login").permitAll() // 로그인을 위한 API 는 토큰 없이도 허용
                     .antMatchers(HttpMethod.GET, "/**").permitAll() // GET 요청은 토큰 없이도 허용
