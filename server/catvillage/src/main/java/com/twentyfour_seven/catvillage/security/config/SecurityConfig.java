@@ -46,6 +46,8 @@ public class SecurityConfig {
                 .headers()
                     .frameOptions()
                     .sameOrigin()
+                .and()
+                .cors()
 //                .and()
 //                .formLogin()
 //                .loginProcessingUrl("/login")
@@ -59,8 +61,6 @@ public class SecurityConfig {
                     .antMatchers(HttpMethod.GET, "/**").permitAll() // GET 요청은 토큰 없이도 허용
                     .antMatchers("/h2/**").permitAll()
                     .anyRequest().authenticated() // 나머지 API 는 모두 인증 필요
-                .and()
-                .cors()
                 .and()
                 .apply(new JwtSecurityConfig(jwtTokenizer))
                 // OAuth2.0 로그인 설정
@@ -76,6 +76,7 @@ public class SecurityConfig {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Arrays.asList("https://catvillage.shop"));
         configuration.setAllowedHeaders(Arrays.asList("*"));
+        configuration.setAllowedMethods(Arrays.asList("*"));
         configuration.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
