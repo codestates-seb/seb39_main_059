@@ -1,4 +1,4 @@
-import { CameraIcon, HeartIcon } from '@Assets/icons'
+import TabBar from '@Modules/TabBar'
 import { BOARD_PATH } from '@Routes/board.routes'
 import { FEED_PATH } from '@Routes/feed.routes'
 import { NavLink, Outlet } from 'react-router-dom'
@@ -64,43 +64,12 @@ const Nav = () => {
   )
 }
 
-const STapBarLayout = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  align-items: center;
-  padding: 0px 25px;
-
-  position: absolute;
-  width: 300px;
-  height: 50px;
-  left: calc(50% - 300px / 2 - 0.5px);
-  bottom: 41px;
-
-  background: #ffffff;
-  box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.25);
-  border-radius: 43px;
-`
-
-const TapBar = () => {
-  return (
-    <STapBarLayout>
-      <NavLink to={FEED_PATH}>
-        <CameraIcon />
-      </NavLink>
-      <NavLink to="login">
-        <HeartIcon />
-      </NavLink>
-    </STapBarLayout>
-  )
-}
-
 export const MainLayout = () => {
   return (
     <>
       <Nav />
       <Outlet />
-      <TapBar />
+      <TabBar />
     </>
   )
 }
