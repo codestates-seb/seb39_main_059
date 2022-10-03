@@ -15,7 +15,8 @@ public enum ExceptionCode {
     FEED_NOT_FOUND(404, "Feed not found"),
     BOARD_COMMENT_NOT_FOUND(404, "Board comment not found"),
     COMMENT_NOT_FOUND(404, "Comment not found"),
-    REFRESH_TOKEN_NOT_FOUND(404, "Refresh token not found");
+    REFRESH_TOKEN_NOT_FOUND(404, "Refresh token not found"),
+    INTERNAL_SERVER_ERROR(500, "Internal server error");
 
     @Getter
     private final int status;
