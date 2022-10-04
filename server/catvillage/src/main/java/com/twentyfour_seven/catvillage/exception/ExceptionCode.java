@@ -17,7 +17,9 @@ public enum ExceptionCode {
     BOARD_COMMENT_NOT_FOUND(404, "Board comment not found"),
     COMMENT_NOT_FOUND(404, "Comment not found"),
     REFRESH_TOKEN_NOT_FOUND(404, "Refresh token not found"),
-    INTERNAL_SERVER_ERROR(500, "Internal server error");
+    INTERNAL_SERVER_ERROR(500, "Internal server error"),
+    LIKE_EXISTS(409, "Like already exists"),
+    LIKE_NOT_FOUND(404, "Like not found");
 
     @Getter
     private final int status;
