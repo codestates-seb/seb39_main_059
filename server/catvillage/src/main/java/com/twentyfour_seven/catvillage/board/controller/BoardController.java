@@ -74,7 +74,7 @@ public class BoardController {
     public ResponseEntity getBoard(@Positive @PathVariable("boards-id") Long boardId) {
         Board board = boardService.findBoard(boardId);
         BoardGetResponseDto responseDto = boardMapper.boardToBoardGetResponseDto(board);
-        responseDto.setComments(boardCommentMapper.boardCommentsToBoardUserCommentResponseDtos(board.getBoardComments()));
+        responseDto.setComments(boardCommentMapper.boardCommentsToBoardCommentResponseDtos(board.getBoardComments()));
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
@@ -112,6 +112,7 @@ public class BoardController {
     public ResponseEntity patchBoard(@AuthenticationPrincipal org.springframework.security.core.userdetails.User user,
                                      @Positive @PathVariable("boards-id") Long boardId,
                                      @Valid @RequestBody BoardPatchDto requestBody) {
+        requestBody.setBoardId(boardId);
         Board board = boardMapper.boardPatchDtoToBoard(requestBody);
         User findUser = userService.findVerifiedEmail(user.getUsername());
         board.setUser(findUser);

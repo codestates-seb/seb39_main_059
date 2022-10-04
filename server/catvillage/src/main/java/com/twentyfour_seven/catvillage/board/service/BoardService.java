@@ -7,10 +7,9 @@ import com.twentyfour_seven.catvillage.board.repository.BoardRepository;
 import com.twentyfour_seven.catvillage.common.picture.dto.PictureDto;
 import com.twentyfour_seven.catvillage.common.picture.entity.Picture;
 import com.twentyfour_seven.catvillage.common.picture.service.PictureService;
-import com.twentyfour_seven.catvillage.user.entity.User;
-import com.twentyfour_seven.catvillage.utils.CustomBeanUtils;
 import com.twentyfour_seven.catvillage.exception.BusinessLogicException;
 import com.twentyfour_seven.catvillage.exception.ExceptionCode;
+import com.twentyfour_seven.catvillage.user.entity.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -64,13 +63,23 @@ public class BoardService {
 
     public Board updateBoard(Board board, List<BoardTagDto> tags, List<PictureDto> pictures) {
         Board findBoard = findVerifiedBoard(board.getBoardId());
-        if(!findBoard.getUser().equals(board.getUser())) {
+        if (!findBoard.getUser().equals(board.getUser())) {
             throw new BusinessLogicException(ExceptionCode.INVALID_USER);
+        }
+
+        // 제목 변경 : 제목은 공백일 수 없다
+        if (!board.getTitle().isEmpty()) {
+            findBoard.setTitle(board.getTitle());
+        }
+
+        // 본문 변경 : 본문은 공백일 수 있다.
+        if (board.getBody() != null) {
+            findBoard.setBody(board.getBody());
         }
 
         // 제거된 태그 삭제
         findBoard.getTagToBoards().forEach(e -> {
-            if(!tags.contains(new BoardTagDto(e.getBoardTag()))) {
+            if (!tags.contains(new BoardTagDto(e.getBoardTag()))) {
                 tagToBoardService.deleteTagToBoard(e);
             }
         });
@@ -84,7 +93,7 @@ public class BoardService {
         // 삭제된 사진 경로는 DB 및 리스트에서 제거
         findBoard.getPictures().forEach(e -> {
             PictureDto dto = new PictureDto(e);
-            if(pictures.contains(dto)) {
+            if (pictures.contains(dto)) {
                 pictures.remove(dto);
             } else {
                 pictureService.removePicture(e.getPictureId());
@@ -106,7 +115,7 @@ public class BoardService {
 
     public void deleteBoard(User user, Long boardId) {
         Board findBoard = findVerifiedBoard(boardId);
-        if(!findBoard.getUser().equals(user)) {
+        if (!findBoard.getUser().equals(user)) {
             throw new BusinessLogicException(ExceptionCode.INVALID_USER);
         }
         boardRepository.delete(findBoard);
