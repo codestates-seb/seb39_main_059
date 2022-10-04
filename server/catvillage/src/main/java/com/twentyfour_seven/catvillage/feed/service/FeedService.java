@@ -10,9 +10,7 @@ import com.twentyfour_seven.catvillage.feed.entity.Feed;
 import com.twentyfour_seven.catvillage.feed.repository.FeedRepository;
 import com.twentyfour_seven.catvillage.user.controller.FollowService;
 import com.twentyfour_seven.catvillage.user.entity.User;
-import com.twentyfour_seven.catvillage.user.repository.UserRepository;
 import com.twentyfour_seven.catvillage.user.service.UserService;
-import com.twentyfour_seven.catvillage.utils.CustomBeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -21,6 +19,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class FeedService {
@@ -57,11 +56,11 @@ public class FeedService {
         // Picture 저장
         feed.getPictures().forEach(
                 picture ->
-                    pictureService.createPicture(
-                            Picture.builder()
-                                    .path(picture.getPath())
-                                    .feed(feed)
-                                    .build())
+                        pictureService.createPicture(
+                                Picture.builder()
+                                        .path(picture.getPath())
+                                        .feed(feed)
+                                        .build())
         );
 
         // feed 저장 후 반환
@@ -109,24 +108,14 @@ public class FeedService {
         }
 
         // Feed 내용 업데이트
-        Feed updateFeed = findFeed;
-        if (findFeed.getBody() != feed.getBody()) {
-            updateFeed.setBody(feed.getBody());
-        }
+        findFeed.setBody(feed.getBody());
 
         // Picture 업데이트를 위해 source, definition의 path만 따로 저장
-        List<String> picturePaths1 = new ArrayList<>();
-        List<String> picturePaths2 = new ArrayList<>();
-        feed.getPictures().forEach(
-                picture -> {
-                    picturePaths1.add(picture.getPath());
-                }
-        );
-        updateFeed.getPictures().forEach(
-                picture -> {
-                    picturePaths2.add(picture.getPath());
-                }
-        );
+        List<String> picturePaths1 = feed.getPictures().stream()
+                .map(picture -> picture.getPath()).collect(Collectors.toList());
+        List<String> picturePaths2 = findFeed.getPictures().stream()
+                .map(picture -> picture.getPath()).collect(Collectors.toList());
+
         // 삭제된 이미지는 DB에서 제거 후 리스트에서도 제거
         findFeed.getPictures().forEach(
                 picture -> {
@@ -141,12 +130,11 @@ public class FeedService {
         feed.getPictures().forEach(
                 picture -> {
                     if (!picturePaths2.contains(picture.getPath())) {
-                        picture = pictureService.createPicture(picture);
-                        findFeed.getPictures().add(picture);
+                        findFeed.getPictures().add(pictureService.createPicture(picture));
                     }
                 }
         );
-        return feedRepository.save(updateFeed);
+        return feedRepository.save(findFeed);
     }
 
     public void removeFeed(long feedId, String email) {
