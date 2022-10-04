@@ -9,7 +9,7 @@ import com.twentyfour_seven.catvillage.exception.BusinessLogicException;
 import com.twentyfour_seven.catvillage.exception.ExceptionCode;
 import com.twentyfour_seven.catvillage.feed.entity.Feed;
 import com.twentyfour_seven.catvillage.feed.repository.FeedRepository;
-import com.twentyfour_seven.catvillage.user.controller.FollowService;
+import com.twentyfour_seven.catvillage.user.service.FollowService;
 import com.twentyfour_seven.catvillage.user.entity.User;
 import com.twentyfour_seven.catvillage.user.service.UserService;
 import org.springframework.data.domain.Page;

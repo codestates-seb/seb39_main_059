@@ -5,8 +5,11 @@ import com.twentyfour_seven.catvillage.user.dto.UserGetResponseDto;
 import com.twentyfour_seven.catvillage.user.dto.UserMyInfoDto;
 import com.twentyfour_seven.catvillage.user.dto.UserPatchDto;
 import com.twentyfour_seven.catvillage.user.dto.UserPatchResponseDto;
+import com.twentyfour_seven.catvillage.user.entity.Follow;
 import com.twentyfour_seven.catvillage.user.entity.User;
+import com.twentyfour_seven.catvillage.user.mapper.FollowMapper;
 import com.twentyfour_seven.catvillage.user.mapper.UserMapper;
+import com.twentyfour_seven.catvillage.user.service.FollowService;
 import com.twentyfour_seven.catvillage.user.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -31,13 +34,17 @@ import javax.validation.constraints.Positive;
 public class UserController {
     private UserService userService;
     private UserMapper userMapper;
+    private FollowService followService;
+    private FollowMapper followMapper;
 
-    public UserController(UserService userService, UserMapper userMapper) {
+    public UserController(UserService userService, UserMapper userMapper, FollowService followService, FollowMapper followMapper) {
         this.userService = userService;
         this.userMapper = userMapper;
+        this.followService = followService;
+        this.followMapper = followMapper;
     }
 
-//    @PostMapping
+    //    @PostMapping
 //    public ResponseEntity postUser(@Valid @RequestBody UserPostDto userPostDto) {
 ////        User user = userMapper.userPostDtoToUser(userPostDto);
 ////        User createUser = userService.createUser(user);
@@ -128,5 +135,35 @@ public class UserController {
     public ResponseEntity getMyInfo(@AuthenticationPrincipal org.springframework.security.core.userdetails.User user) {
         User findUser = userService.findVerifiedEmail(user.getUsername());
         return new ResponseEntity<>(userMapper.userToUserMyInfoDto(findUser), HttpStatus.OK);
+    }
+
+    @Operation(summary = "유저 팔로우",
+            description = "유저를 팔로우 한다.",
+            responses = {
+                    @ApiResponse(responseCode = "201", description = "유저 팔로우 성공"),
+                    @ApiResponse(responseCode = "404", description = "존재하지 않는 유저"),
+                    @ApiResponse(responseCode = "409", description = "이미 존재하는 팔로우")
+            }
+    )
+    @PostMapping("/followers")
+    public ResponseEntity<?> postFollowing(@RequestParam Long userId,
+                                           @AuthenticationPrincipal org.springframework.security.core.userdetails.User user) {
+        Follow follow = followService.addFollowing(user.getUsername(), userId);
+        return new ResponseEntity<>(
+                followMapper.followToFollowResponseDto(follow),
+                HttpStatus.CREATED);
+    }
+
+    @Operation(summary = "유저 언팔로우",
+            description = "유저를 언팔로우 한다.",
+            responses = {
+                    @ApiResponse(responseCode = "204", description = "유저 언팔로우 성공"),
+                    @ApiResponse(responseCode = "404", description = "존재하지 않는 유저\n존재하지 않는 팔로우")
+            })
+    @DeleteMapping("/followers")
+    public ResponseEntity<?> deleteFollowing(@RequestParam Long userId,
+                                             @AuthenticationPrincipal org.springframework.security.core.userdetails.User user) {
+        followService.deleteFollowing(user.getUsername(), userId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

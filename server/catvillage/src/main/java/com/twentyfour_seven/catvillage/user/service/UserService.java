@@ -49,6 +49,9 @@ public class UserService {
     public User updateUser(User updateData, User loginUser) {
         verifiedExistedName(updateData.getName());
         updateData.setPassword(passwordEncoder.encode(updateData.getPassword()));
+        updateData.setFollowerCount(null);
+        updateData.setFollowingCount(null);
+        updateData.setContentCount(null);
         User updateUser = beanUtils.copyNonNullProperties(updateData, loginUser);
         return userRepository.save(updateUser);
     }
