@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.twentyfour_seven.catvillage.cat.entity.Cat;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -11,13 +12,14 @@ import java.util.List;
 
 @Entity(name = "CAT_INFO")
 @Getter
+@NoArgsConstructor
 public class CatInfo {
     @Id
     @Column(name = "CAT_INFO_ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long catInfoId;
 
-    @Column(name = "KOR_NAME", nullable = false, length = 20)
+    @Column(name = "KOR_NAME", nullable = false, length = 20, unique = true)
     private String korName;
 
     @Column(name = "ENG_NAME", length = 20)
