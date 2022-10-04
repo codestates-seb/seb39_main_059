@@ -13,10 +13,7 @@ import com.twentyfour_seven.catvillage.dto.MultiBoardResponseDto;
 import com.twentyfour_seven.catvillage.dto.MultiResponseDto;
 import com.twentyfour_seven.catvillage.feed.dto.*;
 import com.twentyfour_seven.catvillage.security.dto.TokenDto;
-import com.twentyfour_seven.catvillage.user.dto.UserGetResponseDto;
-import com.twentyfour_seven.catvillage.user.dto.UserMyInfoDto;
-import com.twentyfour_seven.catvillage.user.dto.UserPatchResponseDto;
-import com.twentyfour_seven.catvillage.user.dto.UserPostResponseDto;
+import com.twentyfour_seven.catvillage.user.dto.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
@@ -77,7 +74,10 @@ public class SwaggerConfig {
                         typeResolver.resolve(FeedCommentPostDto.class),
                         typeResolver.resolve(FeedCommentGetDto.class),
                         typeResolver.resolve(CatTagPostDto.class),
-                        typeResolver.resolve(CatTagResponseDto.class)
+                        typeResolver.resolve(CatTagResponseDto.class),
+                        typeResolver.resolve(FollowGetResponseDto.class),
+                        typeResolver.resolve(FollowerResponseDto.class),
+                        typeResolver.resolve(FollowingResponseDto.class)
                 )
 //                .useDefaultResponseMessages(true)
                 .useDefaultResponseMessages(false)

@@ -1,10 +1,7 @@
 package com.twentyfour_seven.catvillage.user.controller;
 
 import com.twentyfour_seven.catvillage.dto.MultiResponseDto;
-import com.twentyfour_seven.catvillage.user.dto.UserGetResponseDto;
-import com.twentyfour_seven.catvillage.user.dto.UserMyInfoDto;
-import com.twentyfour_seven.catvillage.user.dto.UserPatchDto;
-import com.twentyfour_seven.catvillage.user.dto.UserPatchResponseDto;
+import com.twentyfour_seven.catvillage.user.dto.*;
 import com.twentyfour_seven.catvillage.user.entity.Follow;
 import com.twentyfour_seven.catvillage.user.entity.User;
 import com.twentyfour_seven.catvillage.user.mapper.FollowMapper;
@@ -165,5 +162,31 @@ public class UserController {
                                              @AuthenticationPrincipal org.springframework.security.core.userdetails.User user) {
         followService.deleteFollowing(user.getUsername(), userId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @Operation(summary = "유저 팔로잉 조회",
+            description = "유저의 팔로잉 목록을 조회한다.",
+            responses = {
+            @ApiResponse(responseCode = "200", description = "유저 팔로잉 목록 조회 성공", content = @Content(schema = @Schema(implementation = FollowingResponseDto.class))),
+            @ApiResponse(responseCode = "404", description = "존재하지 않는 유저")
+            })
+    @GetMapping("/{users-id}/followings")
+    public ResponseEntity<?> getFollowings(@PathVariable("users-id") Long userId) {
+        return new ResponseEntity<>(
+                new FollowingResponseDto(followMapper.followToFollowingGetResponseDto(userService.findUser(userId))),
+                HttpStatus.OK);
+    }
+
+    @Operation(summary = "유저 팔로워 조회",
+            description = "유저의 팔로워 목록을 조회한다.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "유저 팔로워 목록 조회 성공", content = @Content(schema = @Schema(implementation = FollowerResponseDto.class))),
+                    @ApiResponse(responseCode = "404", description = "존재하지 않는 유저")
+            })
+    @GetMapping("/{users-id}/followers")
+    public ResponseEntity<?> getFollowers(@PathVariable("users-id") Long userId) {
+        return new ResponseEntity<>(
+                new FollowerResponseDto(followMapper.followToFollowerGetResponseDto(userService.findUser(userId))),
+                HttpStatus.OK);
     }
 }
