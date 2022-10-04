@@ -5,6 +5,8 @@ export interface Feeds {
   pageSize: number
   totalElements: number
   totalPages: number
+  hasMoreFeed?: boolean
+  isLoading?: boolean
 }
 
 export interface Feed {
