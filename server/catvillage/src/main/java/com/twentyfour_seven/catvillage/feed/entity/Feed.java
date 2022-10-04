@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.twentyfour_seven.catvillage.audit.DateTable;
 import com.twentyfour_seven.catvillage.cat.entity.Cat;
+import com.twentyfour_seven.catvillage.common.like.Like;
 import com.twentyfour_seven.catvillage.common.picture.entity.Picture;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -49,11 +50,9 @@ public class Feed extends DateTable {
     @JsonManagedReference
     private List<Picture> pictures = new ArrayList<>();
 
-    // TODO: Like 구현 후 주석 제거 필요
-//    @Setter
-//    @OneToMany(mappedBy = "feedId")
-//    @JsonManagedReference
-//    private List<Like> likes = new ArrayList<>();
+    @OneToMany(mappedBy = "feed", cascade = CascadeType.REMOVE)
+    @JsonManagedReference
+    private List<Like> likes = new ArrayList<>();
 
     public Feed(String body) {
         this.body = body;
