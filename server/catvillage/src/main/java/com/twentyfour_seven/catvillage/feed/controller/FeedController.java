@@ -207,7 +207,7 @@ public class FeedController {
 
     @Operation(summary = "냥이생활 피드에 좋아요 추가", description = "로그인한 유저 정보를 가져와서 해당 피드에 좋아요를 추가합니다.",
             responses = {
-                    @ApiResponse(responseCode = "200", description = "좋야요 등록 성공"),
+                    @ApiResponse(responseCode = "201", description = "좋야요 등록 성공"),
                     @ApiResponse(responseCode = "404", description = "존재하지 않는 피드"),
                     @ApiResponse(responseCode = "409", description = "이미 좋아요가 존재")
             })
@@ -215,7 +215,7 @@ public class FeedController {
     public ResponseEntity postLikeInFeed(@PathVariable("feeds-id") @Positive long feedId,
                                          @AuthenticationPrincipal User user) {
         feedService.addLike(feedId, user.getUsername());
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @Operation(summary = "냥이생활 피드에 좋아요 삭제", description = "로그인한 유저 정보를 가져와서 해당 피드에 좋아요를 삭제합니다.",
