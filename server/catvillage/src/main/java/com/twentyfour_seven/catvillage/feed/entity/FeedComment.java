@@ -1,14 +1,18 @@
 package com.twentyfour_seven.catvillage.feed.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.twentyfour_seven.catvillage.audit.DateTable;
 import com.twentyfour_seven.catvillage.cat.entity.Cat;
+import com.twentyfour_seven.catvillage.common.like.Like;
 import com.twentyfour_seven.catvillage.user.entity.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity(name = "FEED_COMMENT")
 @Getter
@@ -44,11 +48,9 @@ public class FeedComment extends DateTable {
     @JsonBackReference
     private Cat cat;
 
-    // TODO: Like 구현 후 주석 제거 필요
-//    @Setter
-//    @OneToMany(mappedBy = "feedCommentId")
-//    @JsonManagedReference
-//    private List<Like> likes = new ArrayList<>();
+    @OneToMany(mappedBy = "feedComment", cascade = CascadeType.REMOVE)
+    @JsonManagedReference
+    private List<Like> likes = new ArrayList<>();
 
     public FeedComment(String body) {
         this.body = body;
