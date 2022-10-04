@@ -28,7 +28,7 @@ public class CatPostDto {
     @ApiModelProperty(value = "고양이 탄생일", example = "27")
     private int birthDay;
 
-    @ApiModelProperty(value = "고양이 품종명(등록되어 있는 품종만 선택만 저장가능)", example = "셀커크렉스")
+    @ApiModelProperty(value = "고양이 품종명(등록되어 있는 품종만 선택 및 저장가능)", example = "셀커크렉스")
     private String breed;
 
     @ApiModelProperty(value = "고양이 성별", example = "m")
