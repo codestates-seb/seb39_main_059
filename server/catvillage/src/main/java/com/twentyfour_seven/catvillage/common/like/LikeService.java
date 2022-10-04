@@ -38,6 +38,11 @@ public class LikeService {
     }
 
     public void addLikeInFeedComment(User user, FeedComment comment) {
+        // 유저가 이미 좋아요 누른 상태면 LIKE EXISTS 에러 발생
+        if (likeRepository.existsByUserAndFeedComment(user, comment)) {
+            throw new BusinessLogicException(ExceptionCode.LIKE_EXISTS);
+        }
+
         Like like = Like.builder().user(user).feedComment(comment).build();
         likeRepository.save(like);
     }
@@ -66,8 +71,12 @@ public class LikeService {
     }
 
     public void deleteLikeInFeedComment(User user, FeedComment feedComment) {
-        Like like = Like.builder().user(user).feedComment(feedComment).build();
-        likeRepository.delete(like);
+        // 유저가 좋아요 상태가 아니면 LIKE NOT FOUND 에러 발생
+        if (!likeRepository.existsByUserAndFeedComment(user, feedComment)) {
+            throw new BusinessLogicException(ExceptionCode.LIKE_NOT_FOUND);
+        }
+
+        likeRepository.deleteByUserAndFeedComment(user, feedComment);
     }
 
     public void deleteLikeInBoardComment(User user, BoardComment boardComment) {

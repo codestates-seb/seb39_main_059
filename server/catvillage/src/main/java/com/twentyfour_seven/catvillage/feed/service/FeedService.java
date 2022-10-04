@@ -170,7 +170,7 @@ public class FeedService {
         User findUser = userService.findVerifiedEmail(email);
 
         // like 삭제
-        likeService.deleteLikeInFeed(findUser,findFeed);
+        likeService.deleteLikeInFeed(findUser, findFeed);
 
         // feed 에 likeCount 1 빼서 저장
         findFeed.setLikeCount(findFeed.getLikeCount() - 1);

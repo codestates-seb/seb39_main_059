@@ -27,6 +27,7 @@ public class FeedComment extends DateTable {
     @Column(name = "BODY", length = 500, nullable = false)
     private String body;
 
+    @Setter
     @Column(name = "LIKE_COUNT", nullable = false)
     private long likeCount;
 

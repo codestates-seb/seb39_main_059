@@ -2,6 +2,7 @@ package com.twentyfour_seven.catvillage.common.like;
 
 import com.twentyfour_seven.catvillage.board.entity.Board;
 import com.twentyfour_seven.catvillage.feed.entity.Feed;
+import com.twentyfour_seven.catvillage.feed.entity.FeedComment;
 import com.twentyfour_seven.catvillage.user.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -12,4 +13,8 @@ public interface LikeRepository extends JpaRepository<Like, Long> {
 
     boolean existsByUserAndBoard(User user, Board board);
     void deleteByUserAndBoard(User user, Board board);
+
+    boolean existsByUserAndFeedComment(User user, FeedComment comment);
+
+    void deleteByUserAndFeedComment(User user, FeedComment feedComment);
 }
