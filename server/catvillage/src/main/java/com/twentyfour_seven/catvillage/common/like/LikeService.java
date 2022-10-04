@@ -9,8 +9,6 @@ import com.twentyfour_seven.catvillage.feed.entity.FeedComment;
 import com.twentyfour_seven.catvillage.user.entity.User;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Service
 public class LikeService {
     private final LikeRepository likeRepository;
@@ -21,10 +19,9 @@ public class LikeService {
 
     public void addLikeInFeed(User user, Feed feed) {
         // 유저가 피드에 이미 좋아요 누른 상태면 LIKE EXISTS 에러 발생
-        Optional<Like> optionalLike = likeRepository.findByUserAndFeed(user, feed);
-        optionalLike.ifPresent(a -> {
+        if (likeRepository.existsByUserAndFeed(user, feed)) {
             throw new BusinessLogicException(ExceptionCode.LIKE_EXISTS);
-        });
+        }
 
         Like like = Like.builder().user(user).feed(feed).build();
         likeRepository.save(like);
@@ -47,10 +44,11 @@ public class LikeService {
 
     public void deleteLikeInFeed(User user, Feed feed) {
         // 유저가 피드에 좋아요 상태가 아니면 LIKE NOT FOUND 에러 발생
-        Optional<Like> optionalLike = likeRepository.findByUserAndFeed(user, feed);
-        Like findLike = optionalLike.orElseThrow(() -> new BusinessLogicException(ExceptionCode.LIKE_NOT_FOUND));
+        if (!likeRepository.existsByUserAndFeed(user, feed)) {
+            throw new BusinessLogicException(ExceptionCode.LIKE_NOT_FOUND);
+        }
 
-        likeRepository.delete(findLike);
+        likeRepository.deleteByUserAndFeed(user, feed);
     }
 
     public void deleteLikeInBoard(User user, Board board) {
