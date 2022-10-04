@@ -12,6 +12,6 @@ public class Disease {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long diseaseId;
 
-    @Column(name = "NAME", nullable = false, length = 30)
+    @Column(name = "NAME", nullable = false, length = 30, unique = true)
     private String name;
 }
