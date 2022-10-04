@@ -7,6 +7,7 @@ public enum ExceptionCode {
     MEMBER_EMAIL_EXISTS(409, "Email address already in use"),
     MEMBER_NAME_EXISTS(409, "Name already in use"),
     BREED_NOT_FOUND(404, "Breed not found"),
+    BREED_EXISTS(409, "Breed already exists"),
     CAT_NOT_FOUND(404, "Cat not found"),
     PICTURE_NOT_FOUND(404, "Picture not found"),
     BOARD_NOT_FOUND(404, "Board not found"),
