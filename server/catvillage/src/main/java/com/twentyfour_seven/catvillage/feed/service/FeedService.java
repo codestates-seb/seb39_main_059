@@ -2,6 +2,7 @@ package com.twentyfour_seven.catvillage.feed.service;
 
 import com.twentyfour_seven.catvillage.cat.entity.Cat;
 import com.twentyfour_seven.catvillage.cat.service.CatService;
+import com.twentyfour_seven.catvillage.common.like.LikeService;
 import com.twentyfour_seven.catvillage.common.picture.entity.Picture;
 import com.twentyfour_seven.catvillage.common.picture.service.PictureService;
 import com.twentyfour_seven.catvillage.exception.BusinessLogicException;
@@ -28,17 +29,20 @@ public class FeedService {
     private final PictureService pictureService;
     private final UserService userService;
     private final FollowService followService;
+    private final LikeService likeService;
 
     public FeedService(FeedRepository feedRepository,
                        CatService catService,
                        PictureService pictureService,
                        UserService userService,
-                       FollowService followService) {
+                       FollowService followService,
+                       LikeService likeService) {
         this.feedRepository = feedRepository;
         this.catService = catService;
         this.pictureService = pictureService;
         this.userService = userService;
         this.followService = followService;
+        this.likeService = likeService;
     }
 
     public Feed createFeed(Feed feed, long catId, String email) {
@@ -145,5 +149,31 @@ public class FeedService {
             throw new BusinessLogicException(ExceptionCode.INVALID_USER);
         }
         feedRepository.delete(findFeed);
+    }
+
+    public void addLike(long feedId, String email) {
+        // feed id 로 존재하는 피드인지 확인하고 피드정보 가져옴
+        Feed findFeed = findVerifiedFeed(feedId);
+        User findUser = userService.findVerifiedEmail(email);
+
+        // like 추가
+        likeService.addLikeInFeed(findUser, findFeed);
+
+        // feed 에 likeCount 1 올려서 저장
+        findFeed.setLikeCount(findFeed.getLikeCount() + 1);
+        feedRepository.save(findFeed);
+    }
+
+    public void deleteLike(long feedId, String email) {
+        // feed id 로 존재하는 피드인지 확인하고 피드 정보 가져옴
+        Feed findFeed = findVerifiedFeed(feedId);
+        User findUser = userService.findVerifiedEmail(email);
+
+        // like 삭제
+        likeService.deleteLikeInFeed(findUser, findFeed);
+
+        // feed 에 likeCount 1 빼서 저장
+        findFeed.setLikeCount(findFeed.getLikeCount() - 1);
+        feedRepository.save(findFeed);
     }
 }

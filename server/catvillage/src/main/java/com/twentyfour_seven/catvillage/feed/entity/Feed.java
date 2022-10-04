@@ -27,12 +27,15 @@ public class Feed extends DateTable {
     @Column(name = "BODY", length = 1000)
     private String body;
 
+    @Setter
     @Column(name = "LIKE_COUNT", nullable = false)
     private long likeCount;
 
+    @Setter
     @Column(name = "VIEW_COUNT", nullable = false)
     private long viewCount;
 
+    @Setter
     @Column(name = "COMMENT_COUNT", nullable = false)
     private long commentCount;
 
