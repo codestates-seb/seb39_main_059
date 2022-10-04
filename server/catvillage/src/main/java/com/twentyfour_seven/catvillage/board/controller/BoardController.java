@@ -223,4 +223,32 @@ public class BoardController {
         boardService.deleteLike(boardId, findUser);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
+    @Operation(summary = "집사생활 댓글에 좋아요 추가", description = "로그인한 유저 정보를 가져와서 해당 댓글에 좋아요를 추가합니다.",
+            responses = {
+                    @ApiResponse(responseCode = "201", description = "좋야요 등록 성공"),
+                    @ApiResponse(responseCode = "404", description = "존재하지 않는 댓글"),
+                    @ApiResponse(responseCode = "409", description = "이미 좋아요가 존재")
+            })
+    @PostMapping("/comments/{comments-id}/like")
+    public ResponseEntity postLikeInComment(@PathVariable("comments-id") @Positive long commentId,
+                                          @AuthenticationPrincipal org.springframework.security.core.userdetails.User user) {
+        User findUser = userService.findVerifiedEmail(user.getUsername());
+        boardCommentService.addLike(commentId, findUser);
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    @Operation(summary = "집사생활 댓글에 좋아요 삭제", description = "로그인한 유저 정보를 가져와서 해당 댓글에 좋아요를 삭제합니다.",
+            responses = {
+                    @ApiResponse(responseCode = "204", description = "좋야요 삭제 성공"),
+                    @ApiResponse(responseCode = "404", description = "존재하지 않는 댓글"),
+                    @ApiResponse(responseCode = "404", description = "존재하지 않는 좋아요")
+            })
+    @DeleteMapping("/comments/{comments-id}/like")
+    public ResponseEntity deleteLikeInComment(@PathVariable("comments-id") @Positive long commentId,
+                                           @AuthenticationPrincipal org.springframework.security.core.userdetails.User user) {
+        User findUser = userService.findVerifiedEmail(user.getUsername());
+        boardCommentService.deleteLike(commentId, findUser);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }
