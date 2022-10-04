@@ -2,10 +2,14 @@ package com.twentyfour_seven.catvillage.common.like;
 
 import com.twentyfour_seven.catvillage.board.entity.Board;
 import com.twentyfour_seven.catvillage.board.entity.BoardComment;
+import com.twentyfour_seven.catvillage.exception.BusinessLogicException;
+import com.twentyfour_seven.catvillage.exception.ExceptionCode;
 import com.twentyfour_seven.catvillage.feed.entity.Feed;
 import com.twentyfour_seven.catvillage.feed.entity.FeedComment;
 import com.twentyfour_seven.catvillage.user.entity.User;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class LikeService {
@@ -16,6 +20,12 @@ public class LikeService {
     }
 
     public void addLikeInFeed(User user, Feed feed) {
+        // 유저가 피드에 이미 좋아요 누른 상태면 LIKE EXISTS 에러 발생
+        Optional<Like> optionalLike = likeRepository.findByUserAndFeed(user, feed);
+        optionalLike.ifPresent(a -> {
+            throw new BusinessLogicException(ExceptionCode.LIKE_EXISTS);
+        });
+
         Like like = Like.builder().user(user).feed(feed).build();
         likeRepository.save(like);
     }
@@ -36,8 +46,11 @@ public class LikeService {
     }
 
     public void deleteLikeInFeed(User user, Feed feed) {
-        Like like = Like.builder().user(user).feed(feed).build();
-        likeRepository.delete(like);
+        // 유저가 피드에 좋아요 상태가 아니면 LIKE NOT FOUND 에러 발생
+        Optional<Like> optionalLike = likeRepository.findByUserAndFeed(user, feed);
+        Like findLike = optionalLike.orElseThrow(() -> new BusinessLogicException(ExceptionCode.LIKE_NOT_FOUND));
+
+        likeRepository.delete(findLike);
     }
 
     public void deleteLikeInBoard(User user, Board board) {
