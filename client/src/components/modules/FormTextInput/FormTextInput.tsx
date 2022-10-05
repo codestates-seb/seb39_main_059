@@ -20,25 +20,6 @@ export interface Props {
   onFocusOut?: (e: React.FocusEvent<HTMLInputElement>) => void
 }
 
-// const ContentInput: FC<Props> = ({ inputName, ...props }) => {
-//   const textRef = useRef<HTMLTextAreaElement>(null)
-//   const handleResizeHeight = useCallback(() => {
-//     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-//     textRef.current!.style.height = 'auto'
-//     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-//     textRef.current!.style.height = `${textRef.current!.scrollHeight}px`
-//   }, [])
-//   return (
-//     <S.TextArea
-//       ref={textRef}
-//       name={inputName}
-//       {...props}
-//       onInput={handleResizeHeight}
-//       // rows={10}
-//     />
-//   )
-// }
-
 const ContentInput: FC<Props> = forwardRef(({ inputName, ...props }, ref) => {
   const textRef = useRef<HTMLTextAreaElement>(null)
   useImperativeHandle(ref, () => textRef.current)
