@@ -14,7 +14,7 @@ public interface UserMapper {
             return null;
         } else {
             String encodedPassword = passwordEncoder.encode(requestBody.getPassword());
-            String profileImage = requestBody.getProfileImage().isEmpty() ?
+            String profileImage = requestBody.getProfileImage() == null || requestBody.getProfileImage().isEmpty() ?
                     "https://catvillage-image-server.s3.ap-northeast-2.amazonaws.com/catvillage/images/252c5f03-4c0a-4f2a-8874-b928e7dde911-default-user-image.png" :
                     requestBody.getProfileImage();
             return User.builder()
