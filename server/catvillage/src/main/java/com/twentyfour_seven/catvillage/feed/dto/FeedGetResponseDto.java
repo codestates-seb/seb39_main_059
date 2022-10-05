@@ -12,22 +12,23 @@ import java.util.List;
 public class FeedGetResponseDto {
     private long feedId;
     private long catId;
+    private String name;
+    private String profileImage;
     private List<PictureDto> pictures;
     private String body;
     private long likeCount;
-    private long viewCount;
     private long commentCount;
     private List<FeedTagDto> tags;
     private List<FeedCommentGetDto> comments;
 
     @Builder
-
-    public FeedGetResponseDto(long feedId, long catId, String body, long likeCount, long viewCount, long commentCount) {
+    public FeedGetResponseDto(long feedId, long catId, String name, String profileImage, String body, long likeCount, long commentCount) {
         this.feedId = feedId;
         this.catId = catId;
+        this.name = name;
+        this.profileImage = profileImage;
         this.body = body;
         this.likeCount = likeCount;
-        this.viewCount = viewCount;
         this.commentCount = commentCount;
     }
 }

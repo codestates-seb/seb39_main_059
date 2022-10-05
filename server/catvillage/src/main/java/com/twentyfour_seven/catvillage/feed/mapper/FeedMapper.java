@@ -52,9 +52,10 @@ public interface FeedMapper {
         return FeedGetResponseDto.builder()
                 .feedId(feed.getFeedId())
                 .catId(feed.getCat().getCatId())
+                .name(feed.getCat().getName())
+                .profileImage(feed.getCat().getImage())
                 .body(feed.getBody())
                 .likeCount(feed.getLikeCount())
-                .viewCount(feed.getViewCount())
                 .commentCount(feed.getCommentCount())
                 .build();
     }

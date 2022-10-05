@@ -81,10 +81,11 @@ public class FeedController {
             })
     @GetMapping("/{feeds-id}")
     public ResponseEntity getFeed(@PathVariable("feeds-id") @Positive long feedId) {
-        Feed feed = feedService.findFeed(feedId);
-        List<FeedTag> feedTags = feedTagService.findFeedTags(feed);
-        List<FeedComment> comments = feedCommentService.findComments(feed);
-        FeedGetResponseDto response = feedMapper.feedToFeedGetResponseDto(feed);
+        Feed findFeed = feedService.findFeed(feedId);
+        List<FeedTag> feedTags = feedTagService.findFeedTags(findFeed);
+        List<FeedComment> comments = feedCommentService.findComments(findFeed);
+
+        FeedGetResponseDto response = feedMapper.feedToFeedGetResponseDto(findFeed);
         response.setTags(feedTagMapper.feedTagsToFeedTagDtos(feedTags));
         response.setComments(feedCommentMapper.feedCommentsToFeedCommentGetDtos(comments));
         return new ResponseEntity<>(response, HttpStatus.OK);
