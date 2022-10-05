@@ -9,14 +9,14 @@ import { useAppDispatch, useAppSelector } from '@/redux/store'
 import { getFeedDetailAsync } from '@/redux/actions/FeedDetailAction'
 
 const FeedDetail = () => {
-  const { feedId } = useParams()
+  const { id } = useParams()
   const dispatch = useAppDispatch()
   const { body, name, profileImage, pictures } = useAppSelector(
     state => state.feedDetail.feedDetail,
   )
 
   useEffect(() => {
-    dispatch(getFeedDetailAsync(feedId as string))
+    dispatch(getFeedDetailAsync(id as string))
   }, [dispatch])
 
   return (
