@@ -11,6 +11,7 @@ import com.twentyfour_seven.catvillage.feed.service.FeedCommentService;
 import com.twentyfour_seven.catvillage.feed.service.FeedService;
 import com.twentyfour_seven.catvillage.feed.service.FeedTagService;
 import com.twentyfour_seven.catvillage.user.dto.FollowFeedGetDto;
+import com.twentyfour_seven.catvillage.user.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -80,13 +81,23 @@ public class FeedController {
                     @ApiResponse(responseCode = "404", description = "존재하지 않는 냥이생활 피드")
             })
     @GetMapping("/{feeds-id}")
-    public ResponseEntity getFeed(@PathVariable("feeds-id") @Positive long feedId) {
-        Feed feed = feedService.findFeed(feedId);
-        List<FeedTag> feedTags = feedTagService.findFeedTags(feed);
-        List<FeedComment> comments = feedCommentService.findComments(feed);
-        FeedGetResponseDto response = feedMapper.feedToFeedGetResponseDto(feed);
+    public ResponseEntity getFeed(@PathVariable("feeds-id") @Positive long feedId,
+                                  @AuthenticationPrincipal User user) {
+        Feed findFeed = feedService.findFeed(feedId);
+        List<FeedTag> feedTags = feedTagService.findFeedTags(findFeed);
+        List<FeedComment> comments = feedCommentService.findComments(findFeed);
+
+        FeedGetResponseDto response = feedMapper.feedToFeedGetResponseDto(findFeed);
+
+        // 로그인되어 있다면 유저가 해당 피드에 좋아요를 눌렀는지 확인
+        if (user != null) {
+            boolean isLike = feedService.feedIsLike(findFeed, user.getUsername());
+            response.setIsLike(isLike);
+        }
+
         response.setTags(feedTagMapper.feedTagsToFeedTagDtos(feedTags));
         response.setComments(feedCommentMapper.feedCommentsToFeedCommentGetDtos(comments));
+
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
@@ -99,21 +110,29 @@ public class FeedController {
                                    @RequestParam @Positive int size,
                                    @AuthenticationPrincipal User user) {
         // page 와 size 정보를 토대로 Page 생성
-        Page<Feed> feeds = feedService.findFeeds(page - 1, size);
+        Page<Feed> feedPage = feedService.findFeeds(page - 1, size);
+
+        String email = null;
+        if (user != null) {
+            email = user.getUsername();
+        }
+
+        // feed, userId로 feed dto 리스트로 반환
+        List<FeedMultiGetResponseDto> feedResponseDtos =
+                feedMapper.feedsToFeedMultiGetResponseDtos(feedPage.getContent(), email);
 
         // Page 의 feed 컨텐츠를 형식에 맞는 Dto 로 매핑
-        List<FeedMultiGetResponseDto> feedResponseDto = feedMapper.feedsToFeedMultiGetResponseDtos(feeds.getContent());
 
-        // TODO: Like 구현 후 로그인한 유저가 글마다 좋아요를 눌렀는지 여부 feedResponseDto 에 반영 로직 필요 !
 
         // 응답 객체 생성
-        FeedMultiResponseDto response = new FeedMultiResponseDto(feedResponseDto, feeds);
+        FeedMultiResponseDto response = new FeedMultiResponseDto(feedResponseDtos, feedPage);
 
         // 로그인 정보가 있다면 유저가 팔로우한 유저의 고양이 정보 가져오기
         if (user != null) {
-            List<FollowFeedGetDto> follows = feedService.findFollows(user).stream().map(
+            List<FollowFeedGetDto> follows = feedService.findFollows(email).stream().map(
                     cat -> new FollowFeedGetDto(cat.getImage(), cat.getCatId())
             ).collect(Collectors.toList());
+
             response.setFollow(follows);
         }
 

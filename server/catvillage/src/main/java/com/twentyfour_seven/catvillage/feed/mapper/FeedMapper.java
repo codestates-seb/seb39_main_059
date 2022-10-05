@@ -12,6 +12,7 @@ import org.mapstruct.ReportingPolicy;
 import org.springframework.data.domain.Page;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
@@ -52,22 +53,44 @@ public interface FeedMapper {
         return FeedGetResponseDto.builder()
                 .feedId(feed.getFeedId())
                 .catId(feed.getCat().getCatId())
+                .name(feed.getCat().getName())
+                .profileImage(feed.getCat().getImage())
                 .body(feed.getBody())
                 .likeCount(feed.getLikeCount())
-                .viewCount(feed.getViewCount())
-                .commentCount(feed.getCommentCount())
                 .build();
     }
 
     List<FeedGetResponseDto> feedsToFeedGetResponseDtos(List<Feed> feeds);
 
-    default FeedMultiGetResponseDto feedToFeedMultiGetResponseDto(Feed feed) {
+    default FeedMultiGetResponseDto feedToFeedMultiGetResponseDto(Feed feed, String email) {
         FeedMultiGetResponseDto feedMultiGetResponseDto =  new FeedMultiGetResponseDto();
         feedMultiGetResponseDto.setFeedId(feed.getFeedId());
+
+        // 사진 리스트에서 첫번쨰 사진 가져와서 대표사진으로 저장
         if(!feed.getPictures().isEmpty()) {
             feedMultiGetResponseDto.setImage(feed.getPictures().get(0).getPath());
         }
+
+        // 피드마다 좋아요 여부 저장
+        boolean isLike = false;
+        if (email != null) {
+            isLike = feed.getLikes().stream().anyMatch(like -> like.getUser().getEmail().equals(email));
+        }
+        feedMultiGetResponseDto.setIsLike(isLike);
+
         return feedMultiGetResponseDto;
     }
-    List<FeedMultiGetResponseDto> feedsToFeedMultiGetResponseDtos(List<Feed> feeds);
+    default List<FeedMultiGetResponseDto> feedsToFeedMultiGetResponseDtos(List<Feed> feeds, String email) {
+        if (feeds == null) {
+            return null;
+        }
+
+        List<FeedMultiGetResponseDto> list = new ArrayList<>();
+
+        for (Feed feed : feeds) {
+            list.add(feedToFeedMultiGetResponseDto(feed, email));
+        }
+
+        return list;
+    }
 }

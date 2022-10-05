@@ -92,4 +92,8 @@ public class LikeService {
 
         likeRepository.deleteByUserAndBoardComment(user, boardComment);
     }
+
+    public boolean findExistLike(Feed feed, User user) {
+        return likeRepository.existsByUserAndFeed(user, feed);
+    }
 }

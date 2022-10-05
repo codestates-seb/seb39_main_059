@@ -18,10 +18,13 @@ public interface FeedCommentMapper {
         if (feedComment == null) {
             return null;
         }
+
+        // 유저 프로필로 작성한 경우와 고양이 프로필로 작성한 경우 분리
         if (feedComment.getCat() == null) {
             return FeedCommentGetDto.builder()
                     .feedCommentId(feedComment.getFeedCommentId())
-                    .feedId(feedComment.getFeed().getFeedId())
+                    .profileImage(feedComment.getUser().getProfileImage())
+                    .name(feedComment.getUser().getName())
                     .userId(feedComment.getUser().getUserId())
                     .catId(null)
                     .body(feedComment.getBody())
@@ -29,7 +32,8 @@ public interface FeedCommentMapper {
         } else {
             return FeedCommentGetDto.builder()
                     .feedCommentId(feedComment.getFeedCommentId())
-                    .feedId(feedComment.getFeed().getFeedId())
+                    .name(feedComment.getCat().getName())
+                    .profileImage(feedComment.getCat().getImage())
                     .userId(null)
                     .catId(feedComment.getCat().getCatId())
                     .body(feedComment.getBody())

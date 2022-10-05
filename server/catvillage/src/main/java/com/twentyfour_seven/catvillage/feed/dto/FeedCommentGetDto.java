@@ -9,9 +9,10 @@ import lombok.*;
 @AllArgsConstructor
 public class FeedCommentGetDto {
     private long feedCommentId;
-    private long feedId;
     private Long userId;
     private Long catId;
+    private String profileImage;
+    private String name;
     private String body;
     private long likeCount;
 }
