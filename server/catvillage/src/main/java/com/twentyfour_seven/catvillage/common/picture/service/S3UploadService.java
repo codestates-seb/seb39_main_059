@@ -14,7 +14,7 @@ import java.util.UUID;
 @Service
 public class S3UploadService {
 
-    private static final int CAPACITY_LIMIT_BYTE = 4194304;
+    private static final int CAPACITY_LIMIT_BYTE = 1024 * 1024 * 4;
 
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
@@ -29,7 +29,7 @@ public class S3UploadService {
         String s3FileName = filePath + UUID.randomUUID() + "-" + multipartFile.getOriginalFilename();
 
         // 파일의 크기가 용량제한을 넘을 시 예외를 던진다.
-        if (multipartFile.getInputStream().available() > CAPACITY_LIMIT_BYTE) {
+        if (multipartFile.getSize() > CAPACITY_LIMIT_BYTE) {
             throw new RuntimeException("이미지가 4M 제한을 넘어갑니다.");
         }
         // S3에 알려줄 파일 메타 데이터 정보에 파일 크기를 담는다.
