@@ -88,8 +88,8 @@ public class FeedService {
         return feedRepository.findAll(pageRequest);
     }
 
-    public List<Cat> findFollows(org.springframework.security.core.userdetails.User user) {
-        User loginUser = userService.findVerifiedEmail(user.getUsername());
+    public List<Cat> findFollows(String email) {
+        User loginUser = userService.findVerifiedEmail(email);
         List<User> followUsers = followService.findFollowsInFeed(loginUser);
         List<Cat> followCats = new ArrayList<>();
         followUsers.forEach(
@@ -175,5 +175,10 @@ public class FeedService {
         // feed 에 likeCount 1 빼서 저장
         findFeed.setLikeCount(findFeed.getLikeCount() - 1);
         feedRepository.save(findFeed);
+    }
+
+    public boolean feedIsLike(Feed feed, String email) {
+        User findUser = userService.findVerifiedEmail(email);
+        return likeService.findExistLike(feed, findUser);
     }
 }
