@@ -1,11 +1,10 @@
 <div align="center">
 <br><br><br>
-<h1>임시 로고</h1>
-  <img src="https://user-images.githubusercontent.com/104193237/190061280-13183db5-7966-4d27-b126-0ad643355665.png" width="300" height="300">
-<br><br><br>
-  
+
 <h1>😻냥빌리지(Cat-Village)</h1>
 프로젝트 기간 : 2022. 09. 07 (수) ~ 2022. 10. 12 (수)
+  
+![냥빌리지 로고](https://user-images.githubusercontent.com/96106122/194071917-8c1af41f-a774-4042-a3de-d83340fdf864.png)
 
 <br /> <br /> <br />
 
