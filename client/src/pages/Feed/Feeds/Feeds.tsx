@@ -3,6 +3,8 @@ import Image from '@Atoms/Image'
 import SvgButton from '@Atoms/SvgButton'
 import Avatar from '@Atoms/Avatar'
 import { useEffect } from 'react'
+import { Link } from 'react-router-dom'
+import { FEED_PATH } from '@Routes/feed.routes'
 import * as S from './Feeds.style'
 import { SvgButtonCssProp, AvatarCssProp } from './Feeds.style'
 import { useAppDispatch, useAppSelector } from '@/redux/store'
@@ -45,10 +47,12 @@ const Feeds = () => {
         {feed &&
           feed.map(item => {
             return (
-              <S.FeedItem key={item.feedId}>
-                <Image src={item.image} />
-                <SvgButton icon="HeartIcon" cssProp={SvgButtonCssProp} />
-              </S.FeedItem>
+              <Link to={`/${FEED_PATH}/${item.feedId}`} key={item.feedId}>
+                <S.FeedItem>
+                  <Image src={item.image} />
+                  <SvgButton icon="HeartIcon" cssProp={SvgButtonCssProp} />
+                </S.FeedItem>
+              </Link>
             )
           })}
       </S.FeedBox>
