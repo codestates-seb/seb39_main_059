@@ -1,57 +1,139 @@
+import { FC, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
-import Button from '@Atoms/Button'
+import { Back, Edit } from '@Assets/icons'
+import { useSelector } from 'react-redux'
+import { SubmitHandler, useForm } from 'react-hook-form'
 import { CatspiceList as CatBreedList, CatWeightList } from '@/constant'
 import * as S from './Cat.style'
+import { useAppSelector } from '@/redux/store'
 
-const Cat = () => {
+interface FormValue {
+  image: string
+  name: string
+  weight: string
+  gender: string
+  birth: string
+  breed: string
+  description: string
+}
+
+const Cat: FC = () => {
   const navigate = useNavigate()
+  const auth = useAppSelector(state => state.user)
+  // console.log(auth)
+
+  const dateRef = useRef<HTMLInputElement>(null)
+  useEffect(() => {
+    console.log(dateRef.current)
+  }, [dateRef.current?.value])
+
+  const {
+    register,
+    handleSubmit,
+    getValues,
+    formState: { errors },
+  } = useForm<FormValue>()
+
+  const onSubmitHandler: SubmitHandler<FormValue> = data => {
+    console.log(data)
+  }
+
   return (
-    <div>
-      <div className="header">
+    <S.CatLayout>
+      <S.Header className="header">
         <button type="button" onClick={() => navigate(-1)}>
-          back
+          <Back />
         </button>
         <span>캣 프로필</span>
-        <button type="button">edit</button>
-      </div>
-      <form className="new-cat">
-        <input type="file" name="image-input" />
-        <input type="text" name="name" />
-        <input type="date" name="birth" />
-        <S.Select>
-          <option value="" disabled selected>
-            몸무게
-          </option>
-          {CatWeightList.map(weight => (
-            <option value={`${weight}`}>{`${weight} kg`}</option>
-          ))}
-        </S.Select>
-        <S.Select>
-          <option value="" disabled selected>
-            성별
-          </option>
-          <option value="male">♂︎</option>
-          <option value="female">♀︎</option>
-        </S.Select>
-        <S.Select>
-          <option value="" disabled selected>
+        <button type="button">
+          <Edit />
+        </button>
+      </S.Header>
+      <S.CatForm className="new-cat" onSubmit={handleSubmit(onSubmitHandler)}>
+        <button
+          type="button"
+          onClick={() => {
+            console.log('value=')
+            console.log(getValues())
+          }}
+        >
+          click
+        </button>
+        <S.CatImageInput
+          inputName="image-input"
+          desc="사진 교체하기"
+          required
+          {...register('image', { required: true })}
+        />
+        <S.CatNameInput
+          type="text"
+          inputName="name"
+          placeholder="이름"
+          required
+          {...register('name', { required: true })}
+        />
+        <S.CatBirthInput
+          type="date"
+          inputName="birth"
+          data-placeholder="생일"
+          required
+          {...register('birth', { required: true })}
+        />
+        <S.SelectsBox>
+          <S.Select
+            defaultValue=""
+            required
+            {...register('weight', { required: true })}
+          >
+            <option key="placeholder" value="" disabled>
+              몸무게
+            </option>
+            {CatWeightList.map(weight => (
+              <option
+                key={`${weight}`}
+                value={`${weight * 1000}`}
+              >{`${weight} kg`}</option>
+            ))}
+          </S.Select>
+          <S.Select
+            defaultValue=""
+            required
+            {...register('gender', { required: true })}
+          >
+            <option key="placeholder" value="" disabled>
+              성별
+            </option>
+            <option key="male" value="m">
+              ♂
+            </option>
+            <option key="female" value="f">
+              ♀︎
+            </option>
+          </S.Select>
+        </S.SelectsBox>
+        <S.Select
+          defaultValue=""
+          required
+          {...register('breed', { required: true })}
+        >
+          <option key="placeholder" value="" disabled>
             폼종
           </option>
           {CatBreedList.map(breed => (
-            <option value={`${breed}`}>{`${breed}`}</option>
+            <option key={breed} value={breed}>
+              {breed}
+            </option>
           ))}
         </S.Select>
-        <Button
-          color="white"
-          backgroundColor="primary"
-          fontSize="md"
-          fontWeight="bold"
-          type="submit"
-        >
-          등록하기
-        </Button>
-      </form>
-    </div>
+        <S.DescArea
+          inputName="description"
+          placeholder="고양이를 자랑해 보세요!"
+          required
+          {...register('description', { required: true })}
+        />
+        <S.SubmitButton>등록하기</S.SubmitButton>
+      </S.CatForm>
+    </S.CatLayout>
   )
 }
 export default Cat

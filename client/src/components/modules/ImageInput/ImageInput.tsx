@@ -1,5 +1,14 @@
 import { CameraIcon } from '@Assets/icons'
-import { ChangeEvent, FC, useState } from 'react'
+import Text from '@Atoms/Text'
+import {
+  ChangeEvent,
+  FC,
+  forwardRef,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from 'react'
+import { CSSProp } from 'styled-components'
 import * as S from './ImageInput.style'
 
 export interface Props {
@@ -9,9 +18,15 @@ export interface Props {
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
   /** onFocusOut handler */
   onFocusOut?: (e: React.FocusEvent<HTMLInputElement>) => void
+  desc?: string
+  cssProp?: CSSProp
+  imgCssProp?: CSSProp
 }
 
-const ImageInput: FC<Props> = ({ inputName, ...props }) => {
+const ImageInput: FC<Props> = forwardRef(({ inputName, ...props }, ref) => {
+  const inputRef = useRef(null)
+  // useImperativeHandle 은 reference를 맵핑한다.
+  useImperativeHandle(ref, () => inputRef.current)
   const [files, setFiles] = useState<File | null>(null)
   const [showImages, setShowImages] = useState<string[]>([])
   const uploadHandler = async (event: ChangeEvent<HTMLInputElement>) => {
@@ -37,8 +52,8 @@ const ImageInput: FC<Props> = ({ inputName, ...props }) => {
     if (result) setShowImages(prev => [...prev, result])
   }
   return (
-    <>
-      <S.ImgLabel htmlFor="image-input">
+    <S.ImageInputlayout cssProp={props.cssProp}>
+      <S.ImgLabel imgCssProp={props.imgCssProp} htmlFor="image-input">
         {/* click */}
         <CameraIcon />
       </S.ImgLabel>
@@ -47,6 +62,7 @@ const ImageInput: FC<Props> = ({ inputName, ...props }) => {
         id="image-input"
         name={inputName}
         onChange={uploadHandler}
+        ref={inputRef}
         {...props}
       />
       {showImages.map(src => (
@@ -54,7 +70,12 @@ const ImageInput: FC<Props> = ({ inputName, ...props }) => {
           <img src={src} alt={src} />
         </div>
       ))}
-    </>
+      {props.desc && (
+        <Text fontSize="sm" color="softGray" fontWeight="regular">
+          {props.desc}
+        </Text>
+      )}
+    </S.ImageInputlayout>
   )
-}
+})
 export default ImageInput

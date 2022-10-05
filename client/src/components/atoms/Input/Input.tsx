@@ -1,4 +1,5 @@
 import React, { FC, forwardRef, RefObject } from 'react'
+import { CSSProp } from 'styled-components'
 import * as S from './Input.style'
 
 export interface Props {
@@ -25,6 +26,7 @@ export interface Props {
     | RefObject<HTMLInputElement>
     | null
     | undefined
+  cssProp?: CSSProp
 }
 
 const Input: FC<Props> = forwardRef(({ inputName, ...props }, ref) => {
