@@ -5,7 +5,7 @@ import {
   SearchIcon,
   TabBarHeartIcon,
 } from '@Assets/icons'
-import { Link,useLocation } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import * as S from './TabBar.style'
 
 const TabBar = () => {

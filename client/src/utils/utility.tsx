@@ -18,3 +18,14 @@ export function isValidPhoneNumber(phoneNumber: string): boolean {
   const isVaild = phoneNumber.match(/^01(?:0|1|[6-9])-(?:\d{3}|\d{4})-\d{4}$/)
   return !!isVaild
 }
+
+export function getRangeArray(start: number, end: number, step?: number) {
+  const res = []
+  if (typeof step === 'undefined') {
+    step = 1
+  }
+  for (let i = start; i < end; i += step) {
+    res.push(i)
+  }
+  return res
+}

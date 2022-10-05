@@ -13,11 +13,11 @@ export const GlobalStyle = createGlobalStyle`
   }
 
   body {
-    width: 100vw;
-    height: max(100vh, 812px);
-    display: flex;
+    /* width: 100vw;
+    height: max(100vh, 812px); */
+    /* display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: center; */
   }
   
   input, textarea { 
