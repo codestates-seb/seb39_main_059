@@ -47,15 +47,15 @@ public class User extends DateTable {
 
     @Setter
     @Column(name = "CONTENT_COUNT")
-    private long contentCount;
+    private Long contentCount;
 
     @Setter
     @Column(name = "FOLLOWING_COUNT")
-    private long followingCount;
+    private Long followingCount;
 
     @Setter
     @Column(name = "FOLLOWER_COUNT")
-    private long followerCount;
+    private Long followerCount;
 
     @Setter
     @Column(name = "ROLE", length = 15)
@@ -94,9 +94,9 @@ public class User extends DateTable {
     private final List<Like> likes = new ArrayList<>();
 
     public User() {
-        contentCount = 0;
-        followerCount = 0;
-        followingCount = 0;
+        contentCount = 0L;
+        followerCount = 0L;
+        followingCount = 0L;
         expiryDate = null;
         role = "ROLE_USER";
     }
