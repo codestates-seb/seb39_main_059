@@ -4,12 +4,13 @@ import {
   PreloadedState,
 } from '@reduxjs/toolkit'
 import { useDispatch, useSelector, TypedUseSelectorHook } from 'react-redux'
-
 import { userReducer } from '../reducers/userSlice'
+import { feedsReducer } from '../reducers/FeedSlice'
 
 const rootReducer = combineReducers({
   /* 슬라이스로 생성한 리듀서는 여기에 추가하면 됩니다. */
   user: userReducer,
+  feeds: feedsReducer,
 })
 
 export const setupStore = (preloadedState?: PreloadedState<RootState>) => {

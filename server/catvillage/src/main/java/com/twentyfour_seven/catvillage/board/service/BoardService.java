@@ -4,13 +4,13 @@ import com.twentyfour_seven.catvillage.board.dto.BoardTagDto;
 import com.twentyfour_seven.catvillage.board.entity.Board;
 import com.twentyfour_seven.catvillage.board.entity.TagToBoard;
 import com.twentyfour_seven.catvillage.board.repository.BoardRepository;
+import com.twentyfour_seven.catvillage.common.like.LikeService;
 import com.twentyfour_seven.catvillage.common.picture.dto.PictureDto;
 import com.twentyfour_seven.catvillage.common.picture.entity.Picture;
 import com.twentyfour_seven.catvillage.common.picture.service.PictureService;
-import com.twentyfour_seven.catvillage.user.entity.User;
-import com.twentyfour_seven.catvillage.utils.CustomBeanUtils;
 import com.twentyfour_seven.catvillage.exception.BusinessLogicException;
 import com.twentyfour_seven.catvillage.exception.ExceptionCode;
+import com.twentyfour_seven.catvillage.user.entity.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -25,11 +25,14 @@ public class BoardService {
     private BoardRepository boardRepository;
     private TagToBoardService tagToBoardService;
     private PictureService pictureService;
+    private LikeService likeService;
 
-    public BoardService(BoardRepository boardRepository, TagToBoardService tagToBoardService, PictureService pictureService) {
+    public BoardService(BoardRepository boardRepository, TagToBoardService tagToBoardService,
+                        PictureService pictureService, LikeService likeService) {
         this.boardRepository = boardRepository;
         this.tagToBoardService = tagToBoardService;
         this.pictureService = pictureService;
+        this.likeService = likeService;
     }
 
     public Page<Board> findBoards(int page, int size) {
@@ -64,13 +67,23 @@ public class BoardService {
 
     public Board updateBoard(Board board, List<BoardTagDto> tags, List<PictureDto> pictures) {
         Board findBoard = findVerifiedBoard(board.getBoardId());
-        if(!findBoard.getUser().equals(board.getUser())) {
+        if (!findBoard.getUser().equals(board.getUser())) {
             throw new BusinessLogicException(ExceptionCode.INVALID_USER);
+        }
+
+        // 제목 변경 : 제목은 공백일 수 없다
+        if (!board.getTitle().isEmpty()) {
+            findBoard.setTitle(board.getTitle());
+        }
+
+        // 본문 변경 : 본문은 공백일 수 있다.
+        if (board.getBody() != null) {
+            findBoard.setBody(board.getBody());
         }
 
         // 제거된 태그 삭제
         findBoard.getTagToBoards().forEach(e -> {
-            if(!tags.contains(new BoardTagDto(e.getBoardTag()))) {
+            if (!tags.contains(new BoardTagDto(e.getBoardTag()))) {
                 tagToBoardService.deleteTagToBoard(e);
             }
         });
@@ -84,7 +97,7 @@ public class BoardService {
         // 삭제된 사진 경로는 DB 및 리스트에서 제거
         findBoard.getPictures().forEach(e -> {
             PictureDto dto = new PictureDto(e);
-            if(pictures.contains(dto)) {
+            if (pictures.contains(dto)) {
                 pictures.remove(dto);
             } else {
                 pictureService.removePicture(e.getPictureId());
@@ -106,7 +119,7 @@ public class BoardService {
 
     public void deleteBoard(User user, Long boardId) {
         Board findBoard = findVerifiedBoard(boardId);
-        if(!findBoard.getUser().equals(user)) {
+        if (!findBoard.getUser().equals(user)) {
             throw new BusinessLogicException(ExceptionCode.INVALID_USER);
         }
         boardRepository.delete(findBoard);
@@ -115,5 +128,29 @@ public class BoardService {
     private Board findVerifiedBoard(Long boardId) {
         Optional<Board> findBoard = boardRepository.findById(boardId);
         return findBoard.orElseThrow(() -> new BusinessLogicException(ExceptionCode.BOARD_NOT_FOUND));
+    }
+
+    public void addLike(long boardId, User user) {
+        // board id 로 존재하는 게시글인지 확인하고 게시글 정보 가져옴
+        Board findBoard = findVerifiedBoard(boardId);
+
+        // like 추가
+        likeService.addLikeInBoard(user, findBoard);
+
+        // board 에 likeCount 1 올려서 저장
+        findBoard.setLikeCount(findBoard.getLikeCount() + 1);
+        boardRepository.save(findBoard);
+    }
+
+    public void deleteLike(long boardId, User user) {
+        // board id 로 존재하는 피드인지 확인하고 피드 정보 가져옴
+        Board findBoard = findVerifiedBoard(boardId);
+
+        // like 삭제
+        likeService.deleteLikeInBoard(user, findBoard);
+
+        // board 에 likeCount 1 빼서 저장
+        findBoard.setLikeCount(findBoard.getLikeCount() - 1);
+        boardRepository.save(findBoard);
     }
 }

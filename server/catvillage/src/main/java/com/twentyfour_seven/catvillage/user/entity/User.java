@@ -5,6 +5,7 @@ import com.twentyfour_seven.catvillage.audit.DateTable;
 import com.twentyfour_seven.catvillage.board.entity.Board;
 import com.twentyfour_seven.catvillage.board.entity.BoardComment;
 import com.twentyfour_seven.catvillage.cat.entity.Cat;
+import com.twentyfour_seven.catvillage.common.like.Like;
 import com.twentyfour_seven.catvillage.feed.entity.FeedComment;
 import lombok.Builder;
 import lombok.Getter;
@@ -46,15 +47,15 @@ public class User extends DateTable {
 
     @Setter
     @Column(name = "CONTENT_COUNT")
-    private long contentCount;
+    private Long contentCount;
 
     @Setter
     @Column(name = "FOLLOWING_COUNT")
-    private long followingCount;
+    private Long followingCount;
 
     @Setter
     @Column(name = "FOLLOWER_COUNT")
-    private long followerCount;
+    private Long followerCount;
 
     @Setter
     @Column(name = "ROLE", length = 15)
@@ -88,10 +89,14 @@ public class User extends DateTable {
     @JsonManagedReference
     private final List<BoardComment> boardComments = new ArrayList<>();
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    @JsonManagedReference
+    private final List<Like> likes = new ArrayList<>();
+
     public User() {
-        contentCount = 0;
-        followerCount = 0;
-        followingCount = 0;
+        contentCount = 0L;
+        followerCount = 0L;
+        followingCount = 0L;
         expiryDate = null;
         role = "ROLE_USER";
     }

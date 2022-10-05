@@ -3,11 +3,11 @@ package com.twentyfour_seven.catvillage.board.entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.twentyfour_seven.catvillage.audit.DateTable;
+import com.twentyfour_seven.catvillage.common.like.Like;
 import com.twentyfour_seven.catvillage.common.picture.entity.Picture;
 import com.twentyfour_seven.catvillage.user.entity.User;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -60,10 +60,9 @@ public class Board extends DateTable {
     @JsonManagedReference
     private final List<TagToBoard> tagToBoards = new ArrayList<>();
 
-    // TODO: Like 구현 후 주석 제거 필요
-//    @OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE)
-//    @JsonManagedReference
-//    private final List<Like> likes = new ArrayList<>();
+    @OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE)
+    @JsonManagedReference
+    private final List<Like> likes = new ArrayList<>();
 
     // TODO: Save 구현 후 주석 제거 필요
 //    @OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE)

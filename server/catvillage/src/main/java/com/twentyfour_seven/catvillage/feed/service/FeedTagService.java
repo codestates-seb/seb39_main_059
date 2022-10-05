@@ -6,7 +6,6 @@ import com.twentyfour_seven.catvillage.feed.entity.TagToFeed;
 import com.twentyfour_seven.catvillage.feed.entity.TagToFeedId;
 import com.twentyfour_seven.catvillage.feed.repository.FeedTagRepository;
 import com.twentyfour_seven.catvillage.feed.repository.TagToFeedRepository;
-import com.twentyfour_seven.catvillage.utils.CustomBeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -52,32 +51,36 @@ public class FeedTagService {
     }
 
     public List<FeedTag> updateTags(Feed feed, List<FeedTag> feedTags) {
+        List<TagToFeed> findTagToFeeds = tagToFeedRepository.findByFeed(feed);
+        List<FeedTag> updateFeedTags = new ArrayList<>();
+
+        // feedTag 값이 하나도 없을 경우 feed에 연결되있던 TagToCat 객체 모두 삭제
+        if (feedTags == null) {
+            if (!findTagToFeeds.isEmpty()) {
+                findTagToFeeds.forEach(this::removeTagToFeed);
+            }
+            return null;
+        }
+
+        // 추가한 feedTag는 FeedTag 생성 및 TagToFeed 생성
         feedTags.forEach(
                 feedTag -> {
                     // 입력받은 모든 FeedTag, TagToFeed 업데이트
-                    feedTag = updateFeedTag(feedTag);
-                    updateTagToFeed(new TagToFeed(feed, feedTag));
+                    FeedTag updateFeedTag = createTag(feedTag);
+                    updateTagToFeed(new TagToFeed(feed, updateFeedTag));
+                    updateFeedTags.add(updateFeedTag);
                 }
         );
+
         // 유저가 제거한 Tag 확인하여 TagToFeed 제거
         feed.getTagToFeeds().stream().forEach(
                 tagToFeed -> {
                     if (!feedTags.contains(tagToFeed.getFeedTag())) {
-                        tagToFeedRepository.delete(tagToFeed);
+                        removeTagToFeed(tagToFeed);
                     }
                 }
         );
-        return feedTags;
-    }
-
-    private FeedTag updateFeedTag(FeedTag feedTag) {
-        // feedTag 가 DB에 있는지 확인
-        Optional<FeedTag> optionalFeedTag = feedTagRepository.findByTagName(feedTag.getTagName());
-        // DB에 없다면 feedTag 저장
-        if(!optionalFeedTag.isPresent()) {
-            return feedTagRepository.save(feedTag);
-        }
-        return feedTag;
+        return updateFeedTags;
     }
 
     private TagToFeed updateTagToFeed(TagToFeed tagToFeed) {
@@ -85,5 +88,9 @@ public class FeedTagService {
         TagToFeedId id = new TagToFeedId(tagToFeed.getFeed().getFeedId(), tagToFeed.getFeedTag().getFeedTagId());
         Optional<TagToFeed> optionalTagToFeed = tagToFeedRepository.findById(id);
         return optionalTagToFeed.orElse(tagToFeedRepository.save(tagToFeed));
+    }
+
+    public void removeTagToFeed(TagToFeed tagToFeed) {
+        tagToFeedRepository.delete(tagToFeed);
     }
 }

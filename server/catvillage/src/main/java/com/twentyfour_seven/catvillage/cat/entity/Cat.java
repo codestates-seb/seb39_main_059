@@ -2,6 +2,7 @@ package com.twentyfour_seven.catvillage.cat.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.twentyfour_seven.catvillage.catInfo.entity.CatInfo;
 import com.twentyfour_seven.catvillage.feed.entity.Feed;
 import com.twentyfour_seven.catvillage.feed.entity.FeedComment;
 import com.twentyfour_seven.catvillage.user.entity.User;
@@ -62,12 +63,11 @@ public class Cat {
     @JsonManagedReference
     private final List<FeedComment> feedComments = new ArrayList<>();
 
-    // TODO: CatInfo 구현 후 주석 제거 필요
-//    @Setter
-//    @ManyToOne
-//    @JoinColumn(name = "BREED_ID")
-//    @JsonBackReference
-//    private CatInfo breed;
+    @Setter
+    @ManyToOne
+    @JoinColumn(name = "CAT_INFO_ID")
+    @JsonBackReference
+    private CatInfo catInfo;
 
     @OneToMany(mappedBy = "cat", cascade = CascadeType.REMOVE)
     @JsonManagedReference

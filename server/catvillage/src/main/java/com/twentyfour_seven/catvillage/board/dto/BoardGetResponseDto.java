@@ -1,7 +1,7 @@
 package com.twentyfour_seven.catvillage.board.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.twentyfour_seven.catvillage.board.dto.comment.BoardUserCommentResponseDto;
+import com.twentyfour_seven.catvillage.board.dto.comment.BoardCommentResponseDto;
 import com.twentyfour_seven.catvillage.common.picture.dto.PictureDto;
 import lombok.Builder;
 import lombok.Getter;
@@ -27,10 +27,10 @@ public class BoardGetResponseDto {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdDate;
     private Boolean isLike;
-    private List<BoardUserCommentResponseDto> comments;
+    private List<BoardCommentResponseDto> comments;
 
     @Builder
-    public BoardGetResponseDto(Long boardId, String title, String body, String name, List<BoardTagDto> tags, List<PictureDto> pictures, Long viewCount, Long likeCount, Long commentCount, LocalDateTime createdDate, Boolean isLike, List<BoardUserCommentResponseDto> comments) {
+    public BoardGetResponseDto(Long boardId, String title, String body, String name, List<BoardTagDto> tags, List<PictureDto> pictures, Long viewCount, Long likeCount, Long commentCount, LocalDateTime createdDate, Boolean isLike, List<BoardCommentResponseDto> comments) {
         this.boardId = boardId;
         this.title = title;
         this.body = body;

@@ -1,17 +1,19 @@
 package com.twentyfour_seven.catvillage.user.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 @Entity(name = "FOLLOW")
 @Getter
+@NoArgsConstructor
 public class Follow {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "FOLLOW_ID")
     private Long followId;
 
     @ManyToOne
@@ -23,4 +25,11 @@ public class Follow {
     @JoinColumn(name = "TARGET_ID")
     @JsonBackReference
     private User target;
+
+    @Builder
+    public Follow(Long followId, User member, User target) {
+        this.followId = followId;
+        this.member = member;
+        this.target = target;
+    }
 }

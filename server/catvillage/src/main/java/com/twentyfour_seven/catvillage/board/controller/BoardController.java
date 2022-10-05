@@ -50,12 +50,12 @@ public class BoardController {
     }
 
     @Operation(summary = "집사생활 전체 게시글 보기",
-    responses = {
-            @ApiResponse(responseCode = "200", description = "집사생활 전체 게시글 조회 성공", content = @Content(schema = @Schema(implementation = MultiBoardResponseDto.class)))
-    })
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "집사생활 전체 게시글 조회 성공", content = @Content(schema = @Schema(implementation = MultiBoardResponseDto.class)))
+            })
     @GetMapping
     public ResponseEntity getBoards(@RequestParam @Positive int page,
-                                     @RequestParam @Positive int size) {
+                                    @RequestParam @Positive int size) {
         Page<Board> boards = boardService.findBoards(page - 1, size);
         return new ResponseEntity<>(
                 new MultiResponseDto<BoardMultiGetResponse>(
@@ -66,24 +66,24 @@ public class BoardController {
     }
 
     @Operation(summary = "집사생활 특정 게시글 보기",
-    responses = {
-            @ApiResponse(responseCode = "200", description = "집사생활 게시글 조회 성공", content = @Content(schema = @Schema(implementation = BoardGetResponseDto.class))),
-            @ApiResponse(responseCode = "404", description = "존재하지 않는 게시글")
-    })
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "집사생활 게시글 조회 성공", content = @Content(schema = @Schema(implementation = BoardGetResponseDto.class))),
+                    @ApiResponse(responseCode = "404", description = "존재하지 않는 게시글")
+            })
     @GetMapping("/{boards-id}")
     public ResponseEntity getBoard(@Positive @PathVariable("boards-id") Long boardId) {
         Board board = boardService.findBoard(boardId);
         BoardGetResponseDto responseDto = boardMapper.boardToBoardGetResponseDto(board);
-        responseDto.setComments(boardCommentMapper.boardCommentsToBoardUserCommentResponseDtos(board.getBoardComments()));
+        responseDto.setComments(boardCommentMapper.boardCommentsToBoardCommentResponseDtos(board.getBoardComments()));
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
     @Operation(summary = "집사생활 새 글 작성하기",
             description = "집사생활에 등록되지 않은 태그로 요청이 들어올 경우 에러가 납니다.",
-    responses = {
-            @ApiResponse(responseCode = "201", description = "집사생활 게시글 등록 성공", content = @Content(schema = @Schema(implementation = BoardPostResponseDto.class))),
-            @ApiResponse(responseCode = "404", description = "존재하지 않는 유저 정보\n존재하지 않는 태그")
-    })
+            responses = {
+                    @ApiResponse(responseCode = "201", description = "집사생활 게시글 등록 성공", content = @Content(schema = @Schema(implementation = BoardPostResponseDto.class))),
+                    @ApiResponse(responseCode = "404", description = "존재하지 않는 유저 정보\n존재하지 않는 태그")
+            })
     @PostMapping
     public ResponseEntity postBoard(@AuthenticationPrincipal org.springframework.security.core.userdetails.User user,
                                     @Valid @RequestBody BoardPostDto requestBody) {
@@ -103,15 +103,16 @@ public class BoardController {
 
     @Operation(summary = "집사생활 글 수정하기",
             description = "집사생활에 등록되지 않은 태그로 요청이 들어올 경우 에러가 납니다. 처음에 글을 작성했던 유저와 로그인 되어 있는 유저가 다를 경우 405 에러가 납니다.",
-    responses = {
-            @ApiResponse(responseCode = "200", description = "집사생활 게시글 수정 성공", content = @Content(schema = @Schema(implementation = BoardPostResponseDto.class))),
-            @ApiResponse(responseCode = "404", description = "존재하지 않는 유저 정보\n존재하지 않는 게시글"),
-            @ApiResponse(responseCode = "405", description = "유저 정보 불일치")
-    })
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "집사생활 게시글 수정 성공", content = @Content(schema = @Schema(implementation = BoardPostResponseDto.class))),
+                    @ApiResponse(responseCode = "404", description = "존재하지 않는 유저 정보\n존재하지 않는 게시글"),
+                    @ApiResponse(responseCode = "405", description = "유저 정보 불일치")
+            })
     @PatchMapping("/{boards-id}")
     public ResponseEntity patchBoard(@AuthenticationPrincipal org.springframework.security.core.userdetails.User user,
                                      @Positive @PathVariable("boards-id") Long boardId,
                                      @Valid @RequestBody BoardPatchDto requestBody) {
+        requestBody.setBoardId(boardId);
         Board board = boardMapper.boardPatchDtoToBoard(requestBody);
         User findUser = userService.findVerifiedEmail(user.getUsername());
         board.setUser(findUser);
@@ -122,26 +123,25 @@ public class BoardController {
     }
 
     @Operation(summary = "집사생활 글 삭제하기",
-    description = "존재하지 않는 글의 식별자가 들어올 경우 에러가 납니다. 글 작성자가 아닌 다른 유저가 제거를 요청하면 405 에러가 납니다.",
-    responses = {
-            @ApiResponse(responseCode = "204", description = "집사생활 게시글 삭제 성공"),
-            @ApiResponse(responseCode = "404", description = "존재하지 않는 게시글"),
-            @ApiResponse(responseCode = "405", description = "유저 정보 불일치")
-    })
+            description = "존재하지 않는 글의 식별자가 들어올 경우 에러가 납니다. 글 작성자가 아닌 다른 유저가 제거를 요청하면 405 에러가 납니다.",
+            responses = {
+                    @ApiResponse(responseCode = "204", description = "집사생활 게시글 삭제 성공"),
+                    @ApiResponse(responseCode = "404", description = "존재하지 않는 게시글"),
+                    @ApiResponse(responseCode = "405", description = "유저 정보 불일치")
+            })
     @DeleteMapping("/{board-id}")
     public ResponseEntity deleteBoard(@AuthenticationPrincipal org.springframework.security.core.userdetails.User user,
-                                      @Positive @PathVariable("board-id") Long boardId)
-    {
+                                      @Positive @PathVariable("board-id") Long boardId) {
         User findUser = userService.findVerifiedEmail(user.getUsername());
         boardService.deleteBoard(findUser, boardId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @Operation(summary = "집사생활 댓글 작성",
-        responses = {
-                @ApiResponse(responseCode = "200", description = "집사생활 댓글 작성 성공", content = @Content(schema = @Schema(implementation = BoardCommentPostResponseDto.class))),
-                @ApiResponse(responseCode = "404", description = "존재하지 않는 유저")
-        })
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "집사생활 댓글 작성 성공", content = @Content(schema = @Schema(implementation = BoardCommentPostResponseDto.class))),
+                    @ApiResponse(responseCode = "404", description = "존재하지 않는 유저")
+            })
     @PostMapping("/{boards-id}/comments")
     public ResponseEntity<?> postBoardComment(@AuthenticationPrincipal org.springframework.security.core.userdetails.User user,
                                               @Positive @PathVariable("boards-id") Long boardId,
@@ -193,6 +193,62 @@ public class BoardController {
     public ResponseEntity<?> deleteBoardComment(@Positive @PathVariable("comments-id") Long boardCommentId,
                                                 @AuthenticationPrincipal org.springframework.security.core.userdetails.User user) {
         boardCommentService.deleteBoardComment(user.getUsername(), boardCommentId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @Operation(summary = "집사생활 게시글에 좋아요 추가", description = "로그인한 유저 정보를 가져와서 해당 게시글에 좋아요를 추가합니다.",
+            responses = {
+                    @ApiResponse(responseCode = "201", description = "좋아요 등록 성공"),
+                    @ApiResponse(responseCode = "404", description = "존재하지 않는 게시글"),
+                    @ApiResponse(responseCode = "409", description = "이미 좋아요가 존재")
+            })
+    @PostMapping("/{boards-id}/like")
+    public ResponseEntity postLikeInBoard(@PathVariable("boards-id") @Positive long boardId,
+                                          @AuthenticationPrincipal org.springframework.security.core.userdetails.User user) {
+        User findUser = userService.findVerifiedEmail(user.getUsername());
+        boardService.addLike(boardId, findUser);
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    @Operation(summary = "집사생활 게시글에 좋아요 삭제", description = "로그인한 유저 정보를 가져와서 해당 피드에 좋아요를 삭제합니다.",
+            responses = {
+                    @ApiResponse(responseCode = "204", description = "좋아요 삭제 성공"),
+                    @ApiResponse(responseCode = "404", description = "존재하지 않는 게시글"),
+                    @ApiResponse(responseCode = "404", description = "존재하지 않는 좋아요")
+            })
+    @DeleteMapping("/{boards-id}/like")
+    public ResponseEntity deleteLikeInFeed(@PathVariable("boards-id") @Positive long boardId,
+                                           @AuthenticationPrincipal org.springframework.security.core.userdetails.User user) {
+        User findUser = userService.findVerifiedEmail(user.getUsername());
+        boardService.deleteLike(boardId, findUser);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @Operation(summary = "집사생활 댓글에 좋아요 추가", description = "로그인한 유저 정보를 가져와서 해당 댓글에 좋아요를 추가합니다.",
+            responses = {
+                    @ApiResponse(responseCode = "201", description = "좋아요 등록 성공"),
+                    @ApiResponse(responseCode = "404", description = "존재하지 않는 댓글"),
+                    @ApiResponse(responseCode = "409", description = "이미 좋아요가 존재")
+            })
+    @PostMapping("/comments/{comments-id}/like")
+    public ResponseEntity postLikeInComment(@PathVariable("comments-id") @Positive long commentId,
+                                          @AuthenticationPrincipal org.springframework.security.core.userdetails.User user) {
+        User findUser = userService.findVerifiedEmail(user.getUsername());
+        boardCommentService.addLike(commentId, findUser);
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    @Operation(summary = "집사생활 댓글에 좋아요 삭제", description = "로그인한 유저 정보를 가져와서 해당 댓글에 좋아요를 삭제합니다.",
+            responses = {
+                    @ApiResponse(responseCode = "204", description = "좋아요 삭제 성공"),
+                    @ApiResponse(responseCode = "404", description = "존재하지 않는 댓글"),
+                    @ApiResponse(responseCode = "404", description = "존재하지 않는 좋아요")
+            })
+    @DeleteMapping("/comments/{comments-id}/like")
+    public ResponseEntity deleteLikeInComment(@PathVariable("comments-id") @Positive long commentId,
+                                           @AuthenticationPrincipal org.springframework.security.core.userdetails.User user) {
+        User findUser = userService.findVerifiedEmail(user.getUsername());
+        boardCommentService.deleteLike(commentId, findUser);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

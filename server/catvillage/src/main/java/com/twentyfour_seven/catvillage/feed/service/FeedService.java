@@ -2,17 +2,16 @@ package com.twentyfour_seven.catvillage.feed.service;
 
 import com.twentyfour_seven.catvillage.cat.entity.Cat;
 import com.twentyfour_seven.catvillage.cat.service.CatService;
+import com.twentyfour_seven.catvillage.common.like.LikeService;
 import com.twentyfour_seven.catvillage.common.picture.entity.Picture;
 import com.twentyfour_seven.catvillage.common.picture.service.PictureService;
 import com.twentyfour_seven.catvillage.exception.BusinessLogicException;
 import com.twentyfour_seven.catvillage.exception.ExceptionCode;
 import com.twentyfour_seven.catvillage.feed.entity.Feed;
 import com.twentyfour_seven.catvillage.feed.repository.FeedRepository;
-import com.twentyfour_seven.catvillage.user.controller.FollowService;
+import com.twentyfour_seven.catvillage.user.service.FollowService;
 import com.twentyfour_seven.catvillage.user.entity.User;
-import com.twentyfour_seven.catvillage.user.repository.UserRepository;
 import com.twentyfour_seven.catvillage.user.service.UserService;
-import com.twentyfour_seven.catvillage.utils.CustomBeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -21,6 +20,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class FeedService {
@@ -29,17 +29,20 @@ public class FeedService {
     private final PictureService pictureService;
     private final UserService userService;
     private final FollowService followService;
+    private final LikeService likeService;
 
     public FeedService(FeedRepository feedRepository,
                        CatService catService,
                        PictureService pictureService,
                        UserService userService,
-                       FollowService followService) {
+                       FollowService followService,
+                       LikeService likeService) {
         this.feedRepository = feedRepository;
         this.catService = catService;
         this.pictureService = pictureService;
         this.userService = userService;
         this.followService = followService;
+        this.likeService = likeService;
     }
 
     public Feed createFeed(Feed feed, long catId, String email) {
@@ -57,11 +60,11 @@ public class FeedService {
         // Picture 저장
         feed.getPictures().forEach(
                 picture ->
-                    pictureService.createPicture(
-                            Picture.builder()
-                                    .path(picture.getPath())
-                                    .feed(feed)
-                                    .build())
+                        pictureService.createPicture(
+                                Picture.builder()
+                                        .path(picture.getPath())
+                                        .feed(feed)
+                                        .build())
         );
 
         // feed 저장 후 반환
@@ -109,24 +112,14 @@ public class FeedService {
         }
 
         // Feed 내용 업데이트
-        Feed updateFeed = findFeed;
-        if (findFeed.getBody() != feed.getBody()) {
-            updateFeed.setBody(feed.getBody());
-        }
+        findFeed.setBody(feed.getBody());
 
         // Picture 업데이트를 위해 source, definition의 path만 따로 저장
-        List<String> picturePaths1 = new ArrayList<>();
-        List<String> picturePaths2 = new ArrayList<>();
-        feed.getPictures().forEach(
-                picture -> {
-                    picturePaths1.add(picture.getPath());
-                }
-        );
-        updateFeed.getPictures().forEach(
-                picture -> {
-                    picturePaths2.add(picture.getPath());
-                }
-        );
+        List<String> picturePaths1 = feed.getPictures().stream()
+                .map(picture -> picture.getPath()).collect(Collectors.toList());
+        List<String> picturePaths2 = findFeed.getPictures().stream()
+                .map(picture -> picture.getPath()).collect(Collectors.toList());
+
         // 삭제된 이미지는 DB에서 제거 후 리스트에서도 제거
         findFeed.getPictures().forEach(
                 picture -> {
@@ -141,12 +134,11 @@ public class FeedService {
         feed.getPictures().forEach(
                 picture -> {
                     if (!picturePaths2.contains(picture.getPath())) {
-                        picture = pictureService.createPicture(picture);
-                        findFeed.getPictures().add(picture);
+                        findFeed.getPictures().add(pictureService.createPicture(picture));
                     }
                 }
         );
-        return feedRepository.save(updateFeed);
+        return feedRepository.save(findFeed);
     }
 
     public void removeFeed(long feedId, String email) {
@@ -157,5 +149,31 @@ public class FeedService {
             throw new BusinessLogicException(ExceptionCode.INVALID_USER);
         }
         feedRepository.delete(findFeed);
+    }
+
+    public void addLike(long feedId, String email) {
+        // feed id 로 존재하는 피드인지 확인하고 피드정보 가져옴
+        Feed findFeed = findVerifiedFeed(feedId);
+        User findUser = userService.findVerifiedEmail(email);
+
+        // like 추가
+        likeService.addLikeInFeed(findUser, findFeed);
+
+        // feed 에 likeCount 1 올려서 저장
+        findFeed.setLikeCount(findFeed.getLikeCount() + 1);
+        feedRepository.save(findFeed);
+    }
+
+    public void deleteLike(long feedId, String email) {
+        // feed id 로 존재하는 피드인지 확인하고 피드 정보 가져옴
+        Feed findFeed = findVerifiedFeed(feedId);
+        User findUser = userService.findVerifiedEmail(email);
+
+        // like 삭제
+        likeService.deleteLikeInFeed(findUser, findFeed);
+
+        // feed 에 likeCount 1 빼서 저장
+        findFeed.setLikeCount(findFeed.getLikeCount() - 1);
+        feedRepository.save(findFeed);
     }
 }

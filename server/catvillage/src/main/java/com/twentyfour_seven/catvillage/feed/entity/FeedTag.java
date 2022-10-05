@@ -19,7 +19,7 @@ public class FeedTag {
     private Long feedTagId;
 
     @Setter
-    @Column(name = "TAG_NAME", length = 15, nullable = false)
+    @Column(name = "TAG_NAME", length = 15, nullable = false, unique = true)
     private String tagName;
 
     @OneToMany(mappedBy = "feedTag", cascade = CascadeType.REMOVE)

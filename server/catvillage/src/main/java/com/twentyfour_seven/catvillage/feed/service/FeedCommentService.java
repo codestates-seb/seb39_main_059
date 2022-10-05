@@ -2,6 +2,7 @@ package com.twentyfour_seven.catvillage.feed.service;
 
 import com.twentyfour_seven.catvillage.cat.entity.Cat;
 import com.twentyfour_seven.catvillage.cat.service.CatService;
+import com.twentyfour_seven.catvillage.common.like.LikeService;
 import com.twentyfour_seven.catvillage.exception.BusinessLogicException;
 import com.twentyfour_seven.catvillage.exception.ExceptionCode;
 import com.twentyfour_seven.catvillage.feed.entity.Feed;
@@ -19,13 +20,15 @@ public class FeedCommentService {
     private final FeedCommentRepository feedCommentRepository;
     private final UserService userService;
     private final CatService catService;
+    private final LikeService likeService;
 
     public FeedCommentService(FeedCommentRepository feedCommentRepository,
                               UserService userService,
-                              CatService catService) {
+                              CatService catService, LikeService likeService) {
         this.feedCommentRepository = feedCommentRepository;
         this.userService = userService;
         this.catService = catService;
+        this.likeService = likeService;
     }
 
     public List<FeedComment> findComments(Feed feed) {
@@ -73,5 +76,31 @@ public class FeedCommentService {
                 throw new BusinessLogicException(ExceptionCode.INVALID_USER);
             }
         }
+    }
+
+    public void addLike(long commentsId, String email) {
+        // comment id 로 존재하는 피드인지 확인하고 피드정보 가져옴
+        FeedComment findComment = findVerifiedComment(commentsId);
+        User findUser = userService.findVerifiedEmail(email);
+
+        // like 추가
+        likeService.addLikeInFeedComment(findUser, findComment);
+
+        // FeedComment 에 likeCount 1 올려서 저장
+        findComment.setLikeCount(findComment.getLikeCount() + 1);
+        feedCommentRepository.save(findComment);
+    }
+
+    public void deleteLike(long commentId, String email) {
+        // feed id 로 존재하는 피드인지 확인하고 피드 정보 가져옴
+        FeedComment findComment = findVerifiedComment(commentId);
+        User findUser = userService.findVerifiedEmail(email);
+
+        // like 삭제
+        likeService.deleteLikeInFeedComment(findUser, findComment);
+
+        // feed 에 likeCount 1 빼서 저장
+        findComment.setLikeCount(findComment.getLikeCount() - 1);
+        feedCommentRepository.save(findComment);
     }
 }

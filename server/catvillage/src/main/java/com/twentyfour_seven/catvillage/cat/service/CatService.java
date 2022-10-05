@@ -3,6 +3,8 @@ package com.twentyfour_seven.catvillage.cat.service;
 import com.twentyfour_seven.catvillage.cat.entity.Cat;
 import com.twentyfour_seven.catvillage.cat.entity.CatTag;
 import com.twentyfour_seven.catvillage.cat.repository.CatRepository;
+import com.twentyfour_seven.catvillage.catInfo.entity.CatInfo;
+import com.twentyfour_seven.catvillage.catInfo.service.CatInfoService;
 import com.twentyfour_seven.catvillage.exception.BusinessLogicException;
 import com.twentyfour_seven.catvillage.exception.ExceptionCode;
 import com.twentyfour_seven.catvillage.user.entity.User;
@@ -18,15 +20,19 @@ public class CatService {
     private final CatRepository catRepository;
     private final UserService userService;
     private final CustomBeanUtils<Cat> beanUtils;
+    private final CatInfoService catInfoService;
 
-    public CatService(CatRepository catRepository, UserService userService, CustomBeanUtils beanUtils) {
+    public CatService(CatRepository catRepository, UserService userService, CustomBeanUtils beanUtils,
+                      CatInfoService catInfoService) {
         this.catRepository = catRepository;
         this.userService = userService;
         this.beanUtils = beanUtils;
+        this.catInfoService = catInfoService;
     }
 
     public Cat createCat(Cat cat, String breed, String email) {
-        // TODO: breed(CatInfo) 정보 꺼내서 Cat 에 저장 필요
+        CatInfo findBreed = catInfoService.findVerifiedCatInfo(breed);
+        cat.setCatInfo(findBreed);
         User findUser = userService.findVerifiedEmail(email);
         cat.setUser(findUser);
 
@@ -58,9 +64,8 @@ public class CatService {
 
     public Cat updateCat(long catId, Cat cat, String breed, String email) {
         Cat findCat = findVerifiedCat(catId);
-        // TODO:  CatInfo 구현 후 주석 제거 필요
-//        CatInfo findBreed = breedService.findByKorName(breed);
-//        cat.setBreed(findBreed);
+        CatInfo findBreed = catInfoService.findVerifiedCatInfo(breed);
+        cat.setCatInfo(findBreed);
         // 요청을 보낸 User 가 등록한 User 와 동일한지 확인
         if (!findCat.getUser().getEmail().equals(email)) {
             throw new BusinessLogicException(ExceptionCode.INVALID_USER);
