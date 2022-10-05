@@ -1,6 +1,7 @@
 import { useState, FC, useRef } from 'react'
 import SocialLoginButton from '@Modules/SocialLoginButton'
 import { useForm, SubmitHandler } from 'react-hook-form'
+import logo from '@Assets/logo.svg'
 import * as S from './Signup.style'
 import { useAppDispatch } from '@/redux/store'
 import { signupAsync } from '@/redux/actions/userAction'
@@ -48,7 +49,9 @@ const Signup: FC = () => {
 
   return (
     <S.SignupLayout>
-      <S.Logo />
+      <S.Logo>
+        <img src={logo} alt="logo" />
+      </S.Logo>
       <S.Description>여러분의 고양이를 자랑해보세요</S.Description>
       <S.InputForm onSubmit={handleSubmit(onSubmitHandler)} method="post">
         <S.SignupInput
