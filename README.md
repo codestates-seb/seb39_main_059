@@ -75,11 +75,12 @@
 
 <br />
 
-| 전혜린 | 유인재 | 이은지 | 이주한 |
-|:--------:|:--------:|:--------:|:--------:|
-| ![img](https://avatars.githubusercontent.com/u/104193237?s=120&v=4) | ![img](https://avatars.githubusercontent.com/u/31715847?s=120&v=4) | ![img](https://avatars.githubusercontent.com/u/88873956?s=120&v=4) | <img src = "https://avatars.githubusercontent.com/u/96106122?" width="120" height="120"> |
-| [WiseJade](https://github.com/WiseJade) | [Injae Yu](https://github.com/InjaeYu) | [ddaisylee](https://github.com/ddaisylee) | [leejuhanKr](https://github.com/leejuhanKr) |
-| Backend | Backend | Frontend | Frontend |
+| 전혜린 | 유인재 | 이은지 | 이주한 | 김민경 |
+|:--------:|:--------:|:--------:|:--------:|:--------:|
+| ![img](https://avatars.githubusercontent.com/u/104193237?s=120&v=4) | ![img](https://avatars.githubusercontent.com/u/31715847?s=120&v=4) | ![img](https://avatars.githubusercontent.com/u/88873956?s=120&v=4) | <img src = "https://avatars.githubusercontent.com/u/96106122?" width="120" height="120"> | <img src = "https://user-images.githubusercontent.com/96106122/194065180-b33095e0-7ec2-42cb-a886-c1e49fe957a8.png" width="120" height="120"> |
+| [WiseJade](https://github.com/WiseJade) | [Injae Yu](https://github.com/InjaeYu) | [ddaisylee](https://github.com/ddaisylee) | [leejuhanKr](https://github.com/leejuhanKr) | Kim Min-kyung |
+| Backend | Backend | Frontend | Frontend | design |
+
 
 <br /> <br /> <br />
 
