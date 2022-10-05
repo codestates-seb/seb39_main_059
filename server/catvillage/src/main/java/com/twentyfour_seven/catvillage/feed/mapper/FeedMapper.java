@@ -50,7 +50,17 @@ public interface FeedMapper {
         if (feed == null) {
             return null;
         }
-        return FeedGetResponseDto.builder()
+
+        List<PictureDto> pictureDtos = new ArrayList<>();
+
+        // picture가 있다면 pictureDto로 변환
+        if(!feed.getPictures().isEmpty()) {
+            feed.getPictures().stream().forEach(picture -> {
+                pictureDtos.add(new PictureDto(picture));
+            });
+        }
+
+         FeedGetResponseDto feedGetResponseDto = FeedGetResponseDto.builder()
                 .feedId(feed.getFeedId())
                 .catId(feed.getCat().getCatId())
                 .name(feed.getCat().getName())
@@ -58,6 +68,8 @@ public interface FeedMapper {
                 .body(feed.getBody())
                 .likeCount(feed.getLikeCount())
                 .build();
+        feedGetResponseDto.setPictures(pictureDtos);
+        return feedGetResponseDto;
     }
 
     List<FeedGetResponseDto> feedsToFeedGetResponseDtos(List<Feed> feeds);
