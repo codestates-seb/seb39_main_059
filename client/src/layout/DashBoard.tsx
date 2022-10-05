@@ -13,8 +13,12 @@ const NavBar = styled.nav`
   gap: 5px;
 `
 
-const DashBoardBox = styled.div`
+const DashBoardLayout = styled.div`
+  width: 100vw;
+  height: 100vh;
   display: flex;
+  justify-content: center;
+  align-items: center;
 `
 
 type PhoneLayouts = {
@@ -31,13 +35,14 @@ const DashBoard = () => {
 
   const PhoneLayout = (phoneLayouts as PhoneLayouts)[Selected]
   return (
-    <DashBoardBox>
+    <DashBoardLayout>
       <NavBar>
         <select onChange={onChangeHandler} value={Selected}>
           {layoutList.map(layoutName => (
             <option key={layoutName}>{layoutName}</option>
           ))}
         </select>
+        <Link to="cat">cat</Link>
         <Link to="login">login</Link>
         <Link to="signup">signup</Link>
         <Link to={FEED_PATH}>feed</Link>
@@ -46,7 +51,7 @@ const DashBoard = () => {
       <PhoneLayout>
         <Outlet />
       </PhoneLayout>
-    </DashBoardBox>
+    </DashBoardLayout>
   )
 }
 export default DashBoard
