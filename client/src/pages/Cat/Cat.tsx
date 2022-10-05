@@ -49,15 +49,6 @@ const Cat: FC = () => {
         </button>
       </S.Header>
       <S.CatForm className="new-cat" onSubmit={handleSubmit(onSubmitHandler)}>
-        <button
-          type="button"
-          onClick={() => {
-            console.log('value=')
-            console.log(getValues())
-          }}
-        >
-          click
-        </button>
         <S.CatImageInput
           inputName="image-input"
           desc="사진 교체하기"
