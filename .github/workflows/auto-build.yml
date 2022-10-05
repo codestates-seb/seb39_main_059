@@ -8,7 +8,7 @@
 name: Java CI with Gradle
 
 env:
-  S3_BUCKET_NAME: image.catvillage.shop
+  S3_BUCKET_NAME: catvillage-image-server
   RESOURCE_PATH: ./server/catvillage/src/main/resources-prod/application.yml
 
 on:
