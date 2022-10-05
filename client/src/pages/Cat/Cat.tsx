@@ -1,7 +1,6 @@
 import { FC, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Back, Edit } from '@Assets/icons'
-import { useSelector } from 'react-redux'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { CatspiceList as CatBreedList, CatWeightList } from '@/constant'
 import * as S from './Cat.style'
