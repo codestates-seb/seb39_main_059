@@ -15,6 +15,7 @@ import com.twentyfour_seven.catvillage.user.service.UserService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -134,7 +135,8 @@ public class FeedService {
         feed.getPictures().forEach(
                 picture -> {
                     if (!picturePaths2.contains(picture.getPath())) {
-                        findFeed.getPictures().add(pictureService.createPicture(picture));
+                        Picture createPicture = Picture.builder().feed(findFeed).path(picture.getPath()).build();
+                        findFeed.getPictures().add(pictureService.createPicture(createPicture));
                     }
                 }
         );
