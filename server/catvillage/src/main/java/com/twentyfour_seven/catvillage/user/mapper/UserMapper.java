@@ -10,22 +10,25 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface UserMapper {
     default User userPostDtoToUser(UserPostDto requestBody, PasswordEncoder passwordEncoder) {
-        if(requestBody == null) {
+        if (requestBody == null) {
             return null;
         } else {
             String encodedPassword = passwordEncoder.encode(requestBody.getPassword());
+            String profileImage = requestBody.getProfileImage().isEmpty() ?
+                    "https://catvillage-image-server.s3.ap-northeast-2.amazonaws.com/catvillage/images/252c5f03-4c0a-4f2a-8874-b928e7dde911-default-user-image.png" :
+                    requestBody.getProfileImage();
             return User.builder()
                     .email(requestBody.getEmail())
                     .password(encodedPassword)
                     .name(requestBody.getName())
-                    .profileImage(requestBody.getProfileImage())
+                    .profileImage(profileImage)
                     .location(requestBody.getLocation())
                     .build();
         }
     }
 
     default UserPostResponseDto userToUserPostResponseDto(User user) {
-        if(user == null) {
+        if (user == null) {
             return null;
         } else {
             return UserPostResponseDto.builder()
@@ -39,7 +42,7 @@ public interface UserMapper {
     }
 
     default UserGetResponseDto userToUserGetResponseDto(User user) {
-        if(user == null) {
+        if (user == null) {
             return null;
         } else {
             return UserGetResponseDto.builder()
@@ -59,7 +62,7 @@ public interface UserMapper {
     List<UserGetResponseDto> usersToUserGetResponseDtos(List<User> users);
 
     default User userPatchDtoToUser(UserPatchDto requestBody) {
-        if(requestBody == null) {
+        if (requestBody == null) {
             return null;
         } else {
             return User.builder()
@@ -72,7 +75,7 @@ public interface UserMapper {
     }
 
     default UserPatchResponseDto userToUserPatchResponseDto(User user) {
-        if(user == null) {
+        if (user == null) {
             return null;
         } else {
             return UserPatchResponseDto.builder()
