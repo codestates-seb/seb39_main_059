@@ -1,11 +1,12 @@
 import Button from '@Atoms/Button'
 import Input from '@Atoms/Input'
-import TextArea from '@Atoms/TextArea'
 import FormTextInput from '@Modules/FormTextInput'
 import ImageInput from '@Modules/ImageInput'
 import styled, { css, DefaultTheme } from 'styled-components'
 
-export const CatLayout = styled.div``
+export const CatLayout = styled.div`
+  padding-bottom: 25px;
+`
 
 export const CatForm = styled.form`
   margin: 0px 20px;
