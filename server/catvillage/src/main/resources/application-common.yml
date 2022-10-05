@@ -21,10 +21,13 @@ spring:
             token-uri: https://kauth.kakao.com/oauth/token
             user-info-uri: https://kapi.kakao.com/v2/user/me
             user-name-attribute: id
+  servlet:
+    multipart:
+      maxFileSize: 5MB
 cloud:
   aws:
     s3:
-      bucket: image.catvillage.shop
+      bucket: catvillage-image-server
       dir: catvillage/images/
     region:
       static: ap-northeast-2
