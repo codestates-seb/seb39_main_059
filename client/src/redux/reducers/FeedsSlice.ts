@@ -6,7 +6,7 @@ const initialState: Feeds = {
   feed: [],
   follow: [],
   page: 1,
-  pageSize: 10,
+  pageSize: 20,
   totalElements: 0,
   totalPages: 0,
   hasMoreFeed: true,
