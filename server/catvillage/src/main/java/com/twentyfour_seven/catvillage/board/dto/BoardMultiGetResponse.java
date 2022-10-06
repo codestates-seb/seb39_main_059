@@ -16,6 +16,7 @@ public class BoardMultiGetResponse {
     private Long boardId;
     private String title;
     private String name;
+    private String profileImage;
     private List<BoardTagDto> tags;
     private String picture;
     private Long viewCount;
@@ -25,10 +26,11 @@ public class BoardMultiGetResponse {
     private LocalDateTime createdDate;
 
     @Builder
-    public BoardMultiGetResponse(Long boardId, String title, String name, List<BoardTagDto> tags, String picture, Long viewCount, Long likeCount, Long commentCount, LocalDateTime createdDate) {
+    public BoardMultiGetResponse(Long boardId, String title, String name, String profileImage, List<BoardTagDto> tags, String picture, Long viewCount, Long likeCount, Long commentCount, LocalDateTime createdDate) {
         this.boardId = boardId;
         this.title = title;
         this.name = name;
+        this.profileImage = profileImage;
         this.tags = tags;
         this.picture = picture;
         this.viewCount = viewCount;
