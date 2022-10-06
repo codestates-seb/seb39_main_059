@@ -127,7 +127,7 @@ public class CatController {
             }
     )
     @GetMapping("/users/{users-id}")
-    public ResponseEntity getCatInUserProfile(@PathVariable("users-id") @Positive long userId) {
+    public ResponseEntity getCatsFromUser(@PathVariable("users-id") @Positive long userId) {
         // 유저의 고양이 가져옴, 대표 고양이는 0번 인덱스로
         List<Cat> findCats = catService.findCatsByUser(userId);
 
