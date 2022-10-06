@@ -10,13 +10,10 @@ export const SignupLayout = styled.div`
   justify-content: center;
   gap: 10px;
   position: relative;
-  top: 100px;
+  top: 50px;
 `
 
 export const Logo = styled.div`
-  width: 208px;
-  height: 86px;
-  background-color: ${({ theme }) => theme.color.softGray};
   text-align: center;
   margin-bottom: 20px;
 `

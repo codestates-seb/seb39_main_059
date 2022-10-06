@@ -5,6 +5,7 @@ import { FormValue } from '@pages/Signup/Signup'
 import { ValidationSpan } from '@pages/Signup/Signup.style'
 import { useNavigate } from 'react-router-dom'
 import { FEED_PATH } from '@Routes/feed.routes'
+import logo from '@Assets/logo.svg'
 import * as S from './Login.style'
 import { useAppDispatch, useAppSelector } from '@/redux/store'
 import { loginAsync } from '@/redux/actions/userAction'
@@ -45,7 +46,9 @@ const Login: FC = () => {
 
   return (
     <S.LoginLayout>
-      <S.Logo />
+      <S.Logo>
+        <img src={logo} alt="logo" />
+      </S.Logo>
       <S.Description>여러분의 고양이를 자랑해보세요</S.Description>
       <S.InputForm onSubmit={handleSubmit(onSubmitHandler)} method="post">
         <S.LoginInput
