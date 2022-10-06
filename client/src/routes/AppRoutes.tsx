@@ -1,4 +1,6 @@
 import DashBoard from '@Layout/DashBoard'
+import { Iphone11Pro } from '@Layout/PhoneLayout'
+import PresentLayout from '@Layout/PresentLayout'
 import Cat from '@pages/Cat'
 import Login from '@pages/Login'
 import Signup from '@pages/Signup'
@@ -10,7 +12,9 @@ import { mainRoutes } from './main.routes'
 
 const appRoutes: RouteObject = {
   path: '/',
-  element: <DashBoard />,
+  // element: <Iphone11Pro />,
+  // element: <DashBoard />,
+  element: <PresentLayout />,
   children: [
     { path: 'cat', element: <Cat /> },
     mainRoutes,
