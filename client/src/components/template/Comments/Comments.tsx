@@ -8,7 +8,7 @@ const Comments: FC<FeedDetail> = ({ comments }) => {
     <S.CommentsLayout>
       <S.CommentTitleBox>
         <S.CommentTitle>댓글</S.CommentTitle>
-        <S.CommentCount>3개</S.CommentCount>
+        <S.CommentCount>{comments.length}개</S.CommentCount>
       </S.CommentTitleBox>
       <S.CommentBox>
         {comments.map(item => (
