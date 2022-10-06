@@ -1,6 +1,5 @@
 import Avatar from '@Atoms/Avatar'
 import Button from '@Atoms/Button'
-import ContentInput from '@Modules/FormTextInput/FormTextInput'
 import Image from '@Atoms/Image'
 import { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
@@ -40,10 +39,6 @@ const FeedDetail = () => {
       </S.UserInfoBox>
       {pictures && pictures.map(item => <Image src={item.picture} />)}
       <S.FeedBodyText>{body}</S.FeedBodyText>
-      <ContentInput
-        inputName="feed-body"
-        placeholder="본문에 #을 이용해 태그를 입력해보세요"
-      />
     </S.FeedDetailLayout>
   )
 }
