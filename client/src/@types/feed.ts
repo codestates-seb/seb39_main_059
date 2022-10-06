@@ -40,12 +40,12 @@ export interface FeedDetail {
 
 export interface Comment {
   body: string
-  catId: number
+  catId?: number
   feedCommentId: number
   likeCount: number
   name: string
   profileImage: string
-  userId: number
+  userId?: number
 }
 
 export interface Picture {
