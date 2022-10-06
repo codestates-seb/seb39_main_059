@@ -13,6 +13,10 @@ const NavBar = styled.nav`
   gap: 5px;
 `
 
+const BorderBox = styled.div`
+  border: 3px solid black;
+`
+
 const DashBoardLayout = styled.div`
   width: 100vw;
   height: 100vh;
@@ -48,10 +52,13 @@ const DashBoard = () => {
         <Link to={FEED_PATH}>feed</Link>
         <Link to={BOARD_PATH}>Board</Link>
       </NavBar>
-      <PhoneLayout>
-        <Outlet />
-      </PhoneLayout>
+      <BorderBox>
+        <PhoneLayout>
+          <Outlet />
+        </PhoneLayout>
+      </BorderBox>
     </DashBoardLayout>
   )
 }
+
 export default DashBoard
