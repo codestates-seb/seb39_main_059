@@ -12,6 +12,7 @@ import com.twentyfour_seven.catvillage.user.service.UserService;
 import com.twentyfour_seven.catvillage.utils.CustomBeanUtils;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -73,5 +74,30 @@ public class CatService {
 
         Cat updatingCat = beanUtils.copyNonNullProperties(cat, findCat);
         return catRepository.save(updatingCat);
+    }
+
+    public List<Cat> findCatsByUser(long userId) {
+        // 유저 정보 가져옴
+        User findUser = userService.findUser(userId);
+
+        // 유저에 고양이가 없다면 null로 리턴
+        if (findUser.getCats() == null || findUser.getCats().isEmpty()) {
+            return null;
+        }
+
+        List<Cat> resultCats = new ArrayList<>();
+        List<Cat> findCats = findUser.getCats();
+
+        // 대표고양이 설정이 안되어 있을 경우 0번 고양이를 대표고양이로 지정
+        Cat representCat = findUser.getRepresentCat() == null ? findCats.get(0) : findUser.getRepresentCat();
+
+
+        // 대표 고양이를 반환할 리스트의 0번 인덱스에 추가
+        findCats.remove(representCat);
+        resultCats.add(representCat);
+        // 대표고양이를 제외한 고양이를 반환할 리스트에 추가
+        resultCats.addAll(findCats);
+
+        return resultCats;
     }
 }
