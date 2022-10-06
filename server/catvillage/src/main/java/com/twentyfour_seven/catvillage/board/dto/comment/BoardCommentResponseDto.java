@@ -15,18 +15,20 @@ public class BoardCommentResponseDto {
     private Long boardCommentId;
     private String body;
     private String name;
+    private String profileImage;
     private String link;
     private Long likeCount;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime createdDate;
+    // 생성일을 사용하지 않아 주석처리
+//    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+//    private LocalDateTime createdDate;
 
     @Builder
-    public BoardCommentResponseDto(Long boardCommentId, String body, String name, String link, Long likeCount, LocalDateTime createdDate) {
+    public BoardCommentResponseDto(Long boardCommentId, String body, String name, String profileImage, String link, Long likeCount) {
         this.boardCommentId = boardCommentId;
         this.body = body;
         this.name = name;
+        this.profileImage = profileImage;
         this.link = link;
         this.likeCount = likeCount;
-        this.createdDate = createdDate;
     }
 }
