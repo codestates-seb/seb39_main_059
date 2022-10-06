@@ -30,12 +30,12 @@
 <br>
 
 등록한 고양이 프로필 중 하나를 선택해서 고양이 사진을 게시해서 자랑할 수 있는 게시판입니다.<br>
-한번에 최대 10장의 사진까지 게시할 수 있습니다!<br>
+고양이 사진을 글과 테그와 함께 올려서 다른 사용자들에게 자랑해보세요!<br>
 다른 유저의 게시글에 좋아요👍와 댓글을 추가할 수 있습니다!
 
 </details>
 <details>
-<summary>👤슬기로운 집사생활</summary>
+<summary>👤집사생활</summary>
 <br>
 
 고양이의 품종별 정보를 제공해드립니다!<br>
@@ -48,9 +48,10 @@
 
   <h1>기술스택</h1>
   <br>
-  <img src="https://user-images.githubusercontent.com/104193237/192124591-8a478b5d-ba15-4997-ae5d-692de20fbe62.png" width="500">
+  <img src="https://user-images.githubusercontent.com/104193237/194202223-537b6cbc-1941-4b5d-9a71-66df0f5f155f.png" height="500">
   
   <br><br><br>
+
   <h1>인프라</h1>
   <br>
   <img src="https://user-images.githubusercontent.com/104193237/192691288-d53147ad-45a9-4a43-93eb-70ca073b24f8.png" width="850">
