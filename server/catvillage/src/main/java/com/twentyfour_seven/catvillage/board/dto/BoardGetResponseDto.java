@@ -19,6 +19,7 @@ public class BoardGetResponseDto {
     private String title;
     private String body;
     private String name;
+    private String profileImage;
     private List<BoardTagDto> tags;
     private List<PictureDto> pictures;
     private Long viewCount;
@@ -30,11 +31,12 @@ public class BoardGetResponseDto {
     private List<BoardCommentResponseDto> comments;
 
     @Builder
-    public BoardGetResponseDto(Long boardId, String title, String body, String name, List<BoardTagDto> tags, List<PictureDto> pictures, Long viewCount, Long likeCount, Long commentCount, LocalDateTime createdDate, Boolean isLike, List<BoardCommentResponseDto> comments) {
+    public BoardGetResponseDto(Long boardId, String title, String body, String name, String profileImage, List<BoardTagDto> tags, List<PictureDto> pictures, Long viewCount, Long likeCount, Long commentCount, LocalDateTime createdDate, Boolean isLike, List<BoardCommentResponseDto> comments) {
         this.boardId = boardId;
         this.title = title;
         this.body = body;
         this.name = name;
+        this.profileImage = profileImage;
         this.tags = tags;
         this.pictures = pictures;
         this.viewCount = viewCount;
