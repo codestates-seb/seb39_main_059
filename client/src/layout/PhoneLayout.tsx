@@ -20,7 +20,6 @@ const phoneSize = {
 const PhoneBox = styled.div<{ cssProp?: CSSProp }>(
   ({ cssProp }) => css`
     position: relative;
-    border: 3px solid black;
     width: 100%;
     height: 100%;
     overflow: scroll;
