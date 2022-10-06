@@ -2,10 +2,7 @@ package com.twentyfour_seven.catvillage.feed.mapper;
 
 import com.twentyfour_seven.catvillage.common.picture.dto.PictureDto;
 import com.twentyfour_seven.catvillage.common.picture.entity.Picture;
-import com.twentyfour_seven.catvillage.feed.dto.FeedGetResponseDto;
-import com.twentyfour_seven.catvillage.feed.dto.FeedMultiGetResponseDto;
-import com.twentyfour_seven.catvillage.feed.dto.FeedPostDto;
-import com.twentyfour_seven.catvillage.feed.dto.FeedResponseDto;
+import com.twentyfour_seven.catvillage.feed.dto.*;
 import com.twentyfour_seven.catvillage.feed.entity.Feed;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
@@ -105,4 +102,16 @@ public interface FeedMapper {
 
         return list;
     }
+
+    default FeedSimpleDto feedToFeedSimpleDto(Feed feed) {
+        String picture = "";
+        if (feed.getPictures() != null && feed.getPictures().size() > 0) {
+            picture = feed.getPictures().get(0).getPath();
+        }
+        return FeedSimpleDto.builder()
+                .feedId(feed.getFeedId())
+                .picture(picture).build();
+    }
+
+    List<FeedSimpleDto> feedsToFeedSimpleDtos(List<Feed> feeds);
 }

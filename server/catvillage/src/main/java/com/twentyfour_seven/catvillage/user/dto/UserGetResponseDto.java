@@ -1,5 +1,6 @@
 package com.twentyfour_seven.catvillage.user.dto;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,23 +10,26 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class UserGetResponseDto {
+    @ApiModelProperty(value = "유저 식별자(id)")
     private Long userId;
-    private String email;
+    @ApiModelProperty(value = "유저 이름")
     private String name;
+    @ApiModelProperty(value = "유저 프로필 이미지 경로")
     private String profileImage;
-    private String location;
+    @ApiModelProperty(value = "고양이 프로필 개수")
     private Integer catCount;
+    @ApiModelProperty(value = "작성한 게시글 개수")
     private Long contentCount;
+    @ApiModelProperty(value = "유저가 팔로우하고 있는 유저수")
     private Long followingCount;
+    @ApiModelProperty(value = "유저를 팔로우하고 있는 유저수")
     private Long followerCount;
 
     @Builder
-    public UserGetResponseDto(Long userId, String email, String name, String profileImage, String location, Integer catCount, Long contentCount, Long followingCount, Long followerCount) {
+    public UserGetResponseDto(Long userId, String name, String profileImage, Integer catCount, Long contentCount, Long followingCount, Long followerCount) {
         this.userId = userId;
-        this.email = email;
         this.name = name;
         this.profileImage = profileImage;
-        this.location = location;
         this.catCount = catCount;
         this.contentCount = contentCount;
         this.followingCount = followingCount;

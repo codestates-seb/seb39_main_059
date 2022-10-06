@@ -1,5 +1,6 @@
 package com.twentyfour_seven.catvillage.cat.mapper;
 
+import com.twentyfour_seven.catvillage.cat.dto.CatSimpleDto;
 import com.twentyfour_seven.catvillage.cat.dto.CatPostDto;
 import com.twentyfour_seven.catvillage.cat.dto.CatResponseDto;
 import com.twentyfour_seven.catvillage.cat.entity.Cat;
@@ -8,6 +9,7 @@ import org.mapstruct.ReportingPolicy;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface CatMapper {
@@ -50,4 +52,17 @@ public interface CatMapper {
         );
         return catResponseDto;
     }
+
+    default CatSimpleDto catToCatGetUserResponseDto(Cat cat) {
+        if (cat == null) {
+            return null;
+        }
+
+        return CatSimpleDto.builder()
+                .profileImage(cat.getImage())
+                .name(cat.getName())
+                .link("https://catvillage.shop/cats/" + cat.getCatId())
+                .build();
+    }
+    List<CatSimpleDto> catsToCatGetUserResponseDtos(List<Cat> cats);
 }
