@@ -41,15 +41,15 @@ const phoneLayout = (cssProp: CSSProp) =>
     )
   }
 
-export const Iphone11Pro: FC<{ children: JSX.Element }> = phoneLayout(
+export const Iphone11Pro: FC<{ children?: JSX.Element }> = phoneLayout(
   css(phoneSize.Iphone11Pro),
 )
 
-export const Iphone11Max: FC<{ children: JSX.Element }> = phoneLayout(
+export const Iphone11Max: FC<{ children?: JSX.Element }> = phoneLayout(
   css(phoneSize.Iphone11ProMax),
 )
 
-export const IphoneSE: FC<{ children: JSX.Element }> = phoneLayout(
+export const IphoneSE: FC<{ children?: JSX.Element }> = phoneLayout(
   css(phoneSize.IphoneSE),
 )
 
@@ -61,7 +61,7 @@ const CustomPhoneLayout = styled.div`
   overflow: auto;
 `
 
-export const CustomPhone: FC<{ children: JSX.Element }> = () => {
+export const CustomPhone: FC<{ children?: JSX.Element }> = () => {
   return (
     <CustomPhoneLayout>
       <PhoneBox>
