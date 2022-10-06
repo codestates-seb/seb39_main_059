@@ -34,9 +34,10 @@ public interface BoardCommentMapper {
                     .boardCommentId(boardComment.getBoardCommentId())
                     .body(boardComment.getBody())
                     .name(boardComment.getUser().getName())
+                    .profileImage(boardComment.getUser().getProfileImage())
                     .link("https://catvillage.tk/users/" + boardComment.getUser().getUserId())
                     .likeCount(boardComment.getLikeCount())
-                    .createdDate(boardComment.getCreatedDate())
+//                    .createdDate(boardComment.getCreatedDate())
                     .build();
         }
     }
