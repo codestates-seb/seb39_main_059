@@ -62,6 +62,15 @@ public class User extends DateTable {
     private String role;
 
     @Setter
+    @Column(name = "PROVIDER", length = 20)
+    private String provider;
+
+    @Setter
+    @OneToOne(cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "REPRESENT_CAT_ID")
+    private Cat representCat;
+
+    @Setter
     @Column(name = "EXPIRY_DATE")
     private LocalDateTime expiryDate;
 
