@@ -6,9 +6,7 @@ import com.twentyfour_seven.catvillage.board.dto.BoardMultiGetResponse;
 import com.twentyfour_seven.catvillage.board.dto.BoardPostResponseDto;
 import com.twentyfour_seven.catvillage.board.dto.comment.BoardCommentPostResponseDto;
 import com.twentyfour_seven.catvillage.board.dto.comment.BoardUserCommentResponseDto;
-import com.twentyfour_seven.catvillage.cat.dto.CatResponseDto;
-import com.twentyfour_seven.catvillage.cat.dto.CatTagPostDto;
-import com.twentyfour_seven.catvillage.cat.dto.CatTagResponseDto;
+import com.twentyfour_seven.catvillage.cat.dto.*;
 import com.twentyfour_seven.catvillage.dto.MultiBoardResponseDto;
 import com.twentyfour_seven.catvillage.dto.MultiResponseDto;
 import com.twentyfour_seven.catvillage.feed.dto.*;
@@ -77,7 +75,9 @@ public class SwaggerConfig {
                         typeResolver.resolve(CatTagResponseDto.class),
                         typeResolver.resolve(FollowGetResponseDto.class),
                         typeResolver.resolve(FollowerResponseDto.class),
-                        typeResolver.resolve(FollowingResponseDto.class)
+                        typeResolver.resolve(FollowingResponseDto.class),
+                        typeResolver.resolve(CatUserResponseDto.class),
+                        typeResolver.resolve(CatSimpleDto.class)
                 )
 //                .useDefaultResponseMessages(true)
                 .useDefaultResponseMessages(false)

@@ -3,6 +3,7 @@ package com.twentyfour_seven.catvillage.cat.mapper;
 import com.twentyfour_seven.catvillage.cat.dto.CatSimpleDto;
 import com.twentyfour_seven.catvillage.cat.dto.CatPostDto;
 import com.twentyfour_seven.catvillage.cat.dto.CatResponseDto;
+import com.twentyfour_seven.catvillage.cat.dto.CatUserResponseDto;
 import com.twentyfour_seven.catvillage.cat.entity.Cat;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
@@ -50,7 +51,7 @@ public interface CatMapper {
         return catResponseDto;
     }
 
-    default CatSimpleDto catToCatGetUserResponseDto(Cat cat) {
+    default CatSimpleDto catToCatSimpleDto (Cat cat) {
         if (cat == null) {
             return null;
         }
@@ -61,5 +62,13 @@ public interface CatMapper {
                 .link("https://catvillage.shop/cats/" + cat.getCatId())
                 .build();
     }
-    List<CatSimpleDto> catsToCatGetUserResponseDtos(List<Cat> cats);
+    List<CatSimpleDto> catsToCatSimpleDtos (List<Cat> cats);
+
+     default CatUserResponseDto catsToCatUserResponseDto(List<Cat> cats) {
+         CatUserResponseDto responseDto = new CatUserResponseDto();
+         responseDto.setRepresentCat(catToCatResponseDto(cats.get(0)));
+         cats.remove(0);
+         responseDto.setCats(catsToCatSimpleDtos(cats));
+         return responseDto;
+     }
 }

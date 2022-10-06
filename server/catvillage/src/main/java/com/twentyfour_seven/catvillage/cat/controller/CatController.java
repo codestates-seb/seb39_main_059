@@ -3,6 +3,7 @@ package com.twentyfour_seven.catvillage.cat.controller;
 import com.twentyfour_seven.catvillage.cat.dto.CatPostDto;
 import com.twentyfour_seven.catvillage.cat.dto.CatResponseDto;
 import com.twentyfour_seven.catvillage.cat.dto.CatTagResponseDto;
+import com.twentyfour_seven.catvillage.cat.dto.CatUserResponseDto;
 import com.twentyfour_seven.catvillage.cat.entity.Cat;
 import com.twentyfour_seven.catvillage.cat.entity.CatTag;
 import com.twentyfour_seven.catvillage.cat.mapper.CatMapper;
@@ -13,7 +14,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -47,10 +47,10 @@ public class CatController {
 
     @Operation(summary = "고양이 등록하기",
             description = "로그인한 유저 정보를 꺼내와서 유저에 고양이를 추가합니다. 만약 등록되지 않은 유저일 경우 404 에러가 납니다.",
-    responses = {
-            @ApiResponse(responseCode = "201", description = "고양이 등록 성공", content = @Content(schema = @Schema(implementation = CatResponseDto.class))),
-            @ApiResponse(responseCode = "404", description = "존재하지 않는 유저")
-    })
+            responses = {
+                    @ApiResponse(responseCode = "201", description = "고양이 등록 성공", content = @Content(schema = @Schema(implementation = CatResponseDto.class))),
+                    @ApiResponse(responseCode = "404", description = "존재하지 않는 유저")
+            })
     @PostMapping
     public ResponseEntity postCat(@Valid @RequestBody CatPostDto catPostDto,
                                   @AuthenticationPrincipal User user) {
@@ -68,10 +68,10 @@ public class CatController {
 
     @Operation(summary = "고양이 프로필 정보 불러오기",
             description = "로그인 하지 않은 유저도 요청 가능합니다.",
-    responses = {
-            @ApiResponse(responseCode = "200", description = "고양이 프로필 조회 성공", content = @Content(schema = @Schema(implementation = CatResponseDto.class))),
-            @ApiResponse(responseCode = "404", description = "존재하지 않는 고양이 프로필")
-    })
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "고양이 프로필 조회 성공", content = @Content(schema = @Schema(implementation = CatResponseDto.class))),
+                    @ApiResponse(responseCode = "404", description = "존재하지 않는 고양이 프로필")
+            })
     @GetMapping("/{cats-id}")
     public ResponseEntity getCat(@PathVariable("cats-id") @Positive long catId) {
         Cat cat = catService.findCat(catId);
@@ -84,11 +84,11 @@ public class CatController {
 
     @Operation(summary = "고양이 프로필 수정하기",
             description = "로그인된 유저 정보와 처음 고양이를 등록했던 유저 정보가 일치하지 않을 경우 405 에러가 납니다.",
-    responses = {
-            @ApiResponse(responseCode = "200", description = "고양이 프로필 수정 성공", content = @Content(schema = @Schema(implementation = CatResponseDto.class))),
-            @ApiResponse(responseCode = "404", description = "존재하지 않는 고양이 프로필"),
-            @ApiResponse(responseCode = "405", description = "유저 정보 불일치")
-    })
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "고양이 프로필 수정 성공", content = @Content(schema = @Schema(implementation = CatResponseDto.class))),
+                    @ApiResponse(responseCode = "404", description = "존재하지 않는 고양이 프로필"),
+                    @ApiResponse(responseCode = "405", description = "유저 정보 불일치")
+            })
     @PatchMapping("/{cats-id}")
     public ResponseEntity patchCat(@PathVariable("cats-id") @Positive long catId,
                                    @Valid @RequestBody CatPostDto catPostDto,
@@ -107,14 +107,30 @@ public class CatController {
 
     @Operation(summary = "고양이 프로필 삭제하기",
             description = "로그인된 유저 정보와 처음 고양이를 등록했던 유저 정보가 일치하지 않을 경우 405 에러가 납니다.",
-    responses = {
-            @ApiResponse(responseCode = "204", description = "고양이 프로필 삭제 성공"),
-            @ApiResponse(responseCode = "404", description = "존재하지 않는 고양이 프로필")
-    })
+            responses = {
+                    @ApiResponse(responseCode = "204", description = "고양이 프로필 삭제 성공"),
+                    @ApiResponse(responseCode = "404", description = "존재하지 않는 고양이 프로필")
+            })
     @DeleteMapping("/{cats-id}")
     public ResponseEntity deleteCat(@PathVariable("cats-id") @Positive long catId,
                                     @AuthenticationPrincipal User user) {
         catService.removeCat(catId, user.getUsername());
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+
+    @Operation(summary = "특정 유저의 대표고양이와 그외 고양이 프로필 정보 조회",
+            description = "유저 프로필 페이지에 들어가는 고양이 정보를 불러오는 API 입니다.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "유저의 고양이 정보 조회 성공", content = @Content(schema = @Schema(implementation = CatUserResponseDto.class))),
+                    @ApiResponse(responseCode = "404", description = "존재하지 않는 유저")
+            }
+    )
+    @GetMapping("/users/{users-id}")
+    public ResponseEntity getCatInUserProfile(@PathVariable("users-id") @Positive long userId) {
+        // 유저의 고양이 가져옴, 대표 고양이는 0번 인덱스로
+        List<Cat> findCats = catService.findCatsByUser(userId);
+
+        return new ResponseEntity<>(catMapper.catsToCatUserResponseDto(findCats), HttpStatus.OK);
     }
 }
