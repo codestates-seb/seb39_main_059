@@ -20,9 +20,6 @@ export const ContentBox = styled.div`
   letter-spacing: -0.40799999237060547px;
   line-height: 1.2;
   flex: 1;
-  > * {
-    vertical-align: middle;
-  }
 `
 
 export const AvatarCssProp = css`
