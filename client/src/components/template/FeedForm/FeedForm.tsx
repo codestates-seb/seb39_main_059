@@ -8,7 +8,7 @@ const FeedForm = () => {
   return (
     <S.FeedFormLayout>
       <S.ImageInputBox>
-        <ImageInput inputName="image-input" />
+        {/* <ImageInput inputName="image-input" /> */}
       </S.ImageInputBox>
       <S.TitleInput inputName="title-input" placeholder="글제목" />
       <S.BodyInput

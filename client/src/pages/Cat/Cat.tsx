@@ -1,7 +1,8 @@
-import { FC, useEffect, useRef } from 'react'
+import { FC } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Back, Edit } from '@Assets/icons'
 import { SubmitHandler, useForm } from 'react-hook-form'
+import { axiosInstance } from '@Utils/instance'
 import { CatspiceList as CatBreedList, CatWeightList } from '@/constant'
 import * as S from './Cat.style'
 import { useAppSelector } from '@/redux/store'
@@ -19,19 +20,8 @@ interface FormValue {
 const Cat: FC = () => {
   const navigate = useNavigate()
   const auth = useAppSelector(state => state.user)
-  // console.log(auth)
 
-  const dateRef = useRef<HTMLInputElement>(null)
-  useEffect(() => {
-    console.log(dateRef.current)
-  }, [dateRef.current?.value])
-
-  const {
-    register,
-    handleSubmit,
-    getValues,
-    formState: { errors },
-  } = useForm<FormValue>()
+  const { register, handleSubmit } = useForm<FormValue>()
 
   const onSubmitHandler: SubmitHandler<FormValue> = data => {
     console.log(data)
@@ -52,6 +42,7 @@ const Cat: FC = () => {
         <S.CatImageInput
           inputName="image-input"
           desc="사진 교체하기"
+          onPost={getImgUrl}
           required
           {...register('image', { required: true })}
         />
@@ -126,4 +117,27 @@ const Cat: FC = () => {
     </S.CatLayout>
   )
 }
+
+const getImgUrl = async (formData: FormData): Promise<string> => {
+  const axiosResponse = await axiosInstance.post('/upload', formData, {
+    headers: {
+      'content-type': 'multipart/form-data',
+      Authorization: `Bearer ${localStorage.getItem('ACCESS_TOKEN')}`,
+    },
+  })
+  /*          // HttpStatus가 200번호 구역이 아니거나
+    // 서버에서 응답 코드로 0(성공)을 주지 않았을 경우
+    if (
+      axiosResponse.status < 200 ||
+      axiosResponse.status >= 300 ||
+      axiosResponse.data.resultCode !== 0
+    ) {
+      // Error를 발생시켜 Catch문을 타게 만들어주는데, 서버에 응답받은 메시지를 넣어준다!
+      // 서버에서 응답 메시지를 받지 못했을경우 기본 메시지 설정또한 함께 해준다
+      throw Error(axiosResponse.data.message || '문제가 발생했어요!')
+    } */
+
+  return axiosResponse.data
+}
+
 export default Cat

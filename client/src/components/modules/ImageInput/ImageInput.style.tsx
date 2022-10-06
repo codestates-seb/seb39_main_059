@@ -7,6 +7,7 @@ export const ImageInputlayout = styled.div<{ cssProp?: CSSProp }>(
     align-items: center;
     gap: 13px;
     ${cssProp}
+    position: relative;
   `,
 )
 
@@ -27,5 +28,6 @@ export const ImgLabel = styled.label<{ imgCssProp?: CSSProp }>(
 )
 
 export const HiddenInput = styled.input`
-  display: none;
+  position: absolute;
+  z-index: -1;
 `

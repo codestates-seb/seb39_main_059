@@ -29,3 +29,24 @@ export function getRangeArray(start: number, end: number, step?: number) {
   }
   return res
 }
+
+export const fileExtensionValid = (
+  fileName: string,
+  allowFileExtension: string | string[],
+): boolean => {
+  const extension = removeFileName(fileName)
+
+  if (allowFileExtension.indexOf(extension) === -1 || extension === '') {
+    return false
+  }
+  return true
+}
+
+export const removeFileName = (originalFileName: string): string => {
+  const lastIndex = originalFileName.lastIndexOf('.')
+
+  if (lastIndex < 0) {
+    return ''
+  }
+  return originalFileName.substring(lastIndex + 1).toLowerCase()
+}
