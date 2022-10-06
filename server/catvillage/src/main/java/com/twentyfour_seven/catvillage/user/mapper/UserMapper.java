@@ -45,17 +45,18 @@ public interface UserMapper {
         if (user == null) {
             return null;
         } else {
-            return UserGetResponseDto.builder()
+            UserGetResponseDto userGetResponseDto = UserGetResponseDto.builder()
                     .userId(user.getUserId())
-                    .email(user.getEmail())
                     .name(user.getName())
                     .profileImage(user.getProfileImage())
-                    .location(user.getLocation())
                     .catCount(user.getCats().size())
-                    .contentCount(user.getContentCount()) // TODO : edit after adding feed & board mapping
+                    .contentCount(user.getContentCount())
                     .followerCount(user.getFollowerCount())
                     .followingCount(user.getFollowingCount())
                     .build();
+
+
+            return userGetResponseDto;
         }
     }
 
