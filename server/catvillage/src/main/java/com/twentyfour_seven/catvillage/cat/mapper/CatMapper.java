@@ -15,6 +15,9 @@ public interface CatMapper {
         if (catPostDto == null) {
             return null;
         }
+        String profileImage = (catPostDto.getImage() == null || catPostDto.getImage().isEmpty()) ?
+                "https://catvillage-image-server.s3.ap-northeast-2.amazonaws.com/catvillage/images/1ba41d17-5e93-4926-812a-6072e90b7b5b-default-cat-profile.png" :
+                catPostDto.getImage();
         LocalDateTime birthDate = LocalDateTime.of(catPostDto.getBirthYear(), catPostDto.getBirthMonth(), catPostDto.getBirthDay(), 0, 0, 0);
         Cat cat = Cat.builder()
                 .name(catPostDto.getName())
@@ -22,7 +25,7 @@ public interface CatMapper {
                 .sex(catPostDto.getSex())
                 .weight(catPostDto.getWeight())
                 .body(catPostDto.getBody())
-                .image(catPostDto.getImage())
+                .image(profileImage)
                 .build();
         return cat;
     }
