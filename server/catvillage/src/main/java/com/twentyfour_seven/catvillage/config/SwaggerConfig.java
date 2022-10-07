@@ -15,6 +15,7 @@ import com.twentyfour_seven.catvillage.user.dto.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.ParameterBuilder;
@@ -41,15 +42,8 @@ public class SwaggerConfig {
 
         TypeResolver typeResolver = new TypeResolver();
 
-        Parameter parameterBuilder = new ParameterBuilder()
-                .name(HttpHeaders.AUTHORIZATION)
-                .description("Access Token")
-                .modelRef(new ModelRef("string"))
-                .parameterType("header")
-                .required(false)
-                .build();
-
         return new Docket(DocumentationType.SWAGGER_2)
+                .ignoredParameterTypes(AuthenticationPrincipal.class)
                 .additionalModels(
                         typeResolver.resolve(UserPostResponseDto.class),
                         typeResolver.resolve(UserPatchResponseDto.class),
@@ -79,7 +73,6 @@ public class SwaggerConfig {
                         typeResolver.resolve(CatUserResponseDto.class),
                         typeResolver.resolve(CatSimpleDto.class)
                 )
-//                .useDefaultResponseMessages(true)
                 .useDefaultResponseMessages(false)
                 .apiInfo(apiInfo())
                 .select()
