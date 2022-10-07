@@ -18,18 +18,6 @@ const Feeds = () => {
     dispatch(getFeedsAsync())
   }, [dispatch])
 
-  const handleFeedClick = () => {
-    /* 특정 피드를 클릭했을 때 해당 피드 페이지로 이동하는 함수 */
-  }
-
-  const handleLikeClick = () => {
-    /* 좋아요 버튼을 클릭했을 때 실행되는 함수 */
-  }
-
-  const handleFollowClick = () => {
-    /* 팔로우한 고양이 프로필을 클릭했을 때 실행되는 함수 */
-  }
-
   return (
     <S.FeedsLayout>
       <S.FollowCatBox>
@@ -50,7 +38,14 @@ const Feeds = () => {
               <Link to={`/${FEED_PATH}/${item.feedId}`} key={item.feedId}>
                 <S.FeedItem>
                   <Image src={item.image} />
-                  <SvgButton icon="HeartIcon" cssProp={SvgButtonCssProp} />
+                  {item.isLike ? (
+                    <SvgButton
+                      icon="EmptyHeartIcon"
+                      cssProp={SvgButtonCssProp}
+                    />
+                  ) : (
+                    <SvgButton icon="HeartIcon" cssProp={SvgButtonCssProp} />
+                  )}
                 </S.FeedItem>
               </Link>
             )
