@@ -44,6 +44,10 @@ const SDecoreation = styled.div`
   transition: left 1s;
 `
 
+const SMainLayout = styled.div`
+  position: relative;
+`
+
 const Nav = () => {
   return (
     <SNavLayout>
@@ -66,10 +70,10 @@ const Nav = () => {
 
 export const MainLayout = () => {
   return (
-    <>
+    <SMainLayout>
       <Nav />
       <Outlet />
       <TabBar />
-    </>
+    </SMainLayout>
   )
 }
