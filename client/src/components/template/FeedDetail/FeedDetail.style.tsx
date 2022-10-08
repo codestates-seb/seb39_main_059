@@ -17,9 +17,9 @@ export const UserInfoBox = styled.div`
 export const FeedBodyText = styled.p`
   //styleName: Text/Regular/15;
   font-size: 15px;
-  font-weight: 500;
+  font-weight: ${({ theme }) => theme.fontWeight.thin};
   line-height: 20px;
   letter-spacing: -0.40799999237060547px;
   text-align: left;
-  padding: 20px 0;
+  padding: 10px 0;
 `

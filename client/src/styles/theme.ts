@@ -9,8 +9,9 @@ const fontSize = {
 }
 
 const fontWeight = {
-  bold: 700,
-  regular: 500,
+  thin: 300,
+  regular: 400,
+  bold: 500,
 }
 
 const color = {

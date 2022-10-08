@@ -16,15 +16,18 @@ export const AvatarBox = styled.div`
 
 export const ContentBox = styled.div`
   padding-top: 5px;
-  font-size: ${({ theme }) => theme.fontSize.sm};
+  font-size: ${({ theme }) => theme.fontSize.md};
+  font-weight: ${({ theme }) => theme.fontWeight.thin};
   letter-spacing: -0.40799999237060547px;
-  line-height: 1.2;
+  line-height: 1.4;
   flex: 1;
 `
 
 export const AvatarCssProp = css`
   width: content;
   justify-content: center;
+  font-weight: ${({ theme }) => theme.fontWeight.bold};
+  font-size: ${({ theme }) => theme.fontSize.md};
 `
 
 export const SvgButtonCssProp = css`
