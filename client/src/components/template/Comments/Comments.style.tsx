@@ -5,8 +5,6 @@ export const CommentsLayout = styled.div`
 `
 
 export const CommentBox = styled.div`
-  height: 120px;
-  overflow: scroll;
   -ms-overflow-style: none;
   ::-webkit-scrollbar {
     display: none;
