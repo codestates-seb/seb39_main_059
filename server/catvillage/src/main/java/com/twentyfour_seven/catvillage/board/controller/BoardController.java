@@ -96,6 +96,10 @@ public class BoardController {
         board.setUser(findUser);
 
         Board createdBoard = boardService.createBoard(board, requestBody.getTags(), requestBody.getPictures());
+
+        // 유저 contentCount + 1하여 저장
+        userService.addContentCount(findUser);
+
         return new ResponseEntity<>(
                 boardMapper.boardToBoardPostResponseDto(createdBoard),
                 HttpStatus.CREATED);
@@ -134,6 +138,10 @@ public class BoardController {
                                       @Positive @PathVariable("board-id") Long boardId) {
         User findUser = userService.findVerifiedEmail(user.getUsername());
         boardService.deleteBoard(findUser, boardId);
+
+        // 유저 contentCount - 1하여 저장
+        userService.removeContentCount(findUser);
+
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
