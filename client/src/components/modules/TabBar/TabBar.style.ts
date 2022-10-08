@@ -13,7 +13,7 @@ export const TabBarLayout = styled.nav(
     border-radius: 43px;
     position: sticky;
     left: calc(50% - 300px / 2);
-    bottom: 3.5%; // Iphone11 에서는 30px
+    bottom: 30px; // Iphone11 에서는 30px
   `,
 )
 
