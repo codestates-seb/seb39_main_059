@@ -23,3 +23,20 @@ export const FeedBodyText = styled.p`
   text-align: left;
   padding: 10px 0;
 `
+
+export const TagBox = styled.div`
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: flex-start;
+  gap: 10px;
+  align-items: center;
+`
+
+export const Tag = styled.div`
+  background-color: ${({ theme }) => theme.color.primary};
+  color: ${({ theme }) => theme.color.white};
+  font-size: ${({ theme }) => theme.fontSize.xs};
+  width: content;
+  padding: 5px 10px;
+  border-radius: 30px;
+`

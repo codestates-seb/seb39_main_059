@@ -27,6 +27,12 @@ const FeedDetail: FC<FeedDetail> = ({ body, name, profileImage, pictures }) => {
       </S.UserInfoBox>
       {pictures && pictures.map(item => <Image src={item.picture} />)}
       <S.FeedBodyText>{body}</S.FeedBodyText>
+      {/* 더미데이터 */}
+      <S.TagBox>
+        <S.Tag>#봉투홀릭</S.Tag>
+        <S.Tag>#2시간째</S.Tag>
+        <S.Tag>#개냥이</S.Tag>
+      </S.TagBox>
     </S.FeedDetailLayout>
   )
 }
