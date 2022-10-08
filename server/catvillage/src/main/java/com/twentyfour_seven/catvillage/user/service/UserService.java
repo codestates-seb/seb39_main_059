@@ -96,4 +96,14 @@ public class UserService {
             throw new BusinessLogicException(ExceptionCode.MEMBER_NAME_EXISTS);
         }
     }
+
+    public void addContentCount(User user) {
+        user.setContentCount(user.getContentCount() + 1);
+        userRepository.save(user);
+    }
+
+    public void removeContentCount(User user) {
+        user.setContentCount(user.getContentCount() - 1);
+        userRepository.save(user);
+    }
 }

@@ -9,13 +9,12 @@ import com.twentyfour_seven.catvillage.exception.BusinessLogicException;
 import com.twentyfour_seven.catvillage.exception.ExceptionCode;
 import com.twentyfour_seven.catvillage.feed.entity.Feed;
 import com.twentyfour_seven.catvillage.feed.repository.FeedRepository;
-import com.twentyfour_seven.catvillage.user.service.FollowService;
 import com.twentyfour_seven.catvillage.user.entity.User;
+import com.twentyfour_seven.catvillage.user.service.FollowService;
 import com.twentyfour_seven.catvillage.user.service.UserService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -49,9 +48,10 @@ public class FeedService {
     public Feed createFeed(Feed feed, long catId, String email) {
         // 작성한 고양이 프로필이 유효한지 확인
         Cat findCat = catService.findVerifiedCat(catId);
+        User user = findCat.getUser();
 
         // 로그인한 유저의 고양이가 아닐경우 에러
-        if (!findCat.getUser().getEmail().equals(email)) {
+        if (!user.getEmail().equals(email)) {
             throw new BusinessLogicException(ExceptionCode.INVALID_USER);
         }
 
@@ -70,6 +70,10 @@ public class FeedService {
 
         // feed 저장 후 반환
         Feed saveFeed = feedRepository.save(feed);
+
+        // 유저에 contentCount +1 하여 저장
+        userService.addContentCount(user);
+
         return saveFeed;
     }
 
@@ -151,6 +155,9 @@ public class FeedService {
             throw new BusinessLogicException(ExceptionCode.INVALID_USER);
         }
         feedRepository.delete(findFeed);
+
+        // 유저에 contentCount - 1 하여 저장
+        userService.removeContentCount(findUser);
     }
 
     public void addLike(long feedId, String email) {
