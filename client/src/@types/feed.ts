@@ -12,7 +12,7 @@ export interface Feeds {
 export interface Feed {
   feedId: number
   image: string
-  like: boolean
+  isLike: boolean
 }
 
 export interface Follow {
