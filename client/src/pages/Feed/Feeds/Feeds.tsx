@@ -9,6 +9,7 @@ import * as S from './Feeds.style'
 import { SvgButtonCssProp, AvatarCssProp } from './Feeds.style'
 import { useAppDispatch, useAppSelector } from '@/redux/store'
 import { getFeedsAsync } from '@/redux/actions/FeedsAction'
+import { toggleLike } from '@/redux/reducers/FeedsSlice'
 
 const Feeds = () => {
   const navigate = useNavigate()
@@ -20,10 +21,12 @@ const Feeds = () => {
     dispatch(getFeedsAsync())
   }, [dispatch])
 
-  const handleLikeClick = () => {
-    if (!isLogin) {
+  const handleLikeClick = (feedId: number) => {
+    if (localStorage.getItem('ACCESS_TOKEN') === null) {
       alert('로그인이 필요한 서비스입니다🐱')
       navigate('/login')
+    } else {
+      dispatch(toggleLike(feedId))
     }
   }
 
@@ -51,7 +54,7 @@ const Feeds = () => {
                 <SvgButton
                   icon={item.isLike ? 'EmptyHeartIcon' : 'HeartIcon'}
                   cssProp={SvgButtonCssProp}
-                  onClick={handleLikeClick}
+                  onClick={() => handleLikeClick(item.feedId)}
                 />
               </S.FeedItem>
             )
