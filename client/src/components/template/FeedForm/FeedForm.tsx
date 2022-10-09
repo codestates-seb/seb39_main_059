@@ -10,7 +10,7 @@ const FeedForm = () => {
       <S.ImageInputBox>
         {/* <ImageInput inputName="image-input" /> */}
       </S.ImageInputBox>
-      <S.TitleInput inputName="title-input" placeholder="글제목" />
+      {/* <S.TitleInput inputName="title-input" placeholder="글제목" /> */}
       <S.BodyInput
         inputName="body-input"
         placeholder="본문에 #을 이용해 태그를 입력해보세요!"
