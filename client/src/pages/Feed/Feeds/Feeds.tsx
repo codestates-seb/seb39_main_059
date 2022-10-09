@@ -2,13 +2,14 @@ import { Feeds } from '@Types/feed'
 import Image from '@Atoms/Image'
 import SvgButton from '@Atoms/SvgButton'
 import Avatar from '@Atoms/Avatar'
-import { useEffect } from 'react'
+import { useCallback, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { FEED_PATH } from '@Routes/feed.routes'
 import * as S from './Feeds.style'
 import { SvgButtonCssProp, AvatarCssProp } from './Feeds.style'
 import { useAppDispatch, useAppSelector } from '@/redux/store'
 import { getFeedsAsync } from '@/redux/actions/FeedsAction'
+import { toggleLike } from '@/redux/reducers/FeedsSlice'
 
 const Feeds = () => {
   const navigate = useNavigate()
@@ -20,12 +21,17 @@ const Feeds = () => {
     dispatch(getFeedsAsync())
   }, [dispatch])
 
-  const handleLikeClick = () => {
-    if (!isLogin) {
-      alert('로그인이 필요한 서비스입니다🐱')
-      navigate('/login')
-    }
-  }
+  const handleLikeClick = useCallback(
+    (feedId: number) => {
+      if (localStorage.getItem('ACCESS_TOKEN') === null) {
+        alert('로그인이 필요한 서비스입니다🐱')
+        navigate('/login')
+      } else {
+        dispatch(toggleLike(feedId))
+      }
+    },
+    [feed],
+  )
 
   return (
     <S.FeedsLayout>
@@ -51,7 +57,7 @@ const Feeds = () => {
                 <SvgButton
                   icon={item.isLike ? 'EmptyHeartIcon' : 'HeartIcon'}
                   cssProp={SvgButtonCssProp}
-                  onClick={handleLikeClick}
+                  onClick={() => handleLikeClick(item.feedId)}
                 />
               </S.FeedItem>
             )

@@ -1,5 +1,5 @@
-import { createSlice, Reducer } from '@reduxjs/toolkit'
-import { Feeds } from '@Types/feed'
+import { createSlice, Reducer, PayloadAction } from '@reduxjs/toolkit'
+import { Feed, Feeds } from '@Types/feed'
 import { getFeedsAsync } from '../actions/FeedsAction'
 
 const initialState: Feeds = {
@@ -13,10 +13,15 @@ const initialState: Feeds = {
   isLoading: false,
 }
 
-const userSlice = createSlice({
+const feedsSlice = createSlice({
   name: 'feeds',
   initialState,
-  reducers: {},
+  reducers: {
+    toggleLike: (state, { payload }: PayloadAction<number>) => {
+      const data = state.feed?.find(item => item.feedId === payload) as Feed
+      data.isLike = !data.isLike
+    },
+  },
   extraReducers: builder => {
     builder
       // 전체 피드 불러오기
@@ -37,4 +42,5 @@ const userSlice = createSlice({
   },
 })
 
-export const feedsReducer: Reducer<typeof initialState> = userSlice.reducer
+export const { toggleLike } = feedsSlice.actions
+export const feedsReducer: Reducer<typeof initialState> = feedsSlice.reducer
