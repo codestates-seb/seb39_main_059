@@ -1,1 +1,3 @@
 .DS_Store
+.idea
+application-local.yml

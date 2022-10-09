@@ -9,8 +9,13 @@ name: Java Pull-Request auto build test
 
 on:
   pull_request:
-    branches: [ "dev" ]
+    branches:
+      - 'dev'
+      - 'main'
     paths-ignore: [ "client/**" ]
+
+#env:
+#  RESOURCE_PATH: ./server/catvillage/src/main/resources-prod/application.yml
 
 permissions:
   contents: read
@@ -21,17 +26,36 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
-    - name: Set up JDK 11
-      uses: actions/setup-java@v3
-      with:
-        java-version: '11'
-        distribution: 'temurin'
-        
-    # build gradle
-    - name : Grant execute permission for gradlew
-      run: chmod +x server/catvillage/gradlew
-      shell: bash
-    - name: Build with Gradle
-      run: cd server/catvillage; ./gradlew build
-      shell: bash
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Set up JDK 11
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'temurin'
+
+  #    - name: Set yaml file
+  #      uses: microsoft/variable-substitution@v1
+  #      with:
+  #        files: ${{ env.RESOURCE_PATH }}
+  #      env:
+  #        jwt.secret: ${{ secrets.JWT_SECRET }}
+  #        cloud.aws.credentials.accessKey: ${{ secrets.AWS_ACCESS_KEY }}
+  #        cloud.aws.credentials.secretKey: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+      - name: Build with Gradle
+        uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
+        with:
+          arguments: build -Pprofile=prod
+          build-root-directory: server/catvillage
+        env:
+          RDS_ENDPOINT: ${{ secrets.ENDPOINT }}
+          RDS_PORT: ${{ secrets.PORT }}
+          RDS_USERNAME: ${{ secrets.USER }}
+          RDS_PASSWORD: ${{ secrets.PASSWORD }}
+          KAKAO_API_KEY: ${{ secrets.KAKAO_REST_API_KEY }}
+          KAKAO_CLIENT_SECRET: ${{ secrets.KAKAO_CLIENT_SECRET }}
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          AWS_ACCESS_KEY: ${{ secrets.AWS_ACCESS_KEY }}
+          AWS_SECRET_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}

@@ -8,15 +8,17 @@
 name: Java CI with Gradle
 
 env:
-  S3_BUCKET_NAME: image.catvillage.shop
+  S3_BUCKET_NAME: catvillage-image-server
+  RESOURCE_PATH: ./server/catvillage/src/main/resources-prod/application.yml
 
 on:
   push:
     paths-ignore: [ "client/**" ]
     branches: [ "dev" ]
-  pull_request:
-    paths-ignore: [ "client/**" ]
-    branches: [ "dev" ]
+#  pull_request:
+#    paths-ignore: [ "client/**" ]
+#    branches: [ "dev" ]
+
 
 permissions:
   contents: read
@@ -33,14 +35,39 @@ jobs:
       with:
         java-version: '11'
         distribution: 'temurin'
+    - name: Set yaml file
+      uses: microsoft/variable-substitution@v1
+      with:
+        files: ${{ env.RESOURCE_PATH }}
+      env:
+        spring.datasource.url: jdbc:mariadb://${{ secrets.ENDPOINT }}:${{ secrets.PORT }}/cat_village?serverTimezone=UTC&characterEncoding=utf8mb4
+        spring.datasource.username: ${{ secrets.USER }}
+        spring.datasource.password: ${{ secrets.PASSWORD }}
+        spring.security.oauth2.client.registration.kakao.client-id: ${{ secrets.KAKAO_REST_API_KEY }}
+        spring.security.oauth2.client.registration.kakao.client-secret: ${{ secrets.KAKAO_CLIENT_SECRET }}
+        jwt.secret: ${{ secrets.JWT_SECRET }}
+        cloud.aws.credentials.accessKey: ${{ secrets.AWS_ACCESS_KEY }}
+        cloud.aws.credentials.secretKey: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
     
-    # build gradle
+    # grant execute permission for gradlew
     - name : Grant execute permission for gradlew
-      run: chmod +x gradlew
+      run: chmod +x server/catvillage/gradlew
       shell: bash
+
+    # build gradlew
     - name: Build with Gradle
-      run: ./gradlew build
+      run: cd server/catvillage; ./gradlew build -Pprofile=prod
       shell: bash
+      env:
+        RDS_ENDPOINT: ${{ secrets.ENDPOINT }}
+        RDS_PORT: ${{ secrets.PORT }}
+        RDS_USERNAME: ${{ secrets.USER }}
+        RDS_PASSWORD: ${{ secrets.PASSWORD }}
+        KAKAO_API_KEY: ${{ secrets.KAKAO_REST_API_KEY }}
+        KAKAO_CLIENT_SECRET: ${{ secrets.KAKAO_CLIENT_SECRET }}
+        JWT_SECRET: ${{ secrets.JWT_SECRET }}
+        AWS_ACCESS_KEY: ${{ secrets.AWS_ACCESS_KEY }}
+        AWS_SECRET_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
     # build한 후 프로젝트를 압축합니다.
     - name: Make zip file
@@ -63,3 +90,12 @@ jobs:
     # 압축한 프로젝트를 S3로 전송합니다.
     - name: Upload to S3
       run: aws s3 cp --region ap-northeast-2 ./springBoot-deploy.zip s3://$S3_BUCKET_NAME/springBoot-deploy.zip
+      
+    # CodeDeploy에게 배포 명령을 내립니다.
+    - name: Code Deploy
+      run: >
+        aws deploy create-deployment --application-name catvillage-server-deploy
+        --deployment-config-name CodeDeployDefault.AllAtOnce
+        --deployment-group-name catvillage-server-deploy-group
+        --s3-location bucket=$S3_BUCKET_NAME,bundleType=zip,key=springBoot-deploy.zip
+

@@ -1,29 +1,27 @@
-import logo from './logo.svg';
-import './App.css';
+import { Suspense } from 'react'
+import { BrowserRouter } from 'react-router-dom'
+import { ThemeProvider } from 'styled-components'
+import { GlobalStyle } from '@Styles/GlobalStyle'
+import theme from '@Styles/theme'
+import { Provider } from 'react-redux'
+import AppRoutes from './routes'
+import { setupStore } from './redux/store/index'
 
-function App() {
-  console.log(process.env.PUBLIC_URL)
+const loading = <div>화면을 불러오는 중 입니다.</div>
+
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>{'NODE_ENV= '}{process.env.NODE_ENV}</p>
-        <p>{'PUBLIC_URL= '}{process.env.PUBLIC_URL}</p>
-        <p>{'IMAGE_INLINE_SIZE_LIMIT= '}{process.env.IMAGE_INLINE_SIZE_LIMIT}</p>
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <Provider store={setupStore()}>
+      <BrowserRouter>
+        <ThemeProvider theme={theme}>
+          <GlobalStyle />
+          <Suspense fallback={loading}>
+            <AppRoutes />
+          </Suspense>
+        </ThemeProvider>
+      </BrowserRouter>
+    </Provider>
+  )
 }
 
-export default App;
+export default App

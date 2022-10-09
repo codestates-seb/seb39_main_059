@@ -1,0 +1,35 @@
+spring:
+  jpa:
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: UTC  # DB Timezone configure
+        format_sql: true  # SQL pretty print
+    show-sql: true
+  security:
+    oauth2:
+      client:
+        registration:
+          kakao:
+            client-name: Kakao
+            scope: profile_nickname, profile_image, account_email
+            authorization-grant-type: authorization_code
+            client-authentication-method: POST
+        provider:
+          kakao:
+            authorization-uri: https://kauth.kakao.com/oauth/authorize
+            token-uri: https://kauth.kakao.com/oauth/token
+            user-info-uri: https://kapi.kakao.com/v2/user/me
+            user-name-attribute: id
+  servlet:
+    multipart:
+      maxFileSize: 5MB
+cloud:
+  aws:
+    s3:
+      bucket: catvillage-image-server
+      dir: catvillage/images/
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false
