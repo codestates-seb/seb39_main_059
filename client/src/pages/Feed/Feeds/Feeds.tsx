@@ -2,7 +2,7 @@ import { Feeds } from '@Types/feed'
 import Image from '@Atoms/Image'
 import SvgButton from '@Atoms/SvgButton'
 import Avatar from '@Atoms/Avatar'
-import { useCallback, useEffect } from 'react'
+import { useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { FEED_PATH } from '@Routes/feed.routes'
 import * as S from './Feeds.style'
@@ -21,17 +21,14 @@ const Feeds = () => {
     dispatch(getFeedsAsync())
   }, [dispatch])
 
-  const handleLikeClick = useCallback(
-    (feedId: number) => {
-      if (localStorage.getItem('ACCESS_TOKEN') === null) {
-        alert('로그인이 필요한 서비스입니다🐱')
-        navigate('/login')
-      } else {
-        dispatch(toggleLike(feedId))
-      }
-    },
-    [feed],
-  )
+  const handleLikeClick = (feedId: number) => {
+    if (localStorage.getItem('ACCESS_TOKEN') === null) {
+      alert('로그인이 필요한 서비스입니다🐱')
+      navigate('/login')
+    } else {
+      dispatch(toggleLike(feedId))
+    }
+  }
 
   return (
     <S.FeedsLayout>
