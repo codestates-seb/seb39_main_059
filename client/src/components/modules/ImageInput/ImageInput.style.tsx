@@ -30,4 +30,5 @@ export const ImgLabel = styled.label<{ imgCssProp?: CSSProp }>(
 export const HiddenInput = styled.input`
   position: absolute;
   z-index: -1;
+  opacity: 0%;
 `
