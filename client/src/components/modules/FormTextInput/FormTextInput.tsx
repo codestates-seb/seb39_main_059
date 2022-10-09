@@ -18,6 +18,7 @@ export interface Props {
   rows?: number
   /** onFocusOut handler */
   onFocusOut?: (e: React.FocusEvent<HTMLInputElement>) => void
+  onChange?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void
 }
 
 const ContentInput: FC<Props> = forwardRef(({ inputName, ...props }, ref) => {
