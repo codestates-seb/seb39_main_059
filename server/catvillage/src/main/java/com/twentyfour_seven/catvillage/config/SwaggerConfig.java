@@ -71,7 +71,8 @@ public class SwaggerConfig {
                         typeResolver.resolve(FollowerResponseDto.class),
                         typeResolver.resolve(FollowingResponseDto.class),
                         typeResolver.resolve(CatUserResponseDto.class),
-                        typeResolver.resolve(CatSimpleDto.class)
+                        typeResolver.resolve(CatSimpleDto.class),
+                        typeResolver.resolve(FeedSimpleDto.class)
                 )
                 .useDefaultResponseMessages(false)
                 .apiInfo(apiInfo())
