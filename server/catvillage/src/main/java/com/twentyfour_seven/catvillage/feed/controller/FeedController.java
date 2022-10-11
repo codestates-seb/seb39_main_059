@@ -11,7 +11,6 @@ import com.twentyfour_seven.catvillage.feed.service.FeedCommentService;
 import com.twentyfour_seven.catvillage.feed.service.FeedService;
 import com.twentyfour_seven.catvillage.feed.service.FeedTagService;
 import com.twentyfour_seven.catvillage.user.dto.FollowFeedGetDto;
-import com.twentyfour_seven.catvillage.user.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -258,7 +257,7 @@ public class FeedController {
             })
     @PostMapping("/comments/{comments-id}/like")
     public ResponseEntity postLikeInComment(@PathVariable("comments-id") @Positive long commentsId,
-                                         @AuthenticationPrincipal User user) {
+                                            @AuthenticationPrincipal User user) {
         feedCommentService.addLike(commentsId, user.getUsername());
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
@@ -271,8 +270,21 @@ public class FeedController {
             })
     @DeleteMapping("/comments/{comments-id}/like")
     public ResponseEntity deleteLikeInComment(@PathVariable("comments-id") @Positive long commentId,
-                                           @AuthenticationPrincipal User user) {
+                                              @AuthenticationPrincipal User user) {
         feedCommentService.deleteLike(commentId, user.getUsername());
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @Operation(summary = "특정 유저가 작성한 피드 정보 조회", description = "유저 프로필 페이지에 들어갈 정보",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "피드 조회 성공",
+                            content = @Content(schema = @Schema(implementation = FeedSimpleDto.class))),
+                    @ApiResponse(responseCode = "404", description = "존재하지 않는 유저")
+            }
+    )
+    @GetMapping("/users/{users-id}")
+    public ResponseEntity getFeedFromUser(@PathVariable("users-id") @Positive long userId) {
+        List<Feed> feeds = feedService.findFeedByUser(userId);
+        return new ResponseEntity<>(feedMapper.feedsToFeedSimpleDtos(feeds), HttpStatus.OK);
     }
 }

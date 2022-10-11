@@ -190,4 +190,12 @@ public class FeedService {
         User findUser = userService.findVerifiedEmail(email);
         return likeService.findExistLike(feed, findUser);
     }
+
+    public List<Feed> findFeedByUser(long userId) {
+        User findUser = userService.findUser(userId);
+
+        List<Feed> findFeeds = new ArrayList<>();
+        findUser.getCats().forEach(cat -> findFeeds.addAll(feedRepository.findByCat(cat)));
+        return findFeeds;
+    }
 }
