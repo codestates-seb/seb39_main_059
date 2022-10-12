@@ -14,7 +14,9 @@ env:
 on:
   push:
     paths-ignore: [ "client/**" ]
-    branches: [ "dev" ]
+    branches:
+      - 'main'
+      - 'dev'
 #  pull_request:
 #    paths-ignore: [ "client/**" ]
 #    branches: [ "dev" ]
