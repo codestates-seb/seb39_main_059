@@ -67,7 +67,7 @@ public interface BoardMapper {
                     .tags(board.getTagToBoards().stream()
                             .map(e -> new BoardTagDto(e.getBoardTag()))
                             .collect(Collectors.toList()))
-                    .picture(board.getPictures() == null ? "" : board.getPictures().get(0).getPath())
+                    .picture(board.getPictures() == null  || board.getPictures().size() == 0 ? "" : board.getPictures().get(0).getPath())
                     .viewCount(board.getViewCount())
                     .likeCount(board.getLikeCount())
                     .commentCount(board.getCommentCount())
