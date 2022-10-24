@@ -23,7 +23,7 @@ public class FeedTagService {
     }
 
     public List<FeedTag> createTags(Feed feed, List<FeedTag> feedTags) {
-        if (feedTags.isEmpty()) {
+        if (feedTags == null || feedTags.isEmpty()) {
             return null;
         }
         List<FeedTag> saveFeedTags = new ArrayList<>();
