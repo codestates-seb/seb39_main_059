@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.validation.annotation.Validated;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Positive;
 import java.util.List;
 
@@ -16,6 +18,8 @@ import java.util.List;
 public class FeedPostDto {
     @Positive
     private long catId;
+    @NotEmpty
+    @Valid
     private List<PictureDto> pictures;
     private String body;
     private List<FeedTagDto> tags;

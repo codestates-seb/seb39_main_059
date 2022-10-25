@@ -7,13 +7,15 @@ import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.validation.annotation.Validated;
 
-import javax.validation.constraints.Max;
+import javax.validation.constraints.Pattern;
+
 
 @Getter
 @Setter
 @NoArgsConstructor
 @Validated
 public class PictureDto {
+    @Pattern(regexp = "^((https?|http?|)://)$")
     @Length(max = 500)
     private String picture;
 
