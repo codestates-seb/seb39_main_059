@@ -133,4 +133,17 @@ public class CatController {
 
         return new ResponseEntity<>(catMapper.catsToCatUserResponseDto(findCats), HttpStatus.OK);
     }
+
+    @Operation(summary = "대표고양이 등록, 변경하기",
+            description = "대표고양이가 없을 경우 저장, 변경 시 업데이트 모두 해당 API로 요청 보내시면 됩니다.(이미 있는 경우 데이터가 덮어 씌어집니다.)",
+            responses = {
+                    @ApiResponse(responseCode = "201", description = "대표고양이 등록 성공"),
+                    @ApiResponse(responseCode = "404", description = "존재하지 않는 유저 or 존재하지 않는 고양이")
+            })
+    @PostMapping("/{cats-id}/대표")
+    public ResponseEntity postRepresentCat(@PathVariable("cats-id") @Positive long catId,
+                                           @AuthenticationPrincipal User user) {
+        catService.updateRepresentCat(catId, user.getUsername());
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
 }

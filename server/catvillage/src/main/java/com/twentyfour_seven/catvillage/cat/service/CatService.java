@@ -107,4 +107,10 @@ public class CatService {
 
         return resultCats;
     }
+
+    public void updateRepresentCat(long catId, String username) {
+        User findUser = userService.findVerifiedEmail(username);
+        Cat findCat = findVerifiedCat(catId);
+        userService.updateRepresentCat(findUser, findCat);
+    }
 }
