@@ -1,5 +1,6 @@
 package com.twentyfour_seven.catvillage.user.service;
 
+import com.twentyfour_seven.catvillage.cat.entity.Cat;
 import com.twentyfour_seven.catvillage.exception.BusinessLogicException;
 import com.twentyfour_seven.catvillage.exception.ExceptionCode;
 import com.twentyfour_seven.catvillage.user.entity.User;
@@ -104,6 +105,11 @@ public class UserService {
 
     public void removeContentCount(User user) {
         user.setContentCount(user.getContentCount() - 1);
+        userRepository.save(user);
+    }
+
+    public void updateRepresentCat(User user, Cat cat) {
+        user.setRepresentCat(cat);
         userRepository.save(user);
     }
 }
