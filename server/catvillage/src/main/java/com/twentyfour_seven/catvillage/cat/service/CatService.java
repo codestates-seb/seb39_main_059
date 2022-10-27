@@ -37,7 +37,14 @@ public class CatService {
         User findUser = userService.findVerifiedEmail(email);
         cat.setUser(findUser);
 
-        return catRepository.save(cat);
+        Cat saveCat = catRepository.save(cat);
+
+        // user에 등록된 대표고양이가 없을 경우 대표 고양이로 등록
+        if (findUser.getRepresentCat() == null) {
+            userService.updateRepresentCat(findUser, saveCat);
+        }
+
+        return saveCat;
     }
 
 
@@ -99,5 +106,11 @@ public class CatService {
         resultCats.addAll(findCats);
 
         return resultCats;
+    }
+
+    public void updateRepresentCat(long catId, String username) {
+        User findUser = userService.findVerifiedEmail(username);
+        Cat findCat = findVerifiedCat(catId);
+        userService.updateRepresentCat(findUser, findCat);
     }
 }
