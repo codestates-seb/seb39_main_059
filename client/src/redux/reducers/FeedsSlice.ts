@@ -1,6 +1,10 @@
 import { createSlice, Reducer, PayloadAction } from '@reduxjs/toolkit'
 import { Feed, Feeds } from '@Types/feed'
-import { getFeedsAsync, addLikeAsync } from '../actions/FeedsAction'
+import {
+  getFeedsAsync,
+  addLikeAsync,
+  cancelLikeAsync,
+} from '../actions/FeedsAction'
 
 const initialState: Feeds = {
   feed: [],
@@ -48,6 +52,17 @@ const feedsSlice = createSlice({
         data.isLike = !data.isLike
       })
       .addCase(addLikeAsync.rejected, () => {
+        console.error()
+      })
+      // 좋아요 취소하기
+      .addCase(cancelLikeAsync.pending, state => {
+        state.isLoading = true
+      })
+      .addCase(cancelLikeAsync.fulfilled, (state, { payload }) => {
+        const data = state.feed?.find(item => item.feedId === payload) as Feed
+        data.isLike = !data.isLike
+      })
+      .addCase(cancelLikeAsync.rejected, () => {
         console.error()
       })
   },

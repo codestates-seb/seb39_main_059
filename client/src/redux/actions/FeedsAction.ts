@@ -34,11 +34,36 @@ export const addLikeAsync = createAsyncThunk<
   CreateAsyncThunkTypes
 >('feeds/addLikeAsync', async (feedId, thunkAPI) => {
   try {
-    const { data } = await axiosInstance.post(`/${FEED_PATH}/${feedId}/like`, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('ACCESS_TOKEN')}`,
+    const { data } = await axiosInstance.post(
+      `/${FEED_PATH}/${feedId}/like`,
+      null,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('ACCESS_TOKEN')}`,
+        },
       },
-    })
+    )
+    return feedId
+  } catch (error: any) {
+    return thunkAPI.rejectWithValue(error.message)
+  }
+})
+
+// 좋아요 취소하기
+export const cancelLikeAsync = createAsyncThunk<
+  any,
+  number,
+  CreateAsyncThunkTypes
+>('feeds/cancelLikeAsync', async (feedId, thunkAPI) => {
+  try {
+    const { data } = await axiosInstance.delete(
+      `/${FEED_PATH}/${feedId}/like`,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('ACCESS_TOKEN')}`,
+        },
+      },
+    )
     return feedId
   } catch (error: any) {
     return thunkAPI.rejectWithValue(error.message)
