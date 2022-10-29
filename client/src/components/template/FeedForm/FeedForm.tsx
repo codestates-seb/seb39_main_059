@@ -1,11 +1,22 @@
 import { axiosInstance } from '@Utils/instance'
 import { Back } from '@Assets/icons'
 import { useNavigate } from 'react-router-dom'
-import { useState } from 'react'
+import { FC, useState } from 'react'
+import { SubmitHandler, useForm } from 'react-hook-form'
 import * as S from './FeedForm.style'
 
-const FeedForm = () => {
-  const [body, setBody] = useState<string>('')
+interface Props {
+  hasTitle?: boolean
+}
+
+interface FormValue {
+  body: string
+  picture: string
+  title: string
+}
+
+const FeedForm: FC<Props> = ({ hasTitle = false }) => {
+  // const [body, setBody] = useState<string>('')
   const navigate = useNavigate()
   const getImgUrl = async (formData: FormData): Promise<string> => {
     const axiosResponse = await axiosInstance.post('/upload', formData, {
@@ -28,13 +39,20 @@ const FeedForm = () => {
 
     return axiosResponse.data
   }
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    console.log(body)
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormValue>()
+
+  const onSubmitHandler: SubmitHandler<FormValue> = data => {
+    console.log(data)
   }
 
   return (
-    <S.FeedFormLayout>
+    // <S.FeedFormLayout onSubmit={handleSubmit(onSubmitHandler)}>
+    <S.FeedFormLayout onSubmit={()=> console.log('hello')}>
       <S.Header className="header">
         <button type="button" onClick={() => navigate(-1)}>
           <Back />
@@ -42,16 +60,25 @@ const FeedForm = () => {
         <span>글쓰기</span>
       </S.Header>
       <S.ImageInputBox>
-        <S.FeedImageInput inputName="image-input" onPost={getImgUrl} />
+        <S.FeedImageInput
+          inputName="image-input"
+          onPost={getImgUrl}
+          {...register('picture', { required: true })}
+        />
       </S.ImageInputBox>
-      {/* <S.TitleInput inputName="title-input" placeholder="글제목" /> */}
+      {hasTitle && (
+        <S.TitleInput
+          inputName="title-input"
+          placeholder="글제목"
+          {...register('title', { required: true })}
+        />
+      )}
       <S.BodyInput
         inputName="body-input"
         placeholder="본문에 #을 이용해 태그를 입력해보세요!"
-        defaultValue={body}
-        onChange={e => setBody(e.target.value)}
+        {...register('body', { required: true })}
       />
-      <S.SubmitButton
+      {/* <S.SubmitButton
         backgroundColor="primary"
         color="white"
         fontSize="md"
@@ -59,7 +86,12 @@ const FeedForm = () => {
         type="submit"
       >
         게시하기
-      </S.SubmitButton>
+      </S.SubmitButton> */}
+      <button
+        type="submit"
+      >
+        게시하기
+      </button>
     </S.FeedFormLayout>
   )
 }

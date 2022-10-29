@@ -27,17 +27,17 @@ export const FeedImageInput = styled(ImageInput).attrs({
   `,
 })``
 
-// export const TitleInput = styled(FormTextInput).attrs({ rows: 1 })(
-// ({ theme }) => css`
-//     font-size: ${theme.fontSize.md};
-//     padding: 15px 0px;
-//     border-top: 1px solid ${theme.color.softGray};
-//     &::placeholder {
-//       font-size: ${theme.fontSize.md};
-//     }
-//     border-top: 1px solid ${theme.color.softGray};
-//   `,
-// )
+export const TitleInput = styled(FormTextInput).attrs({ rows: 1 })(
+({ theme }) => css`
+    font-size: ${theme.fontSize.md};
+    padding: 15px 0px;
+    border-top: 1px solid ${theme.color.softGray};
+    &::placeholder {
+      font-size: ${theme.fontSize.md};
+    }
+    border-top: 1px solid ${theme.color.softGray};
+  `,
+)
 
 export const BodyInput = styled(FormTextInput).attrs({ rows: 10 })(
   ({ theme }) => css`
