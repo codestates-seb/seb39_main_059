@@ -8,7 +8,7 @@ import { FEED_PATH } from '@Routes/feed.routes'
 import * as S from './Feeds.style'
 import { SvgButtonCssProp, AvatarCssProp } from './Feeds.style'
 import { useAppDispatch, useAppSelector } from '@/redux/store'
-import { getFeedsAsync } from '@/redux/actions/FeedsAction'
+import { getFeedsAsync, addLikeAsync } from '@/redux/actions/FeedsAction'
 import { toggleLike } from '@/redux/reducers/FeedsSlice'
 
 const Feeds = () => {
@@ -19,15 +19,18 @@ const Feeds = () => {
 
   useEffect(() => {
     dispatch(getFeedsAsync())
-  }, [dispatch])
+  }, [])
 
   const handleLikeClick = (feedId: number) => {
     if (localStorage.getItem('ACCESS_TOKEN') === null) {
       alert('로그인이 필요한 서비스입니다🐱')
       navigate('/login')
-    } else {
-      dispatch(toggleLike(feedId))
     }
+    // if (!isLogin) {
+    //   alert('로그인이 필요한 서비스입니다🐱')
+    //   navigate('/login')
+
+    dispatch(addLikeAsync(feedId))
   }
 
   return (
