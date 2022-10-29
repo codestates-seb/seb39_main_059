@@ -35,7 +35,7 @@ const TabBar = () => {
         </Link>
       </S.IconBox>
       <S.IconBox>
-        <Link to="/users">
+        <Link to="/login">
           <MyProfileIcon />
         </Link>
       </S.IconBox>
