@@ -16,6 +16,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("/집사생활/cats")
@@ -45,9 +46,11 @@ public class CatInfoController {
         return new ResponseEntity<>(catInfoMapper.catInfoToCatInfoResponseDto(createCatInfo), HttpStatus.CREATED);
     }
 
-    @GetMapping
+    @Operation(summary = "모든 고양이 품종 정보 불러오기", description = "고양이 등록 시 품종 선택에 사용하는 api 입니다. 페이지네이션 적절치 않아 사용하지 않습니다.")
+    @GetMapping()
     public ResponseEntity getCatInfos() {
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
+        List<CatInfo> catInfos = catInfoService.findAllCatInfo();
 
+        return new ResponseEntity<>(catInfoMapper.catInfosToCatInfoSimpleDtos(catInfos), HttpStatus.OK);
+    }
 }

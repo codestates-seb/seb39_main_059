@@ -6,6 +6,8 @@ import com.twentyfour_seven.catvillage.exception.BusinessLogicException;
 import com.twentyfour_seven.catvillage.exception.ExceptionCode;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class CatInfoService {
 
@@ -18,6 +20,10 @@ public class CatInfoService {
     public CatInfo createCatInfo(CatInfo catInfo) {
         verifiedExistKorName(catInfo.getKorName());
         return catInfoRepository.save(catInfo);
+    }
+
+    public List<CatInfo> findAllCatInfo() {
+        return catInfoRepository.findAll();
     }
 
     private void verifiedExistKorName(String korName) {
