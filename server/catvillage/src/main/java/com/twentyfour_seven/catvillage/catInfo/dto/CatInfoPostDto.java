@@ -8,6 +8,9 @@ import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.Range;
 import org.springframework.validation.annotation.Validated;
 
+import javax.validation.Valid;
+import java.util.List;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -31,4 +34,7 @@ public class CatInfoPostDto {
 
     @Length(max = 1000)
     private String features;
+
+    @Valid
+    private List<DiseaseDto> disease;
 }
