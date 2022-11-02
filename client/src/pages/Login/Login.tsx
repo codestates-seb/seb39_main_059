@@ -3,7 +3,7 @@ import SocialLoginButton from '@Modules/SocialLoginButton'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { FormValue } from '@pages/Signup/Signup'
 import { ValidationSpan } from '@pages/Signup/Signup.style'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import { FEED_PATH } from '@Routes/feed.routes'
 import logo from '@Assets/logo.svg'
 import * as S from './Login.style'
@@ -103,7 +103,9 @@ const Login: FC = () => {
       </S.InputForm>
       <S.ButtonBox>
         <S.FindButton>아이디/비밀번호 찾기</S.FindButton>
-        <S.SignupButton>회원가입</S.SignupButton>
+        <Link to="/signup">
+          <S.SignupButton>회원가입</S.SignupButton>
+        </Link>
       </S.ButtonBox>
       <SocialLoginButton onClick={handleSocialLogin} />
     </S.LoginLayout>
