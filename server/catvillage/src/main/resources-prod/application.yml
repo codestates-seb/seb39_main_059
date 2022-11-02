@@ -26,15 +26,15 @@ spring:
             client-id: $KAKAO_API_KEY
             client-secret: $KAKAO_CLIENT_SECRET
             redirect-uri: https://catvillage.tk/login/oauth2/code/kakao
-#logging:
-#  level:
-#    org:
-#      hibernate:
-#        SQL: DEBUG
-#        type:
-#          descriptor:
-#            sql:
-#              BasicBinder: TRACE
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: DEBUG
+        type:
+          descriptor:
+            sql:
+              BasicBinder: TRACE
 jwt:
   secret: $JWT_SECRET
 cloud:
