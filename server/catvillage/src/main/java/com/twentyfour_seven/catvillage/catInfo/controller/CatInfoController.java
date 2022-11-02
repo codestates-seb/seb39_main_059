@@ -36,7 +36,7 @@ public class CatInfoController {
             responses = {
                     @ApiResponse(responseCode = "201", description = "고양이 품종 정보 생성 성공",
                             content = @Content(schema = @Schema(implementation = FeedCommentGetDto.class))),
-                    @ApiResponse(responseCode = "409", description = "이미 등록되어 있는 품종(korName)")
+                    @ApiResponse(responseCode = "409", description = "이미 등록되어 있는 품종(korName이 이미 등록되어 있는 경우 에러 발생)")
             }
     )
     @PostMapping
@@ -46,7 +46,11 @@ public class CatInfoController {
         return new ResponseEntity<>(catInfoMapper.catInfoToCatInfoResponseDto(createCatInfo), HttpStatus.CREATED);
     }
 
-    @Operation(summary = "모든 고양이 품종 정보 불러오기", description = "고양이 등록 시 품종 선택에 사용하는 api 입니다. 페이지네이션 적절치 않아 사용하지 않습니다.")
+    @Operation(summary = "모든 고양이 품종 정보 불러오기", description = "고양이 등록 시 품종 선택에 사용하는 api 입니다. 모든 데이터를 가져오지만 페이지네이션은 적절치 않아 사용하지 않습니다.",
+            responses = {
+                @ApiResponse(responseCode = "200", description = "모든 품종 정보 조회 성공")
+            }
+    )
     @GetMapping()
     public ResponseEntity getCatInfos() {
         List<CatInfo> catInfos = catInfoService.findAllCatInfo();
