@@ -4,7 +4,7 @@ spring:
       hibernate:
         jdbc:
           time_zone: UTC  # DB Timezone configure
-        format_sql: true  # SQL pretty print
+#        format_sql: true  # SQL pretty print
     show-sql: false
   security:
     oauth2:
