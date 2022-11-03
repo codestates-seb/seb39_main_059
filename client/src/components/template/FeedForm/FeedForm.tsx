@@ -7,6 +7,7 @@ import * as S from './FeedForm.style'
 
 interface Props {
   hasTitle?: boolean
+  imgRequired?: boolean
   onSubmitHandler: SubmitHandler<FormValue>
 }
 
@@ -16,7 +17,11 @@ export interface FormValue {
   title: string
 }
 
-const FeedForm: FC<Props> = ({ onSubmitHandler, hasTitle = false }) => {
+const FeedForm: FC<Props> = ({
+  onSubmitHandler,
+  hasTitle = false,
+  imgRequired = true,
+}) => {
   const navigate = useNavigate()
   const getImgUrl = async (formData: FormData): Promise<string> => {
     const axiosResponse = await axiosInstance.post('/upload', formData, {
@@ -36,7 +41,6 @@ const FeedForm: FC<Props> = ({ onSubmitHandler, hasTitle = false }) => {
         // 서버에서 응답 메시지를 받지 못했을경우 기본 메시지 설정또한 함께 해준다
         throw Error(axiosResponse.data.message || '문제가 발생했어요!')
       } */
-
     return axiosResponse.data
   }
 
@@ -58,20 +62,20 @@ const FeedForm: FC<Props> = ({ onSubmitHandler, hasTitle = false }) => {
         <S.FeedImageInput
           inputName="image-input"
           onPost={getImgUrl}
-          {...register('picture', { required: false })}
+          {...register('picture', imgRequired?{ required: '사진은 필수 입력입니다' }:undefined)}
         />
       </S.ImageInputBox>
       {hasTitle && (
         <S.TitleInput
           inputName="title-input"
           placeholder="글제목"
-          {...register('title', { required: true })}
+          {...register('title', { required: '제목은 필수 입력입니다' })}
         />
       )}
       <S.BodyInput
         inputName="body-input"
         placeholder="본문에 #을 이용해 태그를 입력해보세요!"
-        {...register('body', { required: true })}
+        {...register('body', { required: '본문은 필수 입력입니다' })}
       />
       <S.SubmitButton
         backgroundColor="primary"

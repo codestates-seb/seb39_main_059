@@ -50,6 +50,8 @@ const NewBoard = () => {
     console.log('게시완료')
   }
 
-  return <FeedForm onSubmitHandler={onSubmitHandler} hasTitle />
+  return (
+    <FeedForm onSubmitHandler={onSubmitHandler} hasTitle imgRequired={false} />
+  )
 }
 export default NewBoard
