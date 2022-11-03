@@ -10,7 +10,7 @@ import * as S from './TabBar.style'
 
 const TabBar = () => {
   const tmpLocation = useLocation()
-  console.log(tmpLocation.pathname)
+  // console.log(tmpLocation.pathname)
 
   return (
     <S.TabBarLayout>
@@ -35,7 +35,7 @@ const TabBar = () => {
         </Link>
       </S.IconBox>
       <S.IconBox>
-        <Link to="/users">
+        <Link to="/login">
           <MyProfileIcon />
         </Link>
       </S.IconBox>

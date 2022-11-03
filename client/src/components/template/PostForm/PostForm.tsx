@@ -1,11 +1,27 @@
 import { axiosInstance } from '@Utils/instance'
 import { Back } from '@Assets/icons'
 import { useNavigate } from 'react-router-dom'
-import { useState } from 'react'
-import * as S from './FeedForm.style'
+import { FC } from 'react'
+import { FieldErrors, SubmitHandler, useForm } from 'react-hook-form'
+import * as S from './PostForm.style'
 
-const FeedForm = () => {
-  const [body, setBody] = useState<string>('')
+interface Props {
+  hasTitle?: boolean
+  imgRequired?: boolean
+  onSubmitHandler: SubmitHandler<FormValue>
+}
+
+export interface FormValue {
+  body: string
+  picture: string
+  title: string
+}
+
+const PostForm: FC<Props> = ({
+  onSubmitHandler,
+  hasTitle = false,
+  imgRequired,
+}) => {
   const navigate = useNavigate()
   const getImgUrl = async (formData: FormData): Promise<string> => {
     const axiosResponse = await axiosInstance.post('/upload', formData, {
@@ -25,16 +41,22 @@ const FeedForm = () => {
         // 서버에서 응답 메시지를 받지 못했을경우 기본 메시지 설정또한 함께 해준다
         throw Error(axiosResponse.data.message || '문제가 발생했어요!')
       } */
-
+    console.log(axiosResponse.data)
     return axiosResponse.data
   }
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    console.log(body)
-  }
 
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormValue>()
+
+  const onInvalid = (errors: FieldErrors) => {
+    console.log('submit fail')
+    console.log(errors)
+  }
   return (
-    <S.FeedFormLayout>
+    <S.PostFormLayout onSubmit={handleSubmit(onSubmitHandler, onInvalid)}>
       <S.Header className="header">
         <button type="button" onClick={() => navigate(-1)}>
           <Back />
@@ -42,14 +64,23 @@ const FeedForm = () => {
         <span>글쓰기</span>
       </S.Header>
       <S.ImageInputBox>
-        <S.FeedImageInput inputName="image-input" onPost={getImgUrl} />
+        <S.PostImageInput
+          inputName="image-input"
+          onPost={getImgUrl}
+          {...register('picture', { required: '사진은 필수 입력입니다' })}
+        />
       </S.ImageInputBox>
-      {/* <S.TitleInput inputName="title-input" placeholder="글제목" /> */}
+      {hasTitle && (
+        <S.TitleInput
+          inputName="title-input"
+          placeholder="글제목"
+          {...register('title', { required: '제목은 필수 입력입니다' })}
+        />
+      )}
       <S.BodyInput
         inputName="body-input"
         placeholder="본문에 #을 이용해 태그를 입력해보세요!"
-        defaultValue={body}
-        onChange={e => setBody(e.target.value)}
+        {...register('body', { required: '본문은 필수 입력입니다' })}
       />
       <S.SubmitButton
         backgroundColor="primary"
@@ -60,7 +91,7 @@ const FeedForm = () => {
       >
         게시하기
       </S.SubmitButton>
-    </S.FeedFormLayout>
+    </S.PostFormLayout>
   )
 }
-export default FeedForm
+export default PostForm

@@ -23,4 +23,3 @@ export interface Board {
 export interface Tag {
   tag: string
 }
-
