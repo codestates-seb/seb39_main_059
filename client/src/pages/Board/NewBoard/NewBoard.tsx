@@ -49,8 +49,6 @@ const NewBoard = () => {
     console.log('게시완료')
   }
 
-  return (
-    <PostForm onSubmitHandler={onSubmitHandler} hasTitle imgRequired />
-  )
+  return <PostForm onSubmitHandler={onSubmitHandler} hasTitle imgRequired />
 }
 export default NewBoard

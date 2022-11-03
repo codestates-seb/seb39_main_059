@@ -20,5 +20,3 @@ export const TabMenu = styled.div<TabMenu>(
     cursor: pointer;
   `,
 )
-
-

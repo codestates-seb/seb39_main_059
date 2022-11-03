@@ -6,15 +6,14 @@ import BoardView from './BoardView'
 import Tab from './Tab'
 import BreedSelection from './BreedSelection'
 
-
 const Boards: FC = () => {
   const dispatch = useAppDispatch()
   const { items } = useAppSelector(state => state.boards)
-  
+
   const [demo, setDemo] = useState(false)
-  const filterItem = (b:boolean) => {
+  const filterItem = (b: boolean) => {
     if (!b) return items
-    return items.filter(({boardId})=> [9,10,6].includes(boardId))
+    return items.filter(({ boardId }) => [9, 10, 6].includes(boardId))
   }
   // console.log(demo)
   // console.log(filterItem(demo))
@@ -24,8 +23,8 @@ const Boards: FC = () => {
   }, [dispatch])
   return (
     <S.BoardLayout>
-      <BreedSelection/>
-      <Tab onChange={()=>setDemo(prev=>!prev)}/>
+      <BreedSelection />
+      <Tab onChange={() => setDemo(prev => !prev)} />
       <S.BoardBox>
         {items &&
           filterItem(demo).map(item => {
@@ -50,4 +49,3 @@ export default Boards
 interface TabProps {
   options: string[]
 }
-

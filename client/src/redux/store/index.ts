@@ -14,7 +14,7 @@ const rootReducer = combineReducers({
   user: userReducer,
   feeds: feedsReducer,
   feedDetail: feedDetailReducer,
-  boards: boardsReducer
+  boards: boardsReducer,
 })
 
 export const setupStore = (preloadedState?: PreloadedState<RootState>) => {
