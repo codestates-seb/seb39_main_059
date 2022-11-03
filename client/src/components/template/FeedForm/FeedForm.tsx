@@ -1,23 +1,22 @@
 import { axiosInstance } from '@Utils/instance'
 import { Back } from '@Assets/icons'
 import { useNavigate } from 'react-router-dom'
-import { FC, useState } from 'react'
+import { FC } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import { BOARD_PATH } from '@Routes/board.routes'
 import * as S from './FeedForm.style'
 
 interface Props {
   hasTitle?: boolean
+  onSubmitHandler: SubmitHandler<FormValue>
 }
 
-interface FormValue {
+export interface FormValue {
   body: string
   picture: string
   title: string
 }
 
-const FeedForm: FC<Props> = ({ hasTitle = false }) => {
-  // const [body, setBody] = useState<string>('')
+const FeedForm: FC<Props> = ({ onSubmitHandler, hasTitle = false }) => {
   const navigate = useNavigate()
   const getImgUrl = async (formData: FormData): Promise<string> => {
     const axiosResponse = await axiosInstance.post('/upload', formData, {
@@ -47,38 +46,8 @@ const FeedForm: FC<Props> = ({ hasTitle = false }) => {
     formState: { errors },
   } = useForm<FormValue>()
 
-  const onSubmitHandler:  SubmitHandler<FormValue> = async data => {
-    console.log('게시글 올리는중')
-    const {picture, body, title} = data
-    const formData = {
-      "body": body,
-      "pictures": [
-        {
-          "picture": picture
-        }
-      ],
-      "tags": [
-        {
-          "tag": '궁금해요'
-        }
-      ],
-      "title": title
-    }
-    console.log(BOARD_PATH)
-    console.log(formData)
-    const axiosResponse = await axiosInstance.post(BOARD_PATH, formData, {
-      headers: {
-        contentType : "application/json",
-        Authorization: `Bearer ${localStorage.getItem('ACCESS_TOKEN')}`,
-      },
-    })
-    console.log(axiosResponse)
-    console.log('게시완료')
-  }
-
   return (
     <S.FeedFormLayout onSubmit={handleSubmit(onSubmitHandler)}>
-    {/* // <S.FeedFormLayout onSubmit={()=> console.log('hello')}> */}
       <S.Header className="header">
         <button type="button" onClick={() => navigate(-1)}>
           <Back />
@@ -89,7 +58,7 @@ const FeedForm: FC<Props> = ({ hasTitle = false }) => {
         <S.FeedImageInput
           inputName="image-input"
           onPost={getImgUrl}
-          {...register('picture', { required: true })}
+          {...register('picture', { required: false })}
         />
       </S.ImageInputBox>
       {hasTitle && (
@@ -113,11 +82,6 @@ const FeedForm: FC<Props> = ({ hasTitle = false }) => {
       >
         게시하기
       </S.SubmitButton>
-      {/* <button
-        type="submit"
-      >
-        게시하기
-      </button> */}
     </S.FeedFormLayout>
   )
 }
