@@ -3,7 +3,7 @@ import styled, { css } from 'styled-components'
 import Button from '@Atoms/Button'
 import ImageInput from '@Modules/ImageInput'
 
-export const FeedFormLayout = styled.form(
+export const PostFormLayout = styled.form(
   () => css`
     margin: 0px 20px;
     display: flex;
@@ -15,7 +15,7 @@ export const ImageInputBox = styled.div`
   margin-bottom: 30px;
 `
 
-export const FeedImageInput = styled(ImageInput).attrs({
+export const PostImageInput = styled(ImageInput).attrs({
   imgCssProp: css`
     width: 100%;
     height: 335 / 300;
@@ -26,7 +26,7 @@ export const FeedImageInput = styled(ImageInput).attrs({
 })``
 
 export const TitleInput = styled(FormTextInput).attrs({ rows: 1 })(
-({ theme }) => css`
+  ({ theme }) => css`
     font-size: ${theme.fontSize.md};
     padding: 15px 0px;
     border-top: 1px solid ${theme.color.softGray};

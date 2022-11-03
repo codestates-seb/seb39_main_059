@@ -2,8 +2,8 @@ import { axiosInstance } from '@Utils/instance'
 import { Back } from '@Assets/icons'
 import { useNavigate } from 'react-router-dom'
 import { FC } from 'react'
-import { SubmitHandler, useForm } from 'react-hook-form'
-import * as S from './FeedForm.style'
+import { FieldErrors, SubmitHandler, useForm } from 'react-hook-form'
+import * as S from './PostForm.style'
 
 interface Props {
   hasTitle?: boolean
@@ -17,10 +17,10 @@ export interface FormValue {
   title: string
 }
 
-const FeedForm: FC<Props> = ({
+const PostForm: FC<Props> = ({
   onSubmitHandler,
   hasTitle = false,
-  imgRequired = true,
+  imgRequired,
 }) => {
   const navigate = useNavigate()
   const getImgUrl = async (formData: FormData): Promise<string> => {
@@ -41,6 +41,7 @@ const FeedForm: FC<Props> = ({
         // 서버에서 응답 메시지를 받지 못했을경우 기본 메시지 설정또한 함께 해준다
         throw Error(axiosResponse.data.message || '문제가 발생했어요!')
       } */
+    console.log(axiosResponse.data)
     return axiosResponse.data
   }
 
@@ -50,8 +51,12 @@ const FeedForm: FC<Props> = ({
     formState: { errors },
   } = useForm<FormValue>()
 
+  const onInvalid = (errors: FieldErrors) => {
+    console.log('submit fail')
+    console.log(errors)
+  }
   return (
-    <S.FeedFormLayout onSubmit={handleSubmit(onSubmitHandler)}>
+    <S.PostFormLayout onSubmit={handleSubmit(onSubmitHandler, onInvalid)}>
       <S.Header className="header">
         <button type="button" onClick={() => navigate(-1)}>
           <Back />
@@ -59,10 +64,10 @@ const FeedForm: FC<Props> = ({
         <span>글쓰기</span>
       </S.Header>
       <S.ImageInputBox>
-        <S.FeedImageInput
+        <S.PostImageInput
           inputName="image-input"
           onPost={getImgUrl}
-          {...register('picture', imgRequired?{ required: '사진은 필수 입력입니다' }:undefined)}
+          {...register('picture', { required: '사진은 필수 입력입니다' })}
         />
       </S.ImageInputBox>
       {hasTitle && (
@@ -86,7 +91,7 @@ const FeedForm: FC<Props> = ({
       >
         게시하기
       </S.SubmitButton>
-    </S.FeedFormLayout>
+    </S.PostFormLayout>
   )
 }
-export default FeedForm
+export default PostForm

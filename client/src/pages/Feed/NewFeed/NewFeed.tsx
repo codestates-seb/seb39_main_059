@@ -1,8 +1,8 @@
-import FeedForm from '@Template/FeedForm'
+import PostForm from '@Template/PostForm'
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { SubmitHandler } from 'react-hook-form'
-import { FormValue } from '@Template/FeedForm/FeedForm'
+import { FormValue } from '@Template/PostForm/PostForm'
 import { useAppSelector } from '@/redux/store'
 
 const NewFeed = () => {
@@ -20,6 +20,6 @@ const NewFeed = () => {
     // do something
   }
 
-  return <FeedForm onSubmitHandler={onSubmitHandler} />
+  return <PostForm onSubmitHandler={onSubmitHandler} />
 }
 export default NewFeed

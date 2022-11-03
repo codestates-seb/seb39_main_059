@@ -1,8 +1,7 @@
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useEffect } from 'react'
-import FeedForm from '@Template/FeedForm'
+import PostForm, { FormValue } from '@Template/PostForm'
 import { SubmitHandler } from 'react-hook-form'
-import { FormValue } from '@Template/FeedForm/FeedForm'
 import { BOARD_PATH } from '@Routes/board.routes'
 import { axiosInstance } from '@Utils/instance'
 import { useAppSelector } from '@/redux/store'
@@ -39,19 +38,19 @@ const NewBoard = () => {
       title,
     }
     console.log(BOARD_PATH)
-    console.log(formData)
-    const axiosResponse = await axiosInstance.post(BOARD_PATH, formData, {
-      headers: {
-        contentType: 'application/json',
-        Authorization: `Bearer ${localStorage.getItem('ACCESS_TOKEN')}`,
-      },
-    })
-    console.log(axiosResponse)
+    console.log(data)
+    // const axiosResponse = await axiosInstance.post(BOARD_PATH, formData, {
+    //   headers: {
+    //     contentType: 'application/json',
+    //     Authorization: `Bearer ${localStorage.getItem('ACCESS_TOKEN')}`,
+    //   },
+    // })
+    // console.log(axiosResponse)
     console.log('게시완료')
   }
 
   return (
-    <FeedForm onSubmitHandler={onSubmitHandler} hasTitle imgRequired={false} />
+    <PostForm onSubmitHandler={onSubmitHandler} hasTitle imgRequired />
   )
 }
 export default NewBoard
