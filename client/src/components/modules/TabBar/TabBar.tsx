@@ -10,7 +10,7 @@ import * as S from './TabBar.style'
 
 const TabBar = () => {
   const tmpLocation = useLocation()
-  console.log(tmpLocation.pathname)
+  // console.log(tmpLocation.pathname)
 
   return (
     <S.TabBarLayout>
