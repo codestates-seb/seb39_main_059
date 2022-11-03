@@ -3,9 +3,7 @@ import styled, { css } from 'styled-components'
 import Button from '@Atoms/Button'
 import ImageInput from '@Modules/ImageInput'
 
-export const FeedFormLayout = styled.form.attrs({
-  onSubmit: (e: React.FormEvent<HTMLFormElement>) => e.preventDefault(),
-})(
+export const FeedFormLayout = styled.form(
   () => css`
     margin: 0px 20px;
     display: flex;
