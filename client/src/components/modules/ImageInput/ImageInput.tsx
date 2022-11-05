@@ -76,7 +76,6 @@ const ImageInput: FC<Props> = forwardRef(
     return (
       <S.ImageInputlayout cssProp={props.cssProp}>
         <S.ImgLabel imgCssProp={props.imgCssProp} htmlFor="image-input">
-          {/* click */}
           {isEmpty(imgUrl) ? <CameraIcon /> : <Image src={imgUrl} />}
         </S.ImgLabel>
         <S.HiddenInput
@@ -87,11 +86,6 @@ const ImageInput: FC<Props> = forwardRef(
           ref={inputRef}
         />
         <S.HiddenInput type="text" value={imgUrl} {...props} ref={urlRef} />
-        {/* {showImages.map(src => (
-          <div key={src}>
-            <img src={src} alt={src} />
-          </div>
-        ))} */}
         {props.desc && (
           <Text fontSize="sm" color="softGray" fontWeight="regular">
             {props.desc}
