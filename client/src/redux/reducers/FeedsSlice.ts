@@ -20,12 +20,7 @@ const initialState: Feeds = {
 const feedsSlice = createSlice({
   name: 'feeds',
   initialState,
-  reducers: {
-    toggleLike: (state, { payload }: PayloadAction<number>) => {
-      const data = state.feed?.find(item => item.feedId === payload) as Feed
-      data.isLike = !data.isLike
-    },
-  },
+  reducers: {},
   extraReducers: builder => {
     builder
       // 전체 피드 불러오기
@@ -68,5 +63,4 @@ const feedsSlice = createSlice({
   },
 })
 
-export const { toggleLike } = feedsSlice.actions
 export const feedsReducer: Reducer<typeof initialState> = feedsSlice.reducer
