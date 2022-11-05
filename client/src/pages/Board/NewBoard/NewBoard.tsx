@@ -37,16 +37,15 @@ const NewBoard = () => {
       ],
       title,
     }
-    console.log(BOARD_PATH)
-    console.log(data)
-    // const axiosResponse = await axiosInstance.post(BOARD_PATH, formData, {
-    //   headers: {
-    //     contentType: 'application/json',
-    //     Authorization: `Bearer ${localStorage.getItem('ACCESS_TOKEN')}`,
-    //   },
-    // })
-    // console.log(axiosResponse)
-    console.log('게시완료')
+    const axiosResponse = await axiosInstance.post(BOARD_PATH, formData, {
+      headers: {
+        contentType: 'application/json',
+        Authorization: `Bearer ${localStorage.getItem('ACCESS_TOKEN')}`,
+      },
+    })
+    if (axiosResponse.status === 201) {
+      navigate(-1)
+    }
   }
 
   return <PostForm onSubmitHandler={onSubmitHandler} hasTitle imgRequired />
