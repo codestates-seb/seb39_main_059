@@ -42,6 +42,12 @@ public class CatInfoPostDto {
     @Length(max = 1000)
     private String features;
 
+    @ApiModelProperty(value = "고양이 품종 정보 페이지에 보여주는지 여부", example = "false")
+    private boolean showCatInfo;
+
+    @ApiModelProperty(value = "고양이 품종 사진 경로", example = "https://catvillage-image-server.s3.ap-northeast-2.amazonaws.com/catvillage/images/dccf3d4d")
+    private String picture;
+
     @ApiModelProperty(value = "취약한 질병 리스트")
     @Valid
     private List<DiseaseDto> diseases;
