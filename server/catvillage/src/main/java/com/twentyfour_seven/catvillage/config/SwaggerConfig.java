@@ -7,6 +7,10 @@ import com.twentyfour_seven.catvillage.board.dto.BoardPostResponseDto;
 import com.twentyfour_seven.catvillage.board.dto.comment.BoardCommentPostResponseDto;
 import com.twentyfour_seven.catvillage.board.dto.comment.BoardUserCommentResponseDto;
 import com.twentyfour_seven.catvillage.cat.dto.*;
+import com.twentyfour_seven.catvillage.catInfo.dto.CatInfoPostDto;
+import com.twentyfour_seven.catvillage.catInfo.dto.CatInfoResponseDto;
+import com.twentyfour_seven.catvillage.catInfo.dto.CatInfoSimpleDto;
+import com.twentyfour_seven.catvillage.catInfo.dto.DiseaseDto;
 import com.twentyfour_seven.catvillage.dto.MultiBoardResponseDto;
 import com.twentyfour_seven.catvillage.dto.MultiResponseDto;
 import com.twentyfour_seven.catvillage.feed.dto.*;
@@ -72,7 +76,11 @@ public class SwaggerConfig {
                         typeResolver.resolve(FollowingResponseDto.class),
                         typeResolver.resolve(CatUserResponseDto.class),
                         typeResolver.resolve(CatSimpleDto.class),
-                        typeResolver.resolve(FeedSimpleDto.class)
+                        typeResolver.resolve(FeedSimpleDto.class),
+                        typeResolver.resolve(CatInfoPostDto.class),
+                        typeResolver.resolve(CatInfoResponseDto.class),
+                        typeResolver.resolve(DiseaseDto.class),
+                        typeResolver.resolve(CatInfoSimpleDto.class)
                 )
                 .useDefaultResponseMessages(false)
                 .apiInfo(apiInfo())
