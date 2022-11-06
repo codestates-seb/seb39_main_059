@@ -12,7 +12,7 @@ public enum ExceptionCode {
     PICTURE_NOT_FOUND(404, "Picture not found"),
     BOARD_NOT_FOUND(404, "Board not found"),
     BOARD_TAG_NOT_FOUND(404, "Board tag not found"),
-    INVALID_USER(405, "Method not allowed"),
+    INVALID_USER(401, "User not granted"),
     FEED_NOT_FOUND(404, "Feed not found"),
     BOARD_COMMENT_NOT_FOUND(404, "Board comment not found"),
     COMMENT_NOT_FOUND(404, "Comment not found"),
