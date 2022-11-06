@@ -25,18 +25,15 @@ const Feeds = () => {
   }, [])
 
   const handleLikeClick = (feedId: number, isLike: boolean) => {
-    if (localStorage.getItem('ACCESS_TOKEN') === null) {
+    if (isLogin) {
+      if (isLike) {
+        dispatch(cancelLikeAsync(feedId))
+      } else {
+        dispatch(addLikeAsync(feedId))
+      }
+    } else {
       alert('로그인이 필요한 서비스입니다🐱')
       navigate('/login')
-    }
-    // if (!isLogin) {
-    //   alert('로그인이 필요한 서비스입니다🐱')
-    //   navigate('/login')
-
-    if (!isLike) {
-      dispatch(addLikeAsync(feedId))
-    } else {
-      dispatch(cancelLikeAsync(feedId))
     }
   }
 
