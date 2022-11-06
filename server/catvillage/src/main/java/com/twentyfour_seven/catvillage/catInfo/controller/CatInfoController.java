@@ -59,13 +59,13 @@ public class CatInfoController {
         return new ResponseEntity<>(catInfoMapper.catInfosToCatInfoSimpleDtos(catInfos), HttpStatus.OK);
     }
 
-    @Operation(summary = "특정 고양이 품종 정보 조회", description = "특정 고양이 품종 페이지에 사용되는 api 입니다. 엔드포인트로 품종의 한국어 이름을 보내주셔야 합니다.",
+    @Operation(summary = "특정 고양이 품종 정보 조회", description = "특정 고양이 품종 페이지에 사용되는 api 입니다.",
             responses = {
                     @ApiResponse(responseCode = "200", description = "특정 품종 정보 조회 성공"),
                     @ApiResponse(responseCode = "404", description = "찾을 수 없는 품종 정보")
             }
     )
-    @GetMapping("{breeds-id}")
+    @GetMapping("/{breeds-id}")
     public ResponseEntity getCatInfo(@PathVariable("breeds-id") @Positive long catInfoId) {
         CatInfo findCatInfo = catInfoService.findById(catInfoId);
         return new ResponseEntity<>(catInfoMapper.catInfoToCatInfoResponseDto(findCatInfo), HttpStatus.OK);
