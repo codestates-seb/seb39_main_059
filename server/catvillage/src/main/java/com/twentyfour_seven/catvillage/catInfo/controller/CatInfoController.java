@@ -16,6 +16,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Positive;
 import java.util.List;
 
 @RestController
@@ -48,7 +49,7 @@ public class CatInfoController {
 
     @Operation(summary = "모든 고양이 품종 정보 불러오기", description = "고양이 등록 시 품종 선택에 사용하는 api 입니다. 모든 데이터를 가져오지만 페이지네이션은 적절치 않아 사용하지 않습니다.",
             responses = {
-                @ApiResponse(responseCode = "200", description = "모든 품종 정보 조회 성공")
+                    @ApiResponse(responseCode = "200", description = "모든 품종 정보 조회 성공")
             }
     )
     @GetMapping()
@@ -56,5 +57,17 @@ public class CatInfoController {
         List<CatInfo> catInfos = catInfoService.findAllCatInfo();
 
         return new ResponseEntity<>(catInfoMapper.catInfosToCatInfoSimpleDtos(catInfos), HttpStatus.OK);
+    }
+
+    @Operation(summary = "특정 고양이 품종 정보 조회", description = "특정 고양이 품종 페이지에 사용되는 api 입니다. 엔드포인트로 품종의 한국어 이름을 보내주셔야 합니다.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "특정 품종 정보 조회 성공"),
+                    @ApiResponse(responseCode = "404", description = "찾을 수 없는 품종 정보")
+            }
+    )
+    @GetMapping("{breeds-id}")
+    public ResponseEntity getCatInfo(@PathVariable("breeds-id") @Positive long catInfoId) {
+        CatInfo findCatInfo = catInfoService.findById(catInfoId);
+        return new ResponseEntity<>(catInfoMapper.catInfoToCatInfoResponseDto(findCatInfo), HttpStatus.OK);
     }
 }

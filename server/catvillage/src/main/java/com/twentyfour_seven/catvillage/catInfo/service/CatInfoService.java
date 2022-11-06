@@ -36,4 +36,8 @@ public class CatInfoService {
     public CatInfo findVerifiedCatInfo(String korName) {
         return catInfoRepository.findByKorName(korName).orElseThrow(() -> new BusinessLogicException(ExceptionCode.BREED_NOT_FOUND));
     }
+
+    public CatInfo findById(long catInfoId) {
+        return catInfoRepository.findById(catInfoId).orElseThrow(() -> new BusinessLogicException(ExceptionCode.BREED_NOT_FOUND));
+    }
 }
