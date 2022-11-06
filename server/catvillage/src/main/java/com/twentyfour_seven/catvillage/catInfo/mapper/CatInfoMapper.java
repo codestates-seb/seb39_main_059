@@ -28,7 +28,10 @@ public interface CatInfoMapper {
                 .hairLength(catInfo.getHairLength())
                 .hairLoss(catInfo.getHairLoss())
                 .features(catInfo.getFeatures())
-                .diseases(diseaseDtos).build();
+                .diseases(diseaseDtos)
+                .picture(catInfo.getPicture())
+                .showCatInfo(catInfo.isShowCatInfo())
+                .build();
     }
 
     List<CatInfoResponseDto> catInfosToCatInfoResponseDtos(List<CatInfo> catInfos);
