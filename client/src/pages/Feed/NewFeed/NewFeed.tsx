@@ -10,14 +10,10 @@ const NewFeed = () => {
   const { isLogin } = useAppSelector(state => state.user)
 
   useEffect(() => {
-    if (localStorage.getItem('ACCESS_TOKEN') === null) {
+    if (!isLogin) {
       alert('로그인이 필요한 서비스입니다🐱')
       navigate('/login')
     }
-    // if (!isLogin) {
-    //   alert('로그인이 필요한 서비스입니다🐱')
-    //   navigate('/login')
-    // }
   }, [isLogin])
 
   const onSubmitHandler: SubmitHandler<FormValue> = async data => {
@@ -26,4 +22,5 @@ const NewFeed = () => {
 
   return <PostForm onSubmitHandler={onSubmitHandler} />
 }
+
 export default NewFeed
