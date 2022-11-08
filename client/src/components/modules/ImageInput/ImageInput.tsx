@@ -2,7 +2,13 @@ import { CameraIcon } from '@Assets/icons'
 import Image from '@Atoms/Image'
 import Text from '@Atoms/Text'
 import { fileExtensionValid, isEmpty } from '@Utils/utility'
-import { FC, forwardRef, useImperativeHandle, useRef, useState } from 'react'
+import React, {
+  FC,
+  forwardRef,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from 'react'
 import { CSSProp } from 'styled-components'
 import * as S from './ImageInput.style'
 
@@ -31,10 +37,12 @@ const fileUploadValidHandler = (file: File): boolean => {
 export interface Props {
   /** name of input */
   inputName: string
+  name: string
   /** onChange handler(setState) */
-  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
   /** onFocusOut handler */
-  onFocusOut?: (e: React.FocusEvent<HTMLInputElement>) => void
+  // onFocusOut?: (e: React.FocusEvent<HTMLInputElement>) => void
+  onBlur: any
   /** uploadHandler */
   onPost: (FormData: FormData) => Promise<string>
   // onUploadImage?:
@@ -43,13 +51,12 @@ export interface Props {
   imgCssProp?: CSSProp
 }
 
-const ImageInput: FC<Props> = forwardRef(
-  ({ inputName, onPost, ...props }, ref) => {
+const ImageInput = forwardRef<HTMLInputElement, Props>(
+  ({ inputName, onPost, onChange, onBlur, name, ...props }, ref) => {
     const [imgUrl, setImgUrl] = useState('')
 
-    const inputRef = useRef(null)
     const urlRef = useRef<HTMLInputElement>(null)
-    useImperativeHandle(ref, () => urlRef.current)
+    useImperativeHandle(ref, () => urlRef.current as HTMLInputElement, [urlRef])
 
     const fileUploadHandler = async (
       event: React.ChangeEvent<HTMLInputElement>,
@@ -65,18 +72,24 @@ const ImageInput: FC<Props> = forwardRef(
       // !!중요1. formData활용!!
       const formData = new FormData()
       formData.append('images', file)
-
-      const ImgUrl = await onPost(formData)
+      if (urlRef.current) {
+        urlRef.current.focus()
+      }
+      const imgUrl = await onPost(formData)
       // 파일 업로드 성공!
-      if (isEmpty(ImgUrl)) alert('파일 업로드 실패')
+      if (isEmpty(imgUrl)) alert('파일 업로드 실패')
 
-      setImgUrl(ImgUrl)
+      setImgUrl(imgUrl)
+      if (urlRef.current) {
+        urlRef.current.value = imgUrl
+        urlRef.current.dispatchEvent(new Event('change', { bubbles: true }))
+        urlRef.current.blur()
+      }
     }
 
     return (
       <S.ImageInputlayout cssProp={props.cssProp}>
         <S.ImgLabel imgCssProp={props.imgCssProp} htmlFor="image-input">
-          {/* click */}
           {isEmpty(imgUrl) ? <CameraIcon /> : <Image src={imgUrl} />}
         </S.ImgLabel>
         <S.HiddenInput
@@ -84,14 +97,14 @@ const ImageInput: FC<Props> = forwardRef(
           id="image-input"
           name={inputName}
           onChange={fileUploadHandler}
-          ref={inputRef}
         />
-        <S.HiddenInput type="text" value={imgUrl} {...props} ref={urlRef} />
-        {/* {showImages.map(src => (
-          <div key={src}>
-            <img src={src} alt={src} />
-          </div>
-        ))} */}
+        <S.HiddenInput
+          type="text"
+          name={name}
+          ref={urlRef}
+          onChange={onChange}
+          onBlur={onBlur}
+        />
         {props.desc && (
           <Text fontSize="sm" color="softGray" fontWeight="regular">
             {props.desc}

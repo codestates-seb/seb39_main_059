@@ -22,6 +22,7 @@ const NewBoard = () => {
 
   const onSubmitHandler: SubmitHandler<FormValue> = async data => {
     console.log('게시글 올리는중')
+    console.log(data)
     const { picture, body, title } = data
     const formData = {
       body,
@@ -37,16 +38,18 @@ const NewBoard = () => {
       ],
       title,
     }
-    console.log(BOARD_PATH)
-    console.log(data)
-    // const axiosResponse = await axiosInstance.post(BOARD_PATH, formData, {
-    //   headers: {
-    //     contentType: 'application/json',
-    //     Authorization: `Bearer ${localStorage.getItem('ACCESS_TOKEN')}`,
-    //   },
-    // })
-    // console.log(axiosResponse)
-    console.log('게시완료')
+    const axiosResponse = await axiosInstance.post(BOARD_PATH, formData, {
+      headers: {
+        contentType: 'application/json',
+        Authorization: `Bearer ${localStorage.getItem('ACCESS_TOKEN')}`,
+      },
+    })
+    if (axiosResponse.status === 201) {
+      navigate(-1)
+    } else {
+      console.log(axiosResponse.status)
+      alert('생성 실패!')
+    }
   }
 
   return <PostForm onSubmitHandler={onSubmitHandler} hasTitle imgRequired />
