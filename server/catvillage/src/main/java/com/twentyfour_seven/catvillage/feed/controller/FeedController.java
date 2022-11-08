@@ -10,7 +10,7 @@ import com.twentyfour_seven.catvillage.feed.mapper.FeedTagMapper;
 import com.twentyfour_seven.catvillage.feed.service.FeedCommentService;
 import com.twentyfour_seven.catvillage.feed.service.FeedService;
 import com.twentyfour_seven.catvillage.feed.service.FeedTagService;
-import com.twentyfour_seven.catvillage.user.dto.FollowFeedGetDto;
+import com.twentyfour_seven.catvillage.user.dto.follow.FollowFeedGetDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;

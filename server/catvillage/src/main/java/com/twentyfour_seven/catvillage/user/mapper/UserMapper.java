@@ -1,5 +1,6 @@
 package com.twentyfour_seven.catvillage.user.mapper;
 
+import com.twentyfour_seven.catvillage.cat.entity.Cat;
 import com.twentyfour_seven.catvillage.user.dto.*;
 import com.twentyfour_seven.catvillage.user.entity.User;
 import org.mapstruct.Mapper;
@@ -98,4 +99,18 @@ public interface UserMapper {
             return new UserMyInfoDto(user.getUserId(), user.getName(), user.getProfileImage());
         }
     }
+
+
+    default UserCatResponseDto catToUserCatResponseDto(Cat cat) {
+        if (cat == null) {
+            return null;
+        } else {
+            return UserCatResponseDto.builder()
+                    .catId(cat.getCatId())
+                    .name(cat.getName())
+                    .profileImage(cat.getImage())
+                    .build();
+        }
+    }
+    List<UserCatResponseDto> catsToUserCatResponseDtos(List<Cat> cat);
 }

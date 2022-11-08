@@ -1,6 +1,6 @@
 package com.twentyfour_seven.catvillage.feed.dto;
 
-import com.twentyfour_seven.catvillage.user.dto.FollowFeedGetDto;
+import com.twentyfour_seven.catvillage.user.dto.follow.FollowFeedGetDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

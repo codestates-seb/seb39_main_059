@@ -1,4 +1,4 @@
-package com.twentyfour_seven.catvillage.user.dto;
+package com.twentyfour_seven.catvillage.user.dto.follow;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

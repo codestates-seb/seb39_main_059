@@ -1,7 +1,11 @@
 package com.twentyfour_seven.catvillage.user.controller;
 
+import com.twentyfour_seven.catvillage.cat.entity.Cat;
+import com.twentyfour_seven.catvillage.cat.service.CatService;
 import com.twentyfour_seven.catvillage.dto.MultiResponseDto;
 import com.twentyfour_seven.catvillage.user.dto.*;
+import com.twentyfour_seven.catvillage.user.dto.follow.FollowerResponseDto;
+import com.twentyfour_seven.catvillage.user.dto.follow.FollowingResponseDto;
 import com.twentyfour_seven.catvillage.user.entity.Follow;
 import com.twentyfour_seven.catvillage.user.entity.User;
 import com.twentyfour_seven.catvillage.user.mapper.FollowMapper;
@@ -22,6 +26,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
+import java.util.List;
 
 //@Tag(name = "Users", description = "유저 API")
 @RestController
@@ -33,12 +38,14 @@ public class UserController {
     private UserMapper userMapper;
     private FollowService followService;
     private FollowMapper followMapper;
+    private CatService catService;
 
-    public UserController(UserService userService, UserMapper userMapper, FollowService followService, FollowMapper followMapper) {
+    public UserController(UserService userService, UserMapper userMapper, FollowService followService, FollowMapper followMapper, CatService catService) {
         this.userService = userService;
         this.userMapper = userMapper;
         this.followService = followService;
         this.followMapper = followMapper;
+        this.catService = catService;
     }
 
     //    @PostMapping
@@ -167,8 +174,8 @@ public class UserController {
     @Operation(summary = "유저 팔로잉 조회",
             description = "유저의 팔로잉 목록을 조회한다.",
             responses = {
-            @ApiResponse(responseCode = "200", description = "유저 팔로잉 목록 조회 성공", content = @Content(schema = @Schema(implementation = FollowingResponseDto.class))),
-            @ApiResponse(responseCode = "404", description = "존재하지 않는 유저")
+                    @ApiResponse(responseCode = "200", description = "유저 팔로잉 목록 조회 성공", content = @Content(schema = @Schema(implementation = FollowingResponseDto.class))),
+                    @ApiResponse(responseCode = "404", description = "존재하지 않는 유저")
             })
     @GetMapping("/{users-id}/followings")
     public ResponseEntity<?> getFollowings(@PathVariable("users-id") Long userId) {
@@ -184,9 +191,22 @@ public class UserController {
                     @ApiResponse(responseCode = "404", description = "존재하지 않는 유저")
             })
     @GetMapping("/{users-id}/followers")
-    public ResponseEntity<?> getFollowers(@PathVariable("users-id") Long userId) {
+    public ResponseEntity<?> getFollowers(@PathVariable("users-id") @Positive Long userId) {
         return new ResponseEntity<>(
                 new FollowerResponseDto(followMapper.followToFollowerGetResponseDto(userService.findUser(userId))),
                 HttpStatus.OK);
+    }
+
+    @Operation(summary = "로그인된 유저의 모든 고양이 프로필 조회", description = "냥이생활 피드 작성 시 프로필 선택 화면에 사용되는 API 입니다.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "고양이 프로필 조회 성공", content = @Content(schema = @Schema(implementation = UserCatResponseDto.class))),
+                    @ApiResponse(responseCode = "404", description = "존재하지 않는 유저")
+            }
+    )
+    @GetMapping("/cats")
+    public ResponseEntity<?> getCats(@AuthenticationPrincipal org.springframework.security.core.userdetails.User user) {
+        User findUser = userService.findVerifiedEmail(user.getUsername());
+        List<Cat> catsByUser = catService.findCatsByUser(findUser.getUserId());
+        return new ResponseEntity<>(userMapper.catsToUserCatResponseDtos(catsByUser), HttpStatus.OK);
     }
 }

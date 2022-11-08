@@ -16,18 +16,17 @@ import com.twentyfour_seven.catvillage.dto.MultiResponseDto;
 import com.twentyfour_seven.catvillage.feed.dto.*;
 import com.twentyfour_seven.catvillage.security.dto.TokenDto;
 import com.twentyfour_seven.catvillage.user.dto.*;
+import com.twentyfour_seven.catvillage.user.dto.follow.FollowGetResponseDto;
+import com.twentyfour_seven.catvillage.user.dto.follow.FollowerResponseDto;
+import com.twentyfour_seven.catvillage.user.dto.follow.FollowingResponseDto;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import springfox.documentation.builders.ApiInfoBuilder;
-import springfox.documentation.builders.ParameterBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
-import springfox.documentation.schema.ModelRef;
 import springfox.documentation.service.ApiInfo;
-import springfox.documentation.service.Parameter;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 
@@ -80,7 +79,8 @@ public class SwaggerConfig {
                         typeResolver.resolve(CatInfoPostDto.class),
                         typeResolver.resolve(CatInfoResponseDto.class),
                         typeResolver.resolve(DiseaseDto.class),
-                        typeResolver.resolve(CatInfoSimpleDto.class)
+                        typeResolver.resolve(CatInfoSimpleDto.class),
+                        typeResolver.resolve(UserCatResponseDto.class)
                 )
                 .useDefaultResponseMessages(false)
                 .apiInfo(apiInfo())
