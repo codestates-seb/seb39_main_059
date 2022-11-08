@@ -86,7 +86,7 @@ public class FeedController {
         List<FeedTag> feedTags = feedTagService.findFeedTags(findFeed);
         List<FeedComment> comments = feedCommentService.findComments(findFeed);
 
-        FeedGetResponseDto response = feedMapper.feedToFeedGetResponseDto(findFeed);
+        FeedGetResponseDto response = feedMapper.feedToFeedGetResponseDto(findFeed, user != null ? user.getUsername() : null);
 
         // 로그인되어 있다면 유저가 해당 피드에 좋아요를 눌렀는지 확인
         if (user != null) {
