@@ -13,6 +13,7 @@ import com.twentyfour_seven.catvillage.exception.ExceptionCode;
 import com.twentyfour_seven.catvillage.user.entity.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -43,6 +44,42 @@ public class BoardService {
     public Board findBoard(Long boardId) {
         return findVerifiedBoard(boardId);
     }
+
+    public Page<Board> searchBoards(int page, int size, String where, String keyword) {
+        PageRequest pageRequest = PageRequest.of(page, size, Sort.by("boardId").descending());
+        return keywordFilteringBoard(where, keyword, pageRequest);
+    }
+
+    private Page<Board> keywordFilteringBoard(String where, String keyword, PageRequest pageRequest) {
+        switch (where) {
+//            case "all": return containingAll(keyword, pageRequest);
+//            case "tag":
+//                return
+            case "title":
+                return containingTitle(keyword, pageRequest);
+            case "body":
+                return containingBody(keyword, pageRequest);
+            case "user":
+                return containingUserName(keyword, pageRequest);
+        }
+        return null;
+    }
+
+    private Page<Board> containingTitle(String keyword, Pageable pageable) {
+        return boardRepository.findByTitleIsContaining(keyword, pageable);
+    }
+
+    private Page<Board> containingBody(String keyword, Pageable pageable) {
+        return boardRepository.findByBodyIsContaining(keyword, pageable);
+    }
+
+    private Page<Board> containingUserName(String keyword, Pageable pageable) {
+        return boardRepository.findByUserNameIsContaining(keyword, pageable);
+    }
+
+//    private Page<Board> containingAll(String keyword, Pageable pageable) {
+//        return boardRepository.findByTitleIsContainingOrBodyIsContainingOrUserNameIsContaining(keyword, pageable);
+//    }
 
     public Board createBoard(Board board, List<BoardTagDto> tags, List<PictureDto> pictures) {
         // ID를 얻기 위한 저장 로직

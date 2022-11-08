@@ -27,6 +27,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Positive;
 
 //@Tag(name = "Board", description = "집사생활 API")
@@ -240,7 +242,7 @@ public class BoardController {
             })
     @PostMapping("/comments/{comments-id}/like")
     public ResponseEntity postLikeInComment(@PathVariable("comments-id") @Positive long commentId,
-                                          @AuthenticationPrincipal org.springframework.security.core.userdetails.User user) {
+                                            @AuthenticationPrincipal org.springframework.security.core.userdetails.User user) {
         User findUser = userService.findVerifiedEmail(user.getUsername());
         boardCommentService.addLike(commentId, findUser);
         return new ResponseEntity<>(HttpStatus.CREATED);
@@ -254,9 +256,24 @@ public class BoardController {
             })
     @DeleteMapping("/comments/{comments-id}/like")
     public ResponseEntity deleteLikeInComment(@PathVariable("comments-id") @Positive long commentId,
-                                           @AuthenticationPrincipal org.springframework.security.core.userdetails.User user) {
+                                              @AuthenticationPrincipal org.springframework.security.core.userdetails.User user) {
         User findUser = userService.findVerifiedEmail(user.getUsername());
         boardCommentService.deleteLike(commentId, findUser);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @Operation(summary = "집사생활 게시글 검색", description = "집사생활에 등록 된 게시글을 검색한다.")
+    @GetMapping("/search")
+    public ResponseEntity getBoardToSearch(@RequestParam(defaultValue = "1") @Positive int page,
+                                           @RequestParam(defaultValue = "10") @Positive int size,
+                                           @RequestParam @Pattern(regexp = "all|title|body|user") String where,
+                                           @RequestParam @NotBlank String keyword) {
+        Page<Board> boards = boardService.searchBoards(page - 1, size, where, keyword);
+        return new ResponseEntity<>(
+                new MultiResponseDto<BoardMultiGetResponse>(
+                        boardMapper.boardsToBoardMultiGetResponseDtos(boards.getContent()),
+                        boards
+                ),
+                HttpStatus.OK);
     }
 }
