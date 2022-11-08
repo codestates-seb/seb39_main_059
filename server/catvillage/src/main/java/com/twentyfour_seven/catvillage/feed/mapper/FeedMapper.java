@@ -43,12 +43,16 @@ public interface FeedMapper {
         return feed;
     }
 
-    default FeedGetResponseDto feedToFeedGetResponseDto(Feed feed) {
+    default FeedGetResponseDto feedToFeedGetResponseDto(Feed feed, String email) {
         if (feed == null) {
             return null;
         }
 
         List<PictureDto> pictureDtos = new ArrayList<>();
+        boolean isMyFeed = false;
+        if(email != null) {
+            isMyFeed = feed.getCat().getUser().getEmail().equals(email);
+        }
 
         // picture가 있다면 pictureDto로 변환
         if(!feed.getPictures().isEmpty()) {
@@ -66,6 +70,7 @@ public interface FeedMapper {
                 .likeCount(feed.getLikeCount())
                 .build();
         feedGetResponseDto.setPictures(pictureDtos);
+        feedGetResponseDto.setIsMyFeed(isMyFeed);
         return feedGetResponseDto;
     }
 
@@ -82,10 +87,13 @@ public interface FeedMapper {
 
         // 피드마다 좋아요 여부 저장
         boolean isLike = false;
+        boolean isMyFeed = false;
         if (email != null) {
             isLike = feed.getLikes().stream().anyMatch(like -> like.getUser().getEmail().equals(email));
+            isMyFeed = feed.getCat().getUser().getEmail().equals(email);
         }
         feedMultiGetResponseDto.setIsLike(isLike);
+        feedMultiGetResponseDto.setIsMyFeed(isMyFeed);
 
         return feedMultiGetResponseDto;
     }

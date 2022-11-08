@@ -28,6 +28,9 @@ public class FeedGetResponseDto {
     @ApiParam(value = "요청을 보낸 사용자가 피드에 좋아요를 눌렀는지 여부, 좋아요를 추가했을 경우 true", example = "false")
     private Boolean isLike;
 
+    @ApiParam(value = "요청을 보낸 사용자가 작성한 피드인지 여부, 작성한 피드인 경우 true", example = "false")
+    private Boolean isMyFeed;
+
     @ApiParam(value = "피드에 작성한 글", example = "수라는 잠이 많아요")
     private String body;
 
