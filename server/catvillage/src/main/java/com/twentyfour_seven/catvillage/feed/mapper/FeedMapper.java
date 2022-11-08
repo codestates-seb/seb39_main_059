@@ -87,13 +87,13 @@ public interface FeedMapper {
 
         // 피드마다 좋아요 여부 저장
         boolean isLike = false;
-        boolean isMyFeed = false;
+//        boolean isMyFeed = false;
         if (email != null) {
             isLike = feed.getLikes().stream().anyMatch(like -> like.getUser().getEmail().equals(email));
-            isMyFeed = feed.getCat().getUser().getEmail().equals(email);
+//            isMyFeed = feed.getCat().getUser().getEmail().equals(email);
         }
         feedMultiGetResponseDto.setIsLike(isLike);
-        feedMultiGetResponseDto.setIsMyFeed(isMyFeed);
+//        feedMultiGetResponseDto.setIsMyFeed(isMyFeed);
 
         return feedMultiGetResponseDto;
     }

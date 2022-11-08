@@ -17,8 +17,8 @@ public class FeedMultiGetResponseDto {
     private String image;
     @ApiParam(value = "로그인한 사용자가 좋아요를 눌렀는지 여부")
     private Boolean isLike;
-    @ApiParam(value = "로그인한 사용자가 작성한 피드인지 여부")
-    private Boolean isMyFeed;
+//    @ApiParam(value = "로그인한 사용자가 작성한 피드인지 여부")
+//    private Boolean isMyFeed;
 
     public FeedMultiGetResponseDto(long feedId, String image) {
         this.feedId = feedId;
