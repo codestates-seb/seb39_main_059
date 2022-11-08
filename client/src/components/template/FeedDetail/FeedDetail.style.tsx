@@ -7,10 +7,19 @@ export const FeedDetailLayout = styled.div`
   gap: 12px;
 `
 
-export const UserInfoBox = styled.div`
+export const InfoBox = styled.div`
   display: flex;
+  width: 100%;
   justify-content: space-between;
   align-items: center;
+`
+
+export const UserInfoBox = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  margin-right: 10px;
 `
 
 // TextArea로 수정
@@ -39,4 +48,8 @@ export const Tag = styled.div`
   width: content;
   padding: 5px 10px;
   border-radius: 30px;
+`
+
+export const DropdownBox = styled.div`
+  position: relative;
 `
