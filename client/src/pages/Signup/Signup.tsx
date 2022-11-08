@@ -2,6 +2,7 @@ import { useState, FC, useRef } from 'react'
 import SocialLoginButton from '@Modules/SocialLoginButton'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import logo from '@Assets/logo.svg'
+import { Link } from 'react-router-dom'
 import * as S from './Signup.style'
 import { useAppDispatch } from '@/redux/store'
 import { signupAsync } from '@/redux/actions/userAction'
@@ -119,7 +120,9 @@ const Signup: FC = () => {
       </S.InputForm>
       <S.Box>
         <span>이미 가입하셨나요?</span>
-        <S.LoginButton>로그인</S.LoginButton>
+        <Link to="/login">
+          <S.LoginButton>로그인</S.LoginButton>
+        </Link>
       </S.Box>
       <SocialLoginButton onClick={handleSocialLogin} />
     </S.SignupLayout>

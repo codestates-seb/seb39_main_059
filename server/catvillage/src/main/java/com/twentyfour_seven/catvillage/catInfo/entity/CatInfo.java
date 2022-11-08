@@ -40,6 +40,9 @@ public class CatInfo {
     @Column(name = "SHOW_CAT_INFO", nullable = false)
     private boolean showCatInfo;
 
+    @Column(name = "PICTURE")
+    private String picture;
+
     @OneToMany(mappedBy = "catInfo")
     @JsonManagedReference
     List<Cat> cats = new ArrayList<>();
@@ -50,7 +53,7 @@ public class CatInfo {
 
     @Builder
     public CatInfo(String korName, String engName, String character, Short hairLength, Short hairLoss,
-                   String features, boolean showCatInfo) {
+                   String features, boolean showCatInfo, String picture) {
         this.korName = korName;
         this.engName = engName;
         this.character = character;
@@ -58,5 +61,6 @@ public class CatInfo {
         this.hairLoss = hairLoss;
         this.features = features;
         this.showCatInfo = showCatInfo;
+        this.picture = picture;
     }
 }

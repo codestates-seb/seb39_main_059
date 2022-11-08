@@ -53,7 +53,6 @@ const PostForm: FC<Props> = ({
   const onInvalid = (errors: FieldErrors) => {
     alert('submit fail')
   }
-
   return (
     <S.PostFormLayout onSubmit={handleSubmit(onSubmitHandler, onInvalid)}>
       <S.Header className="header">

@@ -10,7 +10,7 @@ const NewFeed = () => {
   const { isLogin } = useAppSelector(state => state.user)
 
   useEffect(() => {
-    if (isLogin) {
+    if (!isLogin) {
       alert('로그인이 필요한 서비스입니다🐱')
       navigate('/login')
     }
@@ -22,4 +22,5 @@ const NewFeed = () => {
 
   return <PostForm onSubmitHandler={onSubmitHandler} />
 }
+
 export default NewFeed

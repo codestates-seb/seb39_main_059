@@ -4,6 +4,7 @@ import { FEED_PATH } from '@Routes/feed.routes'
 import { Feeds } from '@Types/feed'
 import { CreateAsyncThunkTypes } from '../store'
 
+// 냥이생활 전체 피드 불러오기
 export const getFeedsAsync = createAsyncThunk<
   Feeds,
   undefined,
@@ -21,6 +22,49 @@ export const getFeedsAsync = createAsyncThunk<
       },
     )
     return data
+  } catch (error: any) {
+    return thunkAPI.rejectWithValue(error.message)
+  }
+})
+
+// 좋아요 추가하기
+export const addLikeAsync = createAsyncThunk<
+  any,
+  number,
+  CreateAsyncThunkTypes
+>('feeds/addLikeAsync', async (feedId, thunkAPI) => {
+  try {
+    const { data } = await axiosInstance.post(
+      `/${FEED_PATH}/${feedId}/like`,
+      null,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('ACCESS_TOKEN')}`,
+        },
+      },
+    )
+    return feedId
+  } catch (error: any) {
+    return thunkAPI.rejectWithValue(error.message)
+  }
+})
+
+// 좋아요 취소하기
+export const cancelLikeAsync = createAsyncThunk<
+  any,
+  number,
+  CreateAsyncThunkTypes
+>('feeds/cancelLikeAsync', async (feedId, thunkAPI) => {
+  try {
+    const { data } = await axiosInstance.delete(
+      `/${FEED_PATH}/${feedId}/like`,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('ACCESS_TOKEN')}`,
+        },
+      },
+    )
+    return feedId
   } catch (error: any) {
     return thunkAPI.rejectWithValue(error.message)
   }

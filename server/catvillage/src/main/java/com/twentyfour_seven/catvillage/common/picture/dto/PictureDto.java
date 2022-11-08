@@ -15,7 +15,7 @@ import javax.validation.constraints.Pattern;
 @NoArgsConstructor
 @Validated
 public class PictureDto {
-    @Pattern(regexp = "^((https?|http?|)://)$")
+    @Pattern(regexp = "^http[s]{0,1}://.*")
     @Length(max = 500)
     private String picture;
 
