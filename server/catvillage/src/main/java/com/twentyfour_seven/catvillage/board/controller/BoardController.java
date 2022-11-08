@@ -6,10 +6,12 @@ import com.twentyfour_seven.catvillage.board.dto.comment.BoardCommentPostDto;
 import com.twentyfour_seven.catvillage.board.dto.comment.BoardCommentPostResponseDto;
 import com.twentyfour_seven.catvillage.board.entity.Board;
 import com.twentyfour_seven.catvillage.board.entity.BoardComment;
+import com.twentyfour_seven.catvillage.board.entity.BoardTag;
 import com.twentyfour_seven.catvillage.board.mapper.BoardCommentMapper;
 import com.twentyfour_seven.catvillage.board.mapper.BoardMapper;
 import com.twentyfour_seven.catvillage.board.service.BoardCommentService;
 import com.twentyfour_seven.catvillage.board.service.BoardService;
+import com.twentyfour_seven.catvillage.board.service.BoardTagService;
 import com.twentyfour_seven.catvillage.dto.MultiBoardResponseDto;
 import com.twentyfour_seven.catvillage.dto.MultiResponseDto;
 import com.twentyfour_seven.catvillage.user.entity.User;
@@ -38,13 +40,15 @@ public class BoardController {
     private BoardMapper boardMapper;
     private BoardCommentMapper boardCommentMapper;
     private BoardService boardService;
+    private BoardTagService boardTagService;
     private UserService userService;
     private BoardCommentService boardCommentService;
 
-    public BoardController(BoardMapper boardMapper, BoardCommentMapper boardCommentMapper, BoardService boardService, UserService userService, BoardCommentService boardCommentService) {
+    public BoardController(BoardMapper boardMapper, BoardCommentMapper boardCommentMapper, BoardService boardService, BoardTagService boardTagService, UserService userService, BoardCommentService boardCommentService) {
         this.boardMapper = boardMapper;
         this.boardCommentMapper = boardCommentMapper;
         this.boardService = boardService;
+        this.boardTagService = boardTagService;
         this.userService = userService;
         this.boardCommentService = boardCommentService;
     }
@@ -240,7 +244,7 @@ public class BoardController {
             })
     @PostMapping("/comments/{comments-id}/like")
     public ResponseEntity postLikeInComment(@PathVariable("comments-id") @Positive long commentId,
-                                          @AuthenticationPrincipal org.springframework.security.core.userdetails.User user) {
+                                            @AuthenticationPrincipal org.springframework.security.core.userdetails.User user) {
         User findUser = userService.findVerifiedEmail(user.getUsername());
         boardCommentService.addLike(commentId, findUser);
         return new ResponseEntity<>(HttpStatus.CREATED);
@@ -254,9 +258,48 @@ public class BoardController {
             })
     @DeleteMapping("/comments/{comments-id}/like")
     public ResponseEntity deleteLikeInComment(@PathVariable("comments-id") @Positive long commentId,
-                                           @AuthenticationPrincipal org.springframework.security.core.userdetails.User user) {
+                                              @AuthenticationPrincipal org.springframework.security.core.userdetails.User user) {
         User findUser = userService.findVerifiedEmail(user.getUsername());
         boardCommentService.deleteLike(commentId, findUser);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
+    @Operation(summary = "집사생활 태그 등록", description = "집사생활 게시글에 사용되는 태그를 등록한다.")
+    @PostMapping("/tags")
+    public ResponseEntity postBoardTag(@RequestBody BoardTagDto requestBody) {
+        BoardTag boardTag = boardTagService.addBoardTag(new BoardTag(requestBody.getTag()));
+        return new ResponseEntity<>(boardTag, HttpStatus.CREATED);
+    }
+
+    @Operation(summary = "집사생활 태그 조회", description = "집사생활에 사용되는 모든 태그를 조회한다.")
+    @GetMapping("/tags")
+    public ResponseEntity getBoardTags(@RequestParam(defaultValue = "1") @Positive int page,
+                                       @RequestParam(defaultValue = "10") @Positive int size) {
+        Page<BoardTag> boardTags = boardTagService.findBoardTags(page - 1, size);
+        return new ResponseEntity<>(
+                new MultiResponseDto<BoardTag>(
+                        boardTags.getContent(),
+                        boardTags
+                ),
+                HttpStatus.OK
+        );
+    }
+
+    @Operation(summary = "집사생활 태그 제거", description = "집사생활에 사용되는 태그를 제거한다.")
+    @DeleteMapping("/tags/{tag-id}")
+    public ResponseEntity deleteBoardTag(@PathVariable("tag-id") @Positive long tagId) {
+        boardTagService.removeBoardTag(tagId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @Operation(summary = "집사생활 태그 수정", description = "집사생활에 사용되는 태그를 수정한다")
+    @PatchMapping("/tags/{tags-id}")
+    public ResponseEntity patchBoardTag(@PathVariable("tags-id") @Positive long tagId,
+                                        @RequestBody BoardTagDto requestBody) {
+        BoardTag boardTag = new BoardTag(requestBody.getTag());
+        boardTag.setBoardTagId(tagId);
+        BoardTag updateBoardTag = boardTagService.updateBoardTag(boardTag);
+        return new ResponseEntity<>(updateBoardTag, HttpStatus.OK);
+    }
+
 }
