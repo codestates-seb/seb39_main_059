@@ -45,11 +45,10 @@ const NewBoard = () => {
       },
     })
     if (axiosResponse.status === 201) {
-      console.log('성공')
       navigate(-1)
     } else {
       console.log(axiosResponse.status)
-      console.log('실패')
+      alert('생성 실패!')
     }
   }
 
