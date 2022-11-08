@@ -1,7 +1,7 @@
 package com.twentyfour_seven.catvillage.user.mapper;
 
-import com.twentyfour_seven.catvillage.user.dto.FollowGetResponseDto;
-import com.twentyfour_seven.catvillage.user.dto.FollowResponseDto;
+import com.twentyfour_seven.catvillage.user.dto.follow.FollowGetResponseDto;
+import com.twentyfour_seven.catvillage.user.dto.follow.FollowResponseDto;
 import com.twentyfour_seven.catvillage.user.entity.Follow;
 import com.twentyfour_seven.catvillage.user.entity.User;
 import org.mapstruct.Mapper;
