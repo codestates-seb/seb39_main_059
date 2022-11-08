@@ -27,7 +27,7 @@ const rootReducer = combineReducers({
   boards: boardsReducer,
 })
 
-const persistedReducer = persistReducer(persistConfig, rootReducer)
+const persistedReducer = persistReducer<RootState>(persistConfig, rootReducer)
 
 export const setupStore = (preloadedState?: PreloadedState<RootState>) => {
   return configureStore({
