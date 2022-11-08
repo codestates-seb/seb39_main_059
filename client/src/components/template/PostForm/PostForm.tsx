@@ -41,7 +41,6 @@ const PostForm: FC<Props> = ({
         // 서버에서 응답 메시지를 받지 못했을경우 기본 메시지 설정또한 함께 해준다
         throw Error(axiosResponse.data.message || '문제가 발생했어요!')
       } */
-    console.log(axiosResponse.data)
     return axiosResponse.data
   }
 
@@ -52,9 +51,9 @@ const PostForm: FC<Props> = ({
   } = useForm<FormValue>()
 
   const onInvalid = (errors: FieldErrors) => {
-    console.log('submit fail')
-    console.log(errors)
+    alert('submit fail')
   }
+
   return (
     <S.PostFormLayout onSubmit={handleSubmit(onSubmitHandler, onInvalid)}>
       <S.Header className="header">
