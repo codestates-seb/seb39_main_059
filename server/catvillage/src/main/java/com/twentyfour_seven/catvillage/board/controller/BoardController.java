@@ -305,7 +305,6 @@ public class BoardController {
         return new ResponseEntity<>(updateBoardTag, HttpStatus.OK);
     }
 
-}
 
     @Operation(summary = "집사생활 게시글 검색", description = "집사생활에 등록 된 게시글을 검색한다.")
     @GetMapping("/search")
