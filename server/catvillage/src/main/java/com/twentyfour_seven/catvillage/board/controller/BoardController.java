@@ -29,6 +29,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Positive;
 
 //@Tag(name = "Board", description = "집사생활 API")
@@ -264,6 +266,7 @@ public class BoardController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+
     @Operation(summary = "집사생활 태그 등록", description = "집사생활 게시글에 사용되는 태그를 등록한다.")
     @PostMapping("/tags")
     public ResponseEntity postBoardTag(@RequestBody BoardTagDto requestBody) {
@@ -303,3 +306,20 @@ public class BoardController {
     }
 
 }
+
+    @Operation(summary = "집사생활 게시글 검색", description = "집사생활에 등록 된 게시글을 검색한다.")
+    @GetMapping("/search")
+    public ResponseEntity getBoardToSearch(@RequestParam(defaultValue = "1") @Positive int page,
+                                           @RequestParam(defaultValue = "10") @Positive int size,
+                                           @RequestParam @Pattern(regexp = "all|title|body|user") String where,
+                                           @RequestParam @NotBlank String keyword) {
+        Page<Board> boards = boardService.searchBoards(page - 1, size, where, keyword);
+        return new ResponseEntity<>(
+                new MultiResponseDto<BoardMultiGetResponse>(
+                        boardMapper.boardsToBoardMultiGetResponseDtos(boards.getContent()),
+                        boards
+                ),
+                HttpStatus.OK);
+    }
+}
+
