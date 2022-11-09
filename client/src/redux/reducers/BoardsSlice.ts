@@ -50,7 +50,7 @@ const res = {
 // }
 // -----------------------------------------
 
-const userSlice = createSlice({
+const boardSlice = createSlice({
   name: 'boards',
   initialState,
   reducers: {},
@@ -99,4 +99,4 @@ const userSlice = createSlice({
 // })
 // -----------------------------------------
 
-export const boardsReducer: Reducer<typeof initialState> = userSlice.reducer
+export const boardsReducer: Reducer<typeof initialState> = boardSlice.reducer
