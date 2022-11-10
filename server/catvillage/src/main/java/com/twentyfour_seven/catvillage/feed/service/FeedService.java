@@ -200,7 +200,7 @@ public class FeedService {
 
     public Page<Feed> findFeedByLike(long userId, int page, int size) {
         User findUser = userService.findUser(userId);
-        PageRequest pageRequest = PageRequest.of(page, size, Sort.unsorted());
+        PageRequest pageRequest = PageRequest.of(page, size, Sort.by("likeId").descending());
         Page<Like> likePage = likeService.findLikeByUserLike(pageRequest, findUser);
         return new PageImpl<Feed>(likePage.getContent().stream().map(Like::getFeed).collect(Collectors.toList()),
                 likePage.getPageable(), likePage.getTotalElements());
