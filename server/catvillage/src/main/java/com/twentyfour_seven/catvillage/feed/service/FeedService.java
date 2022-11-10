@@ -198,4 +198,9 @@ public class FeedService {
         findUser.getCats().forEach(cat -> findFeeds.addAll(feedRepository.findByCat(cat)));
         return findFeeds;
     }
+
+    public List<Feed> findFeedByLike(long userId) {
+        User findUser = userService.findUser(userId);
+        return likeService.findFeedByUserLike(findUser);
+    }
 }

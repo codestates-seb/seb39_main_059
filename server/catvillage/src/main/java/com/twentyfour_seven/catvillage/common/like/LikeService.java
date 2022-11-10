@@ -9,6 +9,9 @@ import com.twentyfour_seven.catvillage.feed.entity.FeedComment;
 import com.twentyfour_seven.catvillage.user.entity.User;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class LikeService {
     private final LikeRepository likeRepository;
@@ -95,5 +98,10 @@ public class LikeService {
 
     public boolean findExistLike(Feed feed, User user) {
         return likeRepository.existsByUserAndFeed(user, feed);
+    }
+
+    public List<Feed> findFeedByUserLike(User user) {
+        List<Like> likes = likeRepository.findByUserAndFeedIsNotNull(user);
+        return likes.stream().map(Like::getFeed).collect(Collectors.toList());
     }
 }

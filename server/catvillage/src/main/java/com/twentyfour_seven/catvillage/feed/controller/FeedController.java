@@ -287,4 +287,10 @@ public class FeedController {
         List<Feed> feeds = feedService.findFeedByUser(userId);
         return new ResponseEntity<>(feedMapper.feedsToFeedSimpleDtos(feeds), HttpStatus.OK);
     }
+
+    @GetMapping("/users/{users-id}/likes")
+    public ResponseEntity getFeedFromUserLike(@PathVariable("users-id") @Positive long userId) {
+        List<Feed> feeds = feedService.findFeedByLike(userId);
+        return new ResponseEntity<>(feedMapper.feedsToFeedSimpleDtos(feeds), HttpStatus.OK);
+    }
 }
