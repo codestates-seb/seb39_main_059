@@ -5,9 +5,9 @@ import com.twentyfour_seven.catvillage.board.entity.BoardComment;
 import com.twentyfour_seven.catvillage.feed.entity.Feed;
 import com.twentyfour_seven.catvillage.feed.entity.FeedComment;
 import com.twentyfour_seven.catvillage.user.entity.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-
-import java.util.List;
 
 public interface LikeRepository extends JpaRepository<Like, Long> {
 
@@ -27,5 +27,5 @@ public interface LikeRepository extends JpaRepository<Like, Long> {
 
     void deleteByUserAndBoardComment(User user, BoardComment boardComment);
 
-    List<Like> findByUserAndFeedIsNotNull(User user);
+    Page<Like> findByUserAndFeedIsNotNull(User user, Pageable pageable);
 }

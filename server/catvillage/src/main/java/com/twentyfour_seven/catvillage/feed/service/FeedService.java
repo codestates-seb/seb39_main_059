@@ -2,6 +2,7 @@ package com.twentyfour_seven.catvillage.feed.service;
 
 import com.twentyfour_seven.catvillage.cat.entity.Cat;
 import com.twentyfour_seven.catvillage.cat.service.CatService;
+import com.twentyfour_seven.catvillage.common.like.Like;
 import com.twentyfour_seven.catvillage.common.like.LikeService;
 import com.twentyfour_seven.catvillage.common.picture.entity.Picture;
 import com.twentyfour_seven.catvillage.common.picture.service.PictureService;
@@ -12,9 +13,7 @@ import com.twentyfour_seven.catvillage.feed.repository.FeedRepository;
 import com.twentyfour_seven.catvillage.user.entity.User;
 import com.twentyfour_seven.catvillage.user.service.FollowService;
 import com.twentyfour_seven.catvillage.user.service.UserService;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -199,8 +198,11 @@ public class FeedService {
         return findFeeds;
     }
 
-    public List<Feed> findFeedByLike(long userId) {
+    public Page<Feed> findFeedByLike(long userId, int page, int size) {
         User findUser = userService.findUser(userId);
-        return likeService.findFeedByUserLike(findUser);
+        PageRequest pageRequest = PageRequest.of(page, size, Sort.unsorted());
+        Page<Like> likePage = likeService.findLikeByUserLike(pageRequest, findUser);
+        return new PageImpl<Feed>(likePage.getContent().stream().map(Like::getFeed).collect(Collectors.toList()),
+                likePage.getPageable(), likePage.getTotalElements());
     }
 }

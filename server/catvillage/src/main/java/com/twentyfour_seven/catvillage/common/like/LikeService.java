@@ -7,10 +7,9 @@ import com.twentyfour_seven.catvillage.exception.ExceptionCode;
 import com.twentyfour_seven.catvillage.feed.entity.Feed;
 import com.twentyfour_seven.catvillage.feed.entity.FeedComment;
 import com.twentyfour_seven.catvillage.user.entity.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class LikeService {
@@ -100,8 +99,8 @@ public class LikeService {
         return likeRepository.existsByUserAndFeed(user, feed);
     }
 
-    public List<Feed> findFeedByUserLike(User user) {
-        List<Like> likes = likeRepository.findByUserAndFeedIsNotNull(user);
-        return likes.stream().map(Like::getFeed).collect(Collectors.toList());
+    public Page<Like> findLikeByUserLike(Pageable pageable, User user) {
+        Page<Like> likePage = likeRepository.findByUserAndFeedIsNotNull(user, pageable);
+        return likePage;
     }
 }
