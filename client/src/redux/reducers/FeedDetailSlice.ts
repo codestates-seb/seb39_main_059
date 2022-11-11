@@ -9,6 +9,7 @@ const initialState: FeedDetailInitialState = {
     comments: [],
     feedId: 0,
     isLike: false,
+    isMyFeed: false,
     likeCount: 0,
     name: '',
     pictures: [],
