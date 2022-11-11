@@ -7,6 +7,8 @@ import com.twentyfour_seven.catvillage.exception.ExceptionCode;
 import com.twentyfour_seven.catvillage.feed.entity.Feed;
 import com.twentyfour_seven.catvillage.feed.entity.FeedComment;
 import com.twentyfour_seven.catvillage.user.entity.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -95,5 +97,10 @@ public class LikeService {
 
     public boolean findExistLike(Feed feed, User user) {
         return likeRepository.existsByUserAndFeed(user, feed);
+    }
+
+    public Page<Like> findLikeByUserLike(Pageable pageable, User user) {
+        Page<Like> likePage = likeRepository.findByUserAndFeedIsNotNull(user, pageable);
+        return likePage;
     }
 }

@@ -1,5 +1,6 @@
 package com.twentyfour_seven.catvillage.feed.controller;
 
+import com.twentyfour_seven.catvillage.dto.MultiResponseDto;
 import com.twentyfour_seven.catvillage.feed.dto.*;
 import com.twentyfour_seven.catvillage.feed.entity.Feed;
 import com.twentyfour_seven.catvillage.feed.entity.FeedComment;
@@ -286,5 +287,22 @@ public class FeedController {
     public ResponseEntity getFeedFromUser(@PathVariable("users-id") @Positive long userId) {
         List<Feed> feeds = feedService.findFeedByUser(userId);
         return new ResponseEntity<>(feedMapper.feedsToFeedSimpleDtos(feeds), HttpStatus.OK);
+    }
+
+    @Operation(summary = "특정 유저가 좋아요를 누른 모든 피드 조회", description = "특정 유저의 id를 path에 입력하여 특정 유저가 좋아요 누른 피드 리스트를 페이지네이션으로 반환합니다. (param 기본값 page: 1, size: 10)",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "피드 조회 성공",
+                            content = @Content(schema = @Schema(implementation = FeedSimpleDto.class))),
+                    @ApiResponse(responseCode = "404", description = "존재하지 않는 유저"),
+
+            }
+    )
+    @GetMapping("/users/{users-id}/likes")
+    public ResponseEntity getFeedFromUserLike(@PathVariable("users-id") @Positive long userId,
+                                              @RequestParam(defaultValue = "1") @Positive int page,
+                                              @RequestParam(defaultValue = "10") @Positive int size) {
+        Page<Feed> feedPage = feedService.findFeedByLike(userId, page - 1, size);
+        return new ResponseEntity<>(
+                new MultiResponseDto<FeedSimpleDto>(feedMapper.feedsToFeedSimpleDtos(feedPage.getContent()), feedPage), HttpStatus.OK);
     }
 }
