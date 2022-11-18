@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom'
+import Header from '@Modules/Header'
 import { logoutAsync } from '@/redux/actions/userAction'
 import { useAppDispatch } from '@/redux/store'
 import { persistor } from '../../index'
@@ -20,7 +21,7 @@ const Profile = () => {
   }
   return (
     <>
-      <div>Profile</div>
+      <Header>profile</Header>
       <button type="button" onClick={logoutHandler}>
         logout
       </button>
