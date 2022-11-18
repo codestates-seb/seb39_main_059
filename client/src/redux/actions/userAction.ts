@@ -44,20 +44,23 @@ export const loginAsync = createAsyncThunk<
 })
 
 export const logoutAsync = createAsyncThunk<
-  UserInfo,
-  null,
+  undefined,
+  undefined,
   CreateAsyncThunkTypes
->('user/logoutAsync', async (payload, thunkAPI) => {
+>('user/logoutAsync', async (_, thunkAPI) => {
   try {
-    console.log('hello')
-    const { data } = await axiosInstance.post('/logout', {
-      accessToken: localStorage.getItem('ACCESS_TOKEN'),
-      refreshToken: localStorage.getItem('REFRESH_TOKEN')
-    }, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('ACCESS_TOKEN')}`,
+    const { data } = await axiosInstance.post(
+      '/logout',
+      {
+        accessToken: localStorage.getItem('ACCESS_TOKEN'),
+        refreshToken: localStorage.getItem('REFRESH_TOKEN'),
       },
-    })
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('ACCESS_TOKEN')}`,
+        },
+      },
+    )
     console.log(data)
     localStorage.removeItem('ACCESS_TOKEN')
     localStorage.removeItem('REFRESH_TOKEN')
