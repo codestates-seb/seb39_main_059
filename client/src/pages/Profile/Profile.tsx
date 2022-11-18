@@ -1,17 +1,29 @@
-import { logoutAsync } from "@/redux/actions/userAction"
-import { useAppDispatch } from "@/redux/store"
+import { useNavigate } from 'react-router-dom'
+import { logoutAsync } from '@/redux/actions/userAction'
+import { useAppDispatch } from '@/redux/store'
+import { persistor } from '../../index'
 
 const Profile = () => {
   const dispatch = useAppDispatch()
-  
-  const logoutHandler = () => {
-    console.log('로그아웃 click')
-    dispatch(logoutAsync(null))
+  const navigate = useNavigate()
+
+  const purge = async () => {
+    await persistor.purge()
+  }
+
+  const logoutHandler = async () => {
+    if (window.confirm('로그아웃 하시겠습니까?')) {
+      await dispatch(logoutAsync())
+      setTimeout(() => purge(), 200)
+      navigate('/')
+    }
   }
   return (
     <>
       <div>Profile</div>
-      <button type="button" onClick={logoutHandler}>logout</button>
+      <button type="button" onClick={logoutHandler}>
+        logout
+      </button>
     </>
   )
 }
