@@ -9,6 +9,7 @@ import { boardRoutes } from './board.routes'
 import { errorRoutes } from './error.routes'
 import { feedRoutes } from './feed.routes'
 import { mainRoutes } from './main.routes'
+import { profileRoutes } from './profile.routes'
 
 const appRoutes: RouteObject = {
   path: '/',
@@ -23,6 +24,7 @@ const appRoutes: RouteObject = {
     feedRoutes,
     boardRoutes,
     errorRoutes,
+    profileRoutes
   ],
 }
 

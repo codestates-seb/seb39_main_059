@@ -42,3 +42,30 @@ export const loginAsync = createAsyncThunk<
     return thunkAPI.rejectWithValue(error.message)
   }
 })
+
+export const logoutAsync = createAsyncThunk<
+  undefined,
+  undefined,
+  CreateAsyncThunkTypes
+>('user/logoutAsync', async (_, thunkAPI) => {
+  try {
+    const { data } = await axiosInstance.post(
+      '/logout',
+      {
+        accessToken: localStorage.getItem('ACCESS_TOKEN'),
+        refreshToken: localStorage.getItem('REFRESH_TOKEN'),
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('ACCESS_TOKEN')}`,
+        },
+      },
+    )
+    console.log(data)
+    localStorage.removeItem('ACCESS_TOKEN')
+    localStorage.removeItem('REFRESH_TOKEN')
+    return data
+  } catch (error: any) {
+    return thunkAPI.rejectWithValue(error.message)
+  }
+})

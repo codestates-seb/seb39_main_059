@@ -6,11 +6,12 @@ import {
   TabBarHeartIcon,
 } from '@Assets/icons'
 import { Link, useLocation } from 'react-router-dom'
+import { useAppSelector } from '@/redux/store'
 import * as S from './TabBar.style'
 
 const TabBar = () => {
   const tmpLocation = useLocation()
-  // console.log(tmpLocation.pathname)
+  const { isLogin } = useAppSelector(state => state.user)
 
   return (
     <S.TabBarLayout>
@@ -35,7 +36,7 @@ const TabBar = () => {
         </Link>
       </S.IconBox>
       <S.IconBox>
-        <Link to="/login">
+        <Link to={isLogin?"/profile":"/login"}>
           <MyProfileIcon />
         </Link>
       </S.IconBox>

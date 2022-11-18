@@ -1,6 +1,7 @@
 import { createSlice, Reducer } from '@reduxjs/toolkit'
 import { UserInitialState } from '@Types/user'
-import { signupAsync, loginAsync } from '../actions/userAction'
+import { PURGE } from 'redux-persist'
+import { signupAsync, loginAsync, logoutAsync } from '../actions/userAction'
 
 const initialState: UserInitialState = {
   isLoading: true,
@@ -50,6 +51,29 @@ const userSlice = createSlice({
         state.isLoading = false
         alert('로그인 실패')
       })
+      // 로그아웃
+      .addCase(logoutAsync.pending, state => {
+        state.isLogin = true
+      })
+      .addCase(logoutAsync.fulfilled, state => {
+        state.isLoading = true
+        state.isSignup = false
+        state.isLogin = false
+        state.userInfo = {
+          email: '',
+          password: '',
+          location: null,
+          name: '',
+          profileImage: null,
+          userId: '',
+        }
+        alert('로그아웃 성공!')
+      })
+      .addCase(logoutAsync.rejected, state => {
+        state.isLogin = true
+        alert('로그아웃 실패')
+      })
+      .addCase(PURGE, () => initialState)
   },
 })
 export const userReducer: Reducer<typeof initialState> = userSlice.reducer
