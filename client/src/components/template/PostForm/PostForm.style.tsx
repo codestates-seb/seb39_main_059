@@ -13,6 +13,9 @@ export const PostFormLayout = styled.form(
 
 export const ImageInputBox = styled.div`
   margin-bottom: 30px;
+  width: 100%;
+  max-width: 450px;
+  margin: auto
 `
 
 export const PostImageInput = styled(ImageInput).attrs({
