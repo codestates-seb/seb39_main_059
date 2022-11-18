@@ -1,3 +1,4 @@
+import Header from '@Modules/Header'
 import TabBar from '@Modules/TabBar'
 import { BOARD_PATH } from '@Routes/board.routes'
 import { FEED_PATH } from '@Routes/feed.routes'
@@ -9,9 +10,11 @@ const SNavLayout = styled.div`
   display: flex;
   justify-content: space-around;
   align-items: center;
-  width: 173px;
+  width: 50%;
+  max-width: 400px;
+  min-width: 173px;
   height: 34px;
-  margin: 15px auto 12px auto;
+  margin: 0 auto;
 
   background: rgba(198, 198, 198, 0.2);
   border-radius: 36px;
@@ -71,7 +74,9 @@ const Nav = () => {
 export const MainLayout = () => {
   return (
     <SMainLayout>
-      <Nav />
+      <Header backButtonDisabled>
+        <Nav />
+      </Header>
       <Outlet />
       <TabBar />
     </SMainLayout>
