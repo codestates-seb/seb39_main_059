@@ -3,7 +3,9 @@ import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { SubmitHandler } from 'react-hook-form'
 import { FormValue } from '@Template/PostForm/PostForm'
+import Header from '@Modules/Header'
 import { useAppSelector } from '@/redux/store'
+import * as S from './NewFeed.style'
 
 const NewFeed = () => {
   const navigate = useNavigate()
@@ -20,7 +22,12 @@ const NewFeed = () => {
     // do something
   }
 
-  return <PostForm onSubmitHandler={onSubmitHandler} />
+  return (
+    <S.NewFeedLayout>
+      <Header>냥이생활 글쓰기</Header>
+      <PostForm onSubmitHandler={onSubmitHandler} />
+    </S.NewFeedLayout>
+  )
 }
 
 export default NewFeed

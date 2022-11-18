@@ -1,5 +1,4 @@
 import { axiosInstance } from '@Utils/instance'
-import { Back } from '@Assets/icons'
 import { useNavigate } from 'react-router-dom'
 import { FC } from 'react'
 import { FieldErrors, SubmitHandler, useForm } from 'react-hook-form'
@@ -55,12 +54,12 @@ const PostForm: FC<Props> = ({
   }
   return (
     <S.PostFormLayout onSubmit={handleSubmit(onSubmitHandler, onInvalid)}>
-      <S.Header className="header">
+      {/* <S.Header className="header">
         <button type="button" onClick={() => navigate(-1)}>
           <Back />
         </button>
         <span>글쓰기</span>
-      </S.Header>
+      </S.Header> */}
       <S.ImageInputBox>
         <S.PostImageInput
           inputName="image-input"

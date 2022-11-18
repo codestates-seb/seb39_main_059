@@ -15,7 +15,7 @@ const appRoutes: RouteObject = {
   path: '/',
   // element: <Iphone11Pro />,
   // element: <DashBoard />,
-  element: <PresentLayout />,
+  // element: <PresentLayout />,
   children: [
     { path: 'cat', element: <Cat /> },
     mainRoutes,
