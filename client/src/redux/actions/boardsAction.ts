@@ -3,7 +3,6 @@ import { axiosInstance } from '@Utils/instance'
 import { BOARD_PATH } from '@Routes/board.routes'
 import { Boards } from '@Types/board'
 import { CreateAsyncThunkTypes } from '../store'
-import { dummy } from '@/data'
 
 export const getBoardsAsync = createAsyncThunk<
   Boards,
@@ -21,21 +20,8 @@ export const getBoardsAsync = createAsyncThunk<
         },
       },
     )
-    // --------------------------------------
-    // const { data } = await resolveAfter1Seconds()
-    // --------------------------------------
     return data
   } catch (error: any) {
     return thunkAPI.rejectWithValue(error.message)
   }
 })
-
-const resolveAfter1Seconds = (): Promise<{
-  data: Boards
-}> => {
-  return new Promise(resolve => {
-    setTimeout(() => {
-      resolve({ data: dummy })
-    }, 200)
-  })
-}

@@ -61,7 +61,6 @@ export const logoutAsync = createAsyncThunk<
         },
       },
     )
-    console.log(data)
     localStorage.removeItem('ACCESS_TOKEN')
     localStorage.removeItem('REFRESH_TOKEN')
     return data
