@@ -4,7 +4,9 @@ import PostForm, { FormValue } from '@Template/PostForm'
 import { SubmitHandler } from 'react-hook-form'
 import { BOARD_PATH } from '@Routes/board.routes'
 import { axiosInstance } from '@Utils/instance'
+import Header from '@Modules/Header'
 import { useAppSelector } from '@/redux/store'
+import * as S from './NewBoard.style'
 
 const NewBoard = () => {
   const { pathname } = useLocation()
@@ -52,6 +54,11 @@ const NewBoard = () => {
     }
   }
 
-  return <PostForm onSubmitHandler={onSubmitHandler} hasTitle imgRequired />
+  return (
+    <S.NewBoardLayout>
+      <Header>집사생활 글쓰기</Header>
+      <PostForm onSubmitHandler={onSubmitHandler} hasTitle imgRequired />
+    </S.NewBoardLayout>
+  )
 }
 export default NewBoard
