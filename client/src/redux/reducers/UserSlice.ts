@@ -1,5 +1,6 @@
 import { createSlice, Reducer } from '@reduxjs/toolkit'
 import { UserInitialState } from '@Types/user'
+import { PURGE } from 'redux-persist'
 import { signupAsync, loginAsync, logoutAsync } from '../actions/userAction'
 
 const initialState: UserInitialState = {
@@ -55,10 +56,10 @@ const userSlice = createSlice({
         state.isLogin = true
       })
       .addCase(logoutAsync.fulfilled, state => {
-        state.isLoading= true
-        state.isSignup= false
-        state.isLogin= false
-        state.userInfo= {
+        state.isLoading = true
+        state.isSignup = false
+        state.isLogin = false
+        state.userInfo = {
           email: '',
           password: '',
           location: null,
@@ -72,6 +73,7 @@ const userSlice = createSlice({
         state.isLogin = true
         alert('로그아웃 실패')
       })
+      .addCase(PURGE, () => initialState)
   },
 })
 export const userReducer: Reducer<typeof initialState> = userSlice.reducer
