@@ -7,7 +7,7 @@ import { setupStore } from './redux/store'
 
 const store = setupStore()
 
-const persistor = persistStore(store)
+export const persistor = persistStore(store)
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 root.render(
