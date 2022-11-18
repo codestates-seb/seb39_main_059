@@ -15,8 +15,6 @@ const Boards: FC = () => {
     if (!b) return items
     return items.filter(({ boardId }) => [9, 10, 6].includes(boardId))
   }
-  // console.log(demo)
-  // console.log(filterItem(demo))
 
   useEffect(() => {
     dispatch(getBoardsAsync())

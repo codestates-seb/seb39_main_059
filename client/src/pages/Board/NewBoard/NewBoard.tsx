@@ -21,8 +21,6 @@ const NewBoard = () => {
   })
 
   const onSubmitHandler: SubmitHandler<FormValue> = async data => {
-    console.log('게시글 올리는중')
-    console.log(data)
     const { picture, body, title } = data
     const formData = {
       body,
@@ -47,7 +45,6 @@ const NewBoard = () => {
     if (axiosResponse.status === 201) {
       navigate(-1)
     } else {
-      console.log(axiosResponse.status)
       alert('생성 실패!')
     }
   }
