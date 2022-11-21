@@ -61,6 +61,7 @@ public class JwtTokenizer {
         Date accessTokenExpiresIn = new Date(now + ACCESS_TOKEN_EXPIRE_TIME);
         return Jwts.builder()
                 .setIssuer(ISSUER)  // "iss": "catVillage"
+                .setHeaderParam("typ", "ATK")   // Header "typ": "ATK"
                 .setClaims(claims)  // JWT에 담는 body
                 .setSubject(authentication.getName())    // JWT 제목 payload "sub": "email"
                 .setIssuedAt(Calendar.getInstance().getTime())  // JWT 발행일자 payload "iat": "발행일자"
@@ -76,6 +77,7 @@ public class JwtTokenizer {
 
         return Jwts.builder()
                 .setIssuer(ISSUER)  // "iss": "catVillage"
+                .setHeaderParam("typ", "RTK") // Header "typ": "RTK"
                 .setSubject(authentication.getName())    // JWT 제목 payload "sub": "email"
                 .setIssuedAt(Calendar.getInstance().getTime())  // JWT 발행일자 payload "iat": "발행일자"
                 .setExpiration(new Date(now + REFRESH_TOKEN_EXPIRE_TIME))  // 만료일자 payload "exp": "발행시간 + 7일"
@@ -113,6 +115,11 @@ public class JwtTokenizer {
         return new UsernamePasswordAuthenticationToken(principal, "", authorities);
     }
 
+    // 리프레쉬 토큰에서 유저 정보(email) 가져오기
+    public String getUserEmail(String refreshToken) {
+        return parseClaims(refreshToken).getSubject();
+    }
+
     // 토큰 정보를 검증
     public boolean validateToken(String token) {
         try {
@@ -128,6 +135,12 @@ public class JwtTokenizer {
             log.info("JWT 토큰이 잘못되었습니다.");
         }
         return false;
+    }
+
+    // Refresh Token 인지 검증
+    public boolean validateRefreshToken(String token) {
+        String tokenType = Jwts.parserBuilder().setSigningKey(key).build().parse(token).getHeader().getType();
+        return tokenType.equals("RTK");
     }
 
     // 만료된 토큰이어도 정보를 꺼내는 로직

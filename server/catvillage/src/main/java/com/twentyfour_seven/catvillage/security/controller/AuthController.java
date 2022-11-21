@@ -67,10 +67,10 @@ public class AuthController {
             }
     )
     @PostMapping("/logout")
-    public ResponseEntity logout(@RequestBody TokenRequestDto tokenRequestDto,
+    public ResponseEntity logout(@RequestBody TokenDto tokenDto,
                                  @AuthenticationPrincipal User user) {
         if (user != null) {
-            authService.logout(tokenRequestDto);
+            authService.logout(tokenDto);
         }
         return new ResponseEntity<>(HttpStatus.OK);
     }

@@ -52,6 +52,7 @@ public class SecurityConfig {
                 .antMatchers("/signup").permitAll() // 회원가입을 위한 API 는 토큰 없이도 허용
                 .antMatchers(HttpMethod.POST, "/login").permitAll() // 로그인을 위한 API 는 토큰 없이도 허용
                 .antMatchers(HttpMethod.GET, "/**").permitAll() // GET 요청은 토큰 없이도 허용
+                .antMatchers("/reissue").permitAll()    // 토큰 재발급 요청은 엑세스 토큰(만료) 확인하지 않음
                 .antMatchers("/h2/**").permitAll()
                 .anyRequest().authenticated() // 나머지 API 는 모두 인증 필요
                 .and()

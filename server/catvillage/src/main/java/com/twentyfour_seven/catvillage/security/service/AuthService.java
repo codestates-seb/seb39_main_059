@@ -17,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +32,7 @@ public class AuthService {
     private final JwtTokenizer jwtTokenizer;
     private final RefreshTokenRepository refreshTokenRepository;
     private final UserMapper userMapper;
+    private final CustomUserDetailsService userDetailsService;
 
     // 일반 회원가입 시 password 인코딩 후 저장
     public UserPostResponseDto signup(UserPostDto userPostDto) {
@@ -67,18 +69,20 @@ public class AuthService {
     }
 
     // 토큰 재발급
+    // RTK만 받고 ATK은 받지 않도록 수정
     public TokenDto reissue(TokenRequestDto tokenRequestDto) {
+        String token = tokenRequestDto.getRefreshToken();
         // 1. Refresh Token 검증
-        if (!jwtTokenizer.validateToken(tokenRequestDto.getRefreshToken())) {
+        if (!jwtTokenizer.validateToken(token) || !jwtTokenizer.validateRefreshToken(token)) {
             throw new RuntimeException("Refresh Token 이 유효하지 않습니다.");
         }
 
-        // 2. Access Token 에서 인증정보 가져오기
-        Authentication authentication = jwtTokenizer.getAuthentication(tokenRequestDto.getAccessToken());
+        // 2. Refresh Token 에서 유저 정보 가져옴
+        String userEmail = jwtTokenizer.getUserEmail(token);
 
         // 3. 저장소에서 User ID(email) 를 기반으로 Refresh Token 값 가져옴
         RefreshToken refreshToken =
-                refreshTokenRepository.findByKey(authentication.getName())
+                refreshTokenRepository.findByKey(userEmail)
                         .orElseThrow(() -> new RuntimeException("로그아웃 된 사용자입니다."));
 
         // 4. 유저의 Refresh Token 과 저장된 Refresh Token 이 일치하는지 검사
@@ -87,7 +91,10 @@ public class AuthService {
         }
 
         // 5. 새로운 토큰 생성
-        TokenDto tokenDto = createToken(authentication);
+        UserDetails userDetails = userDetailsService.loadUserByUsername(userEmail);
+
+
+        TokenDto tokenDto = createToken(new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities()));
 
         // 6. 저장소 정보 업데이트
         RefreshToken newRefreshToken = refreshToken.updateValue(tokenDto.getRefreshToken());
@@ -97,11 +104,11 @@ public class AuthService {
         return tokenDto;
     }
 
-    public void logout(TokenRequestDto tokenRequestDto) {
+    public void logout(TokenDto tokenDto) {
         // TODO: access token은 black list table에 등록하여 더 이상 해당 토큰으로 로그인 못 하도록 처리 필요
 
         // Refresh token 제거
-        RefreshToken findRefreshToken = refreshTokenRepository.findByValue(tokenRequestDto.getRefreshToken())
+        RefreshToken findRefreshToken = refreshTokenRepository.findByValue(tokenDto.getRefreshToken())
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.REFRESH_TOKEN_NOT_FOUND));
 
         refreshTokenRepository.delete(findRefreshToken);
