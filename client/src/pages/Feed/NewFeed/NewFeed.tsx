@@ -1,5 +1,5 @@
+import { FC, useEffect, useState } from 'react'
 import PostForm from '@Template/PostForm'
-import { useEffect, useState, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { SubmitHandler } from 'react-hook-form'
 import { FormValue } from '@Template/PostForm/PostForm'
@@ -15,13 +15,13 @@ interface Props {
   profileImage: string
 }
 
-const NewFeed = () => {
+const NewFeed: FC = () => {
   const navigate = useNavigate()
   const { isLogin } = useAppSelector(state => state.user)
   const [catInfos, setCatInfos] = useState<Props[]>([])
   const [catId, setCatId] = useState<number | null>(null)
 
-  const hasCatInfos = (data: any) => {
+  const hasCatInfos = <Props,>(data: Props[]) => {
     if (!data.length) {
       if (
         window.confirm(
@@ -35,19 +35,16 @@ const NewFeed = () => {
     }
   }
 
-  const getCatInfos = useCallback(
-    async (callback: any) => {
-      const { data } = await axiosInstance.get('/users/cats', {
-        headers: {
-          contentType: 'application/json',
-          Authorization: `Bearer ${localStorage.getItem('ACCESS_TOKEN')}`,
-        },
-      })
-      setCatInfos(data)
-      callback(data)
-    },
-    [catInfos],
-  )
+  const getCatInfos = async (callback: (params: Props[]) => void) => {
+    const { data } = await axiosInstance.get('/users/cats', {
+      headers: {
+        contentType: 'application/json',
+        Authorization: `Bearer ${localStorage.getItem('ACCESS_TOKEN')}`,
+      },
+    })
+    setCatInfos(data)
+    callback(data)
+  }
 
   useEffect(() => {
     if (!isLogin) {
@@ -80,9 +77,8 @@ const NewFeed = () => {
     return axiosResponse
   }
 
-  const catList: JSX.Element[] = catInfos.map((catInfo, index) => (
-    // eslint-disable-next-line react/no-array-index-key
-    <option key={index} value={catInfo.catId}>
+  const catList: JSX.Element[] = catInfos.map(catInfo => (
+    <option key={catInfo.catId} value={catInfo.catId}>
       {catInfo.name}
     </option>
   ))
@@ -93,7 +89,6 @@ const NewFeed = () => {
       <div>
         <select
           onChange={e => {
-            console.log(e.target.value)
             setCatId(Number(e.target.value))
           }}
         >
