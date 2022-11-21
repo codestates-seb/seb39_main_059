@@ -4,6 +4,9 @@ import Image from '@Atoms/Image'
 import SvgButton from '@Atoms/SvgButton'
 import { FeedDetail } from '@Types/feed'
 import { FC, useState } from 'react'
+import { axiosInstance } from '@Utils/instance'
+import { FEED_PATH } from '@Routes/feed.routes'
+import { useNavigate } from 'react-router-dom'
 import Dropdown from '@Modules/Dropdown'
 import * as S from './FeedDetail.style'
 
@@ -13,11 +16,29 @@ const FeedDetail: FC<FeedDetail> = ({
   profileImage,
   pictures,
   isMyFeed,
+  feedId,
 }) => {
   const [isDropdownView, setIsDropdownView] = useState<boolean | undefined>(
     false,
   )
+  const navigate = useNavigate()
 
+  const handleDeleteFeed = async () => {
+    try {
+      if (window.confirm('삭제하시겠습니까?')) {
+        const axiosResponse = axiosInstance.delete(`${FEED_PATH}/${feedId}`, {
+          headers: {
+            contentType: 'application/json',
+            Authorization: `Bearer ${localStorage.getItem('ACCESS_TOKEN')}`,
+          },
+        })
+      }
+      alert('삭제되었습니다.')
+      navigate(-1)
+    } catch (error: any) {
+      alert('에러가 발생했습니다 :(')
+    }
+  }
   return (
     <S.FeedDetailLayout>
       <S.InfoBox>
@@ -43,7 +64,7 @@ const FeedDetail: FC<FeedDetail> = ({
               icon="DropdownMenuIcon"
               onClick={() => setIsDropdownView(!isDropdownView)}
             />
-            {isDropdownView && <Dropdown />}
+            {isDropdownView && <Dropdown handleDeleteFeed={handleDeleteFeed} />}
           </S.DropdownBox>
         )}
       </S.InfoBox>
