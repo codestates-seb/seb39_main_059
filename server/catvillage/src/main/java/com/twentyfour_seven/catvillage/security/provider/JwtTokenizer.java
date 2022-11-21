@@ -140,10 +140,7 @@ public class JwtTokenizer {
     // Refresh Token 인지 검증
     public boolean validateRefreshToken(String token) {
         String tokenType = Jwts.parserBuilder().setSigningKey(key).build().parse(token).getHeader().getType();
-        if (!tokenType.equals("RTK")) {
-            return false;
-        }
-        return true;
+        return tokenType.equals("RTK");
     }
 
     // 만료된 토큰이어도 정보를 꺼내는 로직
