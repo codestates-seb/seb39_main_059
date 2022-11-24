@@ -19,7 +19,7 @@ const NewFeed: FC = () => {
   const navigate = useNavigate()
   const { isLogin } = useAppSelector(state => state.user)
   const [catInfos, setCatInfos] = useState<Props[]>([])
-  const [catId, setCatId] = useState<number | null>(null)
+  const [catId, setCatId] = useState<number>(0)
 
   const hasCatInfos = <Props,>(data: Props[]) => {
     if (!data.length) {
