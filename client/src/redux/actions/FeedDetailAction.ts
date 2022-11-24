@@ -10,7 +10,11 @@ export const getFeedDetailAsync = createAsyncThunk<
   CreateAsyncThunkTypes
 >('feedDetail/getFeedDetailAsync', async (payload, thunkAPI) => {
   try {
-    const { data } = await axiosInstance.get(`/${FEED_PATH}/${payload}`)
+    const { data } = await axiosInstance.get(`/${FEED_PATH}/${payload}`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('ACCESS_TOKEN')}`,
+      },
+    })
     return data
   } catch (error: any) {
     return thunkAPI.rejectWithValue(error.message)
