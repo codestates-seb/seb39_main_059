@@ -10,7 +10,7 @@ import { useAppSelector } from '@/redux/store'
 import * as S from './NewFeed.style'
 
 interface Props {
-  catId: 0
+  catId: number
   name: string
   profileImage: string
 }
