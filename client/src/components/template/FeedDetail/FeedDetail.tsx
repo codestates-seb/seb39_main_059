@@ -29,7 +29,7 @@ const FeedDetail: FC<FeedDetail> = ({
         const axiosResponse = axiosInstance.delete(`${FEED_PATH}/${feedId}`, {
           headers: {
             contentType: 'application/json',
-            Authorization: `Bearer ${localStorage.getItem('ACCESS_TOKEN')}`,
+            tokenNeeded: true,
           },
         })
       }

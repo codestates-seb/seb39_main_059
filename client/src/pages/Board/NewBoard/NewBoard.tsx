@@ -41,7 +41,7 @@ const NewBoard = () => {
     const axiosResponse = await axiosInstance.post(BOARD_PATH, formData, {
       headers: {
         contentType: 'application/json',
-        Authorization: `Bearer ${localStorage.getItem('ACCESS_TOKEN')}`,
+        tokenNeeded: true
       },
     })
     if (axiosResponse.status === 201) {

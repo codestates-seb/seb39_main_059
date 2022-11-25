@@ -122,7 +122,7 @@ const getImgUrl = async (formData: FormData): Promise<string> => {
   const axiosResponse = await axiosInstance.post('/upload', formData, {
     headers: {
       'content-type': 'multipart/form-data',
-      Authorization: `Bearer ${localStorage.getItem('ACCESS_TOKEN')}`,
+      tokenNeeded: true
     },
   })
   /*          // HttpStatus가 200번호 구역이 아니거나

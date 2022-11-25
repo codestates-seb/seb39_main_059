@@ -15,19 +15,22 @@ async function authorizationSetter(config: AxiosRequestConfig) {
   let accessToken = retrieveUserToken('ACCESS_TOKEN')
 
   if (!accessToken) {
-    throw new axios.Cancel(
-      '유저 인증 정보가 존재하지 않습니다. 로그인 상태를 확인하세요.',
-    )
+    delete header.tokenNeeded
+    header.Authorization = ''
+    return config
   }
 
   if (isTokenExpired(accessToken)) {
-    const refreshToken = retrieveUserToken('ACCESS_TOKEN')
-    const renewedAccessToken = await renewAccessToken(refreshToken!)
+    const refreshToken = retrieveUserToken('REFRESH_TOKEN')
+    const { renewedAccessToken, renewedRefreshToken } = await renewAccessToken(
+      refreshToken!,
+    )
+
     if (!renewedAccessToken) {
       throw new axios.Cancel()
     }
+
     accessToken = renewedAccessToken
-    setUserToken('ACCESS_TOKEN', accessToken)
   }
 
   delete header.tokenNeeded

@@ -39,7 +39,7 @@ const NewFeed: FC = () => {
     const { data } = await axiosInstance.get('/users/cats', {
       headers: {
         contentType: 'application/json',
-        Authorization: `Bearer ${localStorage.getItem('ACCESS_TOKEN')}`,
+        tokenNeeded: true
       },
     })
     setCatInfos(data)
@@ -70,7 +70,7 @@ const NewFeed: FC = () => {
     const axiosResponse = await axiosInstance.post(FEED_PATH, formData, {
       headers: {
         contentType: 'application/json',
-        Authorization: `Bearer ${localStorage.getItem('ACCESS_TOKEN')}`,
+        tokenNeeded: true
       },
     })
     navigate(-1)

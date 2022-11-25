@@ -12,7 +12,7 @@ export const getFeedDetailAsync = createAsyncThunk<
   try {
     const { data } = await axiosInstance.get(`/${FEED_PATH}/${payload}`, {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem('ACCESS_TOKEN')}`,
+        tokenNeeded: true
       },
     })
     return data

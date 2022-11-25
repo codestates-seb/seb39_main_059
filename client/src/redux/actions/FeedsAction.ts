@@ -17,7 +17,7 @@ export const getFeedsAsync = createAsyncThunk<
       `/${FEED_PATH}?page=${page}&size=${pageSize}`,
       {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem('ACCESS_TOKEN')}`,
+          tokenNeeded: true
         },
       },
     )
@@ -39,7 +39,7 @@ export const addLikeAsync = createAsyncThunk<
       null,
       {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem('ACCESS_TOKEN')}`,
+          tokenNeeded: true
         },
       },
     )
@@ -60,7 +60,7 @@ export const cancelLikeAsync = createAsyncThunk<
       `/${FEED_PATH}/${feedId}/like`,
       {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem('ACCESS_TOKEN')}`,
+          tokenNeeded: true
         },
       },
     )

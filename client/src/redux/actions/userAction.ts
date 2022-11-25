@@ -1,6 +1,8 @@
+import { renewAccessToken } from '@Api/auth'
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import { UserInfo, LoginPayload } from '@Types/user'
 import { axiosInstance } from '@Utils/instance'
+import { isTokenExpired, retrieveUserToken } from '@Utils/tokenControl'
 import { CreateAsyncThunkTypes } from '../store'
 
 export const signupAsync = createAsyncThunk<
@@ -31,7 +33,7 @@ export const loginAsync = createAsyncThunk<
 
     const userInfo = await axiosInstance.get('/users/my-info', {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem('ACCESS_TOKEN')}`,
+        tokenNeeded: true,
       },
     })
 
@@ -49,20 +51,28 @@ export const logoutAsync = createAsyncThunk<
   CreateAsyncThunkTypes
 >('user/logoutAsync', async (_, thunkAPI) => {
   try {
-    const { data } = await axiosInstance.post(
-      '/logout',
-      {
-        accessToken: localStorage.getItem('ACCESS_TOKEN'),
-        refreshToken: localStorage.getItem('REFRESH_TOKEN'),
+    let payload = {
+      accessToken: retrieveUserToken('ACCESS_TOKEN'),
+      refreshToken: retrieveUserToken('REFRESH_TOKEN'),
+    }
+
+    if (isTokenExpired(payload.accessToken!)) {
+      const {
+        renewedAccessToken: accessToken,
+        renewedRefreshToken: refreshToken,
+      } = await renewAccessToken(payload.refreshToken!)
+
+      payload = { accessToken, refreshToken }
+    }
+
+    const { data } = await axiosInstance.post('/logout', payload, {
+      headers: {
+        tokenNeeded: true,
       },
-      {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('ACCESS_TOKEN')}`,
-        },
-      },
-    )
-    localStorage.removeItem('ACCESS_TOKEN')
-    localStorage.removeItem('REFRESH_TOKEN')
+    })
+    
+    localStorage.clear()
+
     return data
   } catch (error: any) {
     return thunkAPI.rejectWithValue(error.message)
