@@ -12,6 +12,5 @@ export const isTokenExpired = (token: string) => {
   }
   const expiresIn = window.atob(payload).match(/(?<=exp":)\w{1,}/g)
   const dueToExpire = Number(expiresIn) - Date.now() / 1000 < 5 * 60 // 5분
-
   return dueToExpire
 }
