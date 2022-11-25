@@ -16,7 +16,7 @@ export const getBoardsAsync = createAsyncThunk<
       `/${BOARD_PATH}?page=${page}&size=${pageSize}`,
       {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem('ACCESS_TOKEN')}`,
+          tokenNeeded: true
         },
       },
     )
