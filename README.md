@@ -19,13 +19,15 @@
 
 (사진을 게시하려면 고양이가 등록되어 있어야 합니다.)
 
-![냥이생활](https://user-images.githubusercontent.com/104193237/194764940-424df338-1f22-47a6-8380-4eadb32749ec.gif)
+ <img src="https://user-images.githubusercontent.com/104193237/194764940-424df338-1f22-47a6-8380-4eadb32749ec.gif" height="500" alt="냥이생활"/>
+ 
+<br><br>
 
 ### 집사생활
 
 고양이와 관련된 QnA 및 정보 공유를 할 수 있는 공간입니다.
 
-![집사생활](https://user-images.githubusercontent.com/104193237/194765028-93960aef-a7b3-4d99-a1c7-e63fe607ef7d.gif)
+<img src="https://user-images.githubusercontent.com/96106122/208285599-24c1e5da-ab46-4952-9c7b-a2ab32dfa9a2.gif" height="500" alt="냥이생활"/>
 
 <br /> <br /> <br />
 
