@@ -38,8 +38,7 @@ public class CatTagService {
 
     public CatTag findExistCatTag (CatTag catTag) {
         Optional<CatTag> optionalCatTag = catTagRepository.findByTagName(catTag.getTagName());
-        CatTag findCatTag = optionalCatTag.orElse(catTagRepository.save(catTag));
-        return findCatTag;
+        return optionalCatTag.orElseGet(() -> catTagRepository.save(catTag));
     }
 
     public void saveTagToCat(TagToCat tagToCat) {
