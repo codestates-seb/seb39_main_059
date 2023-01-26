@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components'
 
 export const FeedsLayout = styled.div`
-  margin: 0px 20px;
+  margin: 0px 100px;
   display: flex;
   flex-direction: column;
 `
@@ -13,12 +13,16 @@ export const FollowCatBox = styled.div`
 `
 
 export const FeedBox = styled.ul`
-  column-count: 2;
+  column-count: 3;
+
+  @media screen and (max-width: 768px) {
+    column-count: 2;
+  }
 `
 
 export const FeedItem = styled.li`
   position: relative;
-  margin-bottom: 15px;
+  margin-bottom: 20px;
   cursor: pointer;
   > * {
     border-radius: 10px;
