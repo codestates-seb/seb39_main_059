@@ -7,6 +7,11 @@ import { Back } from '@Assets/icons'
 import { useAppDispatch, useAppSelector } from '@/redux/store'
 import { getFeedDetailAsync } from '@/redux/actions/FeedDetailAction'
 
+const FeedDetailLayout = styled.div`
+  max-width: 768px;
+  margin: 0 auto;
+`
+
 export const Header = styled.div`
   display: grid;
   grid-template-columns: 24px auto 24px;
@@ -15,8 +20,6 @@ export const Header = styled.div`
     margin: auto;
   }
 `
-
-const FeedDetailLayout = styled.div``
 
 const FeedDetail: FC = () => {
   const navigate = useNavigate()
